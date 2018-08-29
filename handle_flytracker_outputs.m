@@ -1,5 +1,5 @@
 
-function [ind_data,wing_ext_frames_indexed]= handle_flytracker_outputs(filename)
+function [wing_ext_frames_indexed]= handle_flytracker_outputs(filename)
 
 load(filename);
 %  vel=feat.data(:,:,1);
