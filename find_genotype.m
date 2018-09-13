@@ -14,26 +14,32 @@
 
 function find_genotype(genotypelist,path,expname,genotype)
 outputtable=readtable(genotypelist);
-videos=cellfun(@(list)dir(char(strcat('*',list,'*'))),outputtable.Var1,'UniformOutput',false);
+videos=cellfun(@(list)dir(char(strcat('*',list))),outputtable.Var1,'UniformOutput',false);
+
 videonames=cellfun(@(struct)arrayfun(@(indiv) indiv.name(indiv.isdir==1,:),struct,'UniformOutput',false),videos,'UniformOutput',false);
 currentdir=pwd;
-fieldname=strcat('F.',expname);
-for i=1:height(outputtable)
-cd(videonames{i}{1});
-cd(videonames{i}{1});
-cd(path);
+fieldname=char(strcat('F.',expname));
+for i=1:size(videonames,1)
+    if (size(videonames{i})>0)
+        cd(videonames{i}{1});
+        cd(videonames{i}{1});
+        cd(path);
 
 
-strtofind=strcat(string(videonames{i}{1}),string(outputtable.Var3(i)),string(outputtable.Var2(i)));
-disp(strtofind);
-datafile=dir(char(strcat('*',strtofind,'*','.mat')));
-datafilename=datafile.name;
-disp(datafilename);
-load(datafilename);
-data(i,:) = arrayfun(@(F)eval(fieldname),pdfdata,'UniformOutput',false);
-
-cd(currentdir);
+        strtofind=strcat(string(videonames{i}{1}),string(outputtable.Var3(i)),string(outputtable.Var2(i)));
+        disp(strtofind);
+        datafile=dir(char(strcat('*',strtofind,'*','.mat')));
+        if (size(datafile)>0)
+            datafilename=datafile.name;
+            disp(datafilename);
+        
+            load(datafilename);
+            data(i,:) = arrayfun(@(F)eval(fieldname),pdfdata,'UniformOutput',false);
+        end
+        cd(currentdir);
+    end
 end
+
 matdata=cell2mat(data(:,2));
 meandata=mean(matdata);
 x=cell2mat(data(1,1));
