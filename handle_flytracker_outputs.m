@@ -30,4 +30,17 @@ endPos = cellfun(@(fall,wideenough) transpose(fall(wideenough)-1),falling,wideEn
 allInSpan = cellfun(@(starts,ends) arrayfun(@(x,y) (x:1:y), starts, ends, 'uni', false),startPos,endPos,'uni',false);  
 catspans=cellfun(@(spans) [spans{:}], allInSpan,'uni',false);
 wing_ext_frames_13frames=cellfun(@(indiv,catspan) indiv(catspan,:),ind_data,catspans,'UniformOutput',false);
-wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, wing_ext_frames_13frames,num2cell(indices),'UniformOutput',false);
+contact_frames=cellfun(@(indiv) indiv(indiv(:,10)<2.5,:),ind_data,'UniformOutput',false);
+contact=cellfun(@(indiv) (indiv(:,10)<2.5),ind_data,'UniformOutput',false);
+contact=cellfun(@(above) [false;above;false],contact,'uni',false);
+edges_contact = cellfun(@(above) diff(above),contact,'UniformOutput',false);
+rising_contact = cellfun(@(edge) find(edge==1),edges_contact,'UniformOutput',false);    %rising/falling edges
+falling_contact = cellfun(@(edge) find(edge==-1),edges_contact,'UniformOutput',false);    %rising/falling edges
+spanWidth_contact = cellfun(@(rise,fall) fall-rise,rising_contact,falling_contact,'UniformOutput',false);  %width of span of 1's (above threshold)
+wideEnough_contact = cellfun(@(span) span >= 1500,spanWidth_contact,'UniformOutput',false);    
+startPos_contact = cellfun(@(rise,wideenough) transpose(rise(wideenough)),rising_contact,wideEnough_contact,'UniformOutput',false);    %start of each span
+tf = cellfun('isempty',startPos_contact); % true for empty cells
+startPos_contact(tf) = {15000} ; 
+catspans_no_cop=cellfun(@(catspan,startPos_c) catspan(catspan<startPos_c(1)),catspans,startPos_contact,'uni',false);
+removed_copulation=cellfun(@(indiv,catspan) indiv(catspan,:),ind_data,catspans_no_cop,'UniformOutput',false);
+wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, removed_copulation,num2cell(indices),'UniformOutput',false);
