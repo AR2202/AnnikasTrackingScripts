@@ -28,7 +28,10 @@ for p = 1:numel(dirs)
         cd(subdirname);
         error_handling_wrapper('pdfplot_errors.log','pdfplot',subdirname,'pdfs');
         %pdfplot(string(subdirname),'pdfs');
+        cd (startdir);
+        cd(dirname);
     end
+    cd (startdir);
 end
-%cd (startdir);
+
 
