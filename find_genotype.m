@@ -14,6 +14,7 @@
 
 function find_genotype(genotypelist,path,expname,genotype)
 outputtable=readtable(genotypelist);
+disp(outputtable.Var1);
 videos=cellfun(@(list)dir(char(strcat('*',list))),outputtable.Var1,'UniformOutput',false);
 
 videonames=cellfun(@(struct)arrayfun(@(indiv) indiv.name(indiv.isdir==1,:),struct,'UniformOutput',false),videos,'UniformOutput',false);
@@ -42,15 +43,16 @@ end
 
 matdata=cell2mat(data(:,2));
 meandata=mean(matdata);
-x=cell2mat(data(1,1));
+x=cell2mat(data(:,1));
+xmean=mean(x);
 dataSEM=std(matdata)/sqrt(size(matdata,1));
-figuredata.x=x;
+figuredata.x=xmean;
 figuredata.mean=meandata;
 figuredata.SEM=dataSEM;
 fullfigname=strcat(genotype,'_mean_',expname);
 datafilename=strcat(fullfigname,'.mat');
  fignew=figure('Name',fullfigname);
- %plot the mean with a shaded area showing the SEM
- h=boundedline(x,meandata, dataSEM,'m');
+% plot the mean with a shaded area showing the SEM
+ h=boundedline(xmean,meandata, dataSEM,'m');
  saveas(fignew,fullfigname,'epsc');
  save(datafilename,'figuredata');
