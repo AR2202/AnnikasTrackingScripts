@@ -26,30 +26,6 @@ if angle>pi
     angle_180=2*pi-angle;
 else angle_180=angle;
 end
-%function newfigplot has side effects
-function newfigplot(x,f,figname,flynumber,inputfilename,outputdir)
-fullfigname=strcat(figname,flynumber);
-fignew=figure('Name',fullfigname);
-plot(x,f)
-imagename=strcat(inputfilename,'_',flynumber,'_',figname);
-saveimage(outputdir,imagename,fignew);
-
-%function saveimage has side effects
-function saveimage(outputdir,fullfigname,fignew)
-    currentdir=pwd;
- if ~exist(outputdir,'dir')
-     mkdir (outputdir);
- end
- cd(outputdir);
- saveas(fignew,fullfigname,'epsc');
- cd(currentdir);
 %function savepdf has side effects
-function savepdf(outputdir,filename,pdfdata)
-currentdir=pwd;
- if ~exist(outputdir,'dir')
-     mkdir (outputdir);
- end
- cd(outputdir);
- save(filename,'pdfdata');
-  cd(currentdir);
+
  

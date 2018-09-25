@@ -51,6 +51,7 @@ figuredata.x=xmean;
 figuredata.mean=meandata;
 figuredata.SEM=dataSEM;
 figuredata.n=data_n;
+figuredata.data=data;
 fullfigname=strcat(genotype,'_mean_',expname);
 datafilename=strcat(fullfigname,'.mat');
  fignew=figure('Name',fullfigname);

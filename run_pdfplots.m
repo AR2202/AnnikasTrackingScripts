@@ -1,6 +1,6 @@
 
 
-dirs = dir('*Courtship');
+dirs = dir('*made');
 
 for p = 1:numel(dirs)
     if ~dirs(p).isdir
@@ -22,7 +22,7 @@ for p = 1:numel(dirs)
         if ismember(subdirname,{'.','..'})
             continue;
         end
-        disp(['Now making pdfs for:' subdirname]);
+        %disp(['Now making pdfs for:' subdirname]);
         cd(subdirname);
         disp(['Now making pdfs for:' subdirname]);
         cd(subdirname);
