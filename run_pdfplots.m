@@ -1,6 +1,6 @@
 
 
-dirs = dir('*made');
+dirs = dir('*Courtship');
 
 for p = 1:numel(dirs)
     if ~dirs(p).isdir
