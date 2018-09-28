@@ -27,7 +27,7 @@ for i=1:size(videonames,1)
         cd(path);
 
 
-        strtofind=strcat(string(videonames{i}{1}),string(outputtable.Var3(i)),string(outputtable.Var2(i)));
+        strtofind=strcat(string(videonames{i}{1}),string(outputtable.Var3(i)),string(outputtable.Var2(i)),string(outputtable.Var3(i)));
         disp(strtofind);
         datafile=dir(char(strcat('*',strtofind,'*','.mat')));
         if (size(datafile)>0)
