@@ -1,4 +1,4 @@
-%function pdfplot has side effects
+
 function pdfplot(inputfilename,outputdir)
 inputfilename_full=strcat(inputfilename,'-feat_id_corrected.mat');
  [wing_ext_frames_indexed]= handle_flytracker_outputs(inputfilename_full);
@@ -26,6 +26,6 @@ if angle>pi
     angle_180=2*pi-angle;
 else angle_180=angle;
 end
-%function savepdf has side effects
+
 
  
