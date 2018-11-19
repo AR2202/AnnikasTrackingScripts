@@ -14,30 +14,30 @@ for i=1:size(videonames,1)
         strtofind=string(videonames{i}{1});
         disp(strtofind);
         datafile=dir(char(strcat('*',strtofind,'_Indices.csv')));
-        if (size(datafile)>0)
-            datafilename=datafile.name;
-            disp(datafilename)
-            outputtable2=readtable(datafilename,'readvariablenames',true);
-            %disp(outputtable2);
-            
-           
-            WingIndex={outputtable2.WingIndex(outputtable2.FlyId==outputtable.Var2(i))};
-           
-            disp(WingIndex{1});
-            
-            
-            if(~isempty('WingIndex'))
-            if (size(WingIndex)>0)
-               
-            data(i)=str2double(WingIndex{1});
-            end
-          
+            if (size(datafile)>0)
+                datafilename=datafile.name;
+                disp(datafilename)
+                outputtable2=readtable(datafilename,'readvariablenames',true);
+                %disp(outputtable2);
+
+
+                WingIndex=outputtable2.WingIndex(outputtable2.FlyId==outputtable.Var2(i));
+
+                disp(WingIndex);
+
+                if ismember(outputtable.Var2(i),outputtable2.FlyId)
+
+                if (size(WingIndex)>0)
+
+                data(i)=WingIndex;
+                end
+
+                end
             end
         end
+
+        cd(currentdir);
     end
-    
-    cd(currentdir);
-end
 fullfigname=strcat(genotype,'_mean_WingIndex');
 datafilename=strcat(fullfigname,'.mat');
 save(datafilename,'data');
