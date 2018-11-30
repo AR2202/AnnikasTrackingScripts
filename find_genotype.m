@@ -10,7 +10,7 @@
 %genotype=genotype of the flies - is only used for labelling the figure(and
 %naming the output file)
 %csv file must have the following columns
-%videoname,fly-id,deliminator(in file name)
+%videoname,fly-id,delimitor(in file name, usually '_')
 
 function find_genotype(genotypelist,path,expname,genotype)
 outputtable=readtable(genotypelist,'readvariablenames',false);
