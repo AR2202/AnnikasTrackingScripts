@@ -23,7 +23,7 @@ ind_data=arrayfun(@(x,x2) horzcat(transpose(trk.data(x,:,1)),transpose(trk.data(
     %ori = ind_data(:,:,3);
     %  pos x of target fly=ind_data(:,:,4);
     %  pos y of target fly=ind_data(:,:,5);
-
+ % max_wing_angle=ind_data(:,:,6);
 
     %dist_to_other=ind_data(:,:,10);
     %facing_angle=ind_data(:,:,12);
