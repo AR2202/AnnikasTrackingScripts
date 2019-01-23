@@ -1,12 +1,13 @@
 
 function [right_wing_ext_frames_indexed, left_wing_ext_frames_indexed]= handle_track_outputs(inputfilename)
-featfilename=strcat(inputfilename,'-feat_id_corrected.mat');
-trackfilename=strcat(inputfilename,'-track_id_corrected.mat');
+featfilename=strcat(inputfilename,'-feat.mat');
+trackfilename=strcat(inputfilename,'-track.mat');
+
 load(featfilename);
 load(trackfilename);
 %  pos x=trk.data(:,:,1);
 %  pos y=trk.data(:,:,2);
-%ori = track.data(:,:,3);
+%ori = trk.data(:,:,3);
 
 % right_wing_ang=trk.data(:,:,16);
 %  left_wing_ang=trk.data(:,:,14);
@@ -15,7 +16,7 @@ load(trackfilename);
 %all DATA
 indices=transpose(1:size(trk.data,1));
 ind2=arrayfun(@(ind)ind-(~isOdd(ind))+(isOdd(ind)),indices);
-ind_data=arrayfun(@(x,x2) horzcat(transpose(trk.data(x,:,1)),transpose(trk.data(x,:,2)),transpose(trk.data(x,:,3)),transpose(trk.data(x2,:,1)),transpose(trk.data(x2,:,2)),transpose(trk.data(x,:,6)),transpose(trk.data(x,:,7)),transpose(trk.data(x,:,8)),transpose(trk.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(trk.data(x,:,11)),transpose(trk.data(x,:,12)),transpose(trk.data(x,:,13)),transpose(trk.data(x,:,14)),transpose(trk.data(x,:,15)),transpose(trk.data(x,:,16))),indices,ind2,'UniformOutput',false);
+ind_data=arrayfun(@(x,x2) horzcat(transpose(trk.data(x,:,1)),transpose(trk.data(x,:,2)),transpose(trk.data(x,:,3)),transpose(trk.data(x2,:,1)),transpose(trk.data(x2,:,2)),transpose(feat.data(x,:,4)),transpose(trk.data(x,:,7)),transpose(trk.data(x,:,8)),transpose(trk.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(trk.data(x,:,11)),transpose(feat.data(x,:,12)),transpose(trk.data(x,:,13)),transpose(trk.data(x,:,14)),transpose(trk.data(x,:,15)),transpose(trk.data(x,:,16))),indices,ind2,'UniformOutput',false);
 %ind_data contains:
     %  pos x=ind_data(:,:,1);
     %  pos y=ind_data(:,:,2);
@@ -30,8 +31,8 @@ ind_data=arrayfun(@(x,x2) horzcat(transpose(trk.data(x,:,1)),transpose(trk.data(
     % left_wing_ang=ind_data(:,:,14);
     % right_wing_ang=ind_data(:,:,16);
  %right wing extension
- wing_ext_frames_right=cellfun(@(indiv) indiv(indiv(:,16)>pi/6,:),ind_data,'UniformOutput',false);
- aboveThreshold_r=cellfun(@(indiv) (indiv(:,16)>pi/6),ind_data,'UniformOutput',false);
+ wing_ext_frames_right=cellfun(@(indiv) indiv(indiv(:,16)>pi/16,:),ind_data,'UniformOutput',false);
+ aboveThreshold_r=cellfun(@(indiv) (indiv(:,6)>pi/6),ind_data,'UniformOutput',false);
  aboveThreshold_r=cellfun(@(above) [false;above;false],aboveThreshold_r,'uni',false);
  edges_r = cellfun(@(above) diff(above),aboveThreshold_r,'UniformOutput',false);
  rising_r = cellfun(@(edge) find(edge==1),edges_r,'UniformOutput',false);    %rising/falling edges
@@ -45,8 +46,8 @@ ind_data=arrayfun(@(x,x2) horzcat(transpose(trk.data(x,:,1)),transpose(trk.data(
  wing_ext_frames_13frames_r=cellfun(@(indiv,catspan) indiv(catspan,:),ind_data,catspans_r,'UniformOutput',false);
  
  %left wing extension
-  wing_ext_frames_left=cellfun(@(indiv) indiv(indiv(:,16)>pi/6,:),ind_data,'UniformOutput',false);
- aboveThreshold_l=cellfun(@(indiv) (indiv(:,16)>pi/6),ind_data,'UniformOutput',false);
+  wing_ext_frames_left=cellfun(@(indiv) indiv(indiv(:,14)<-pi/6,:),ind_data,'UniformOutput',false);
+ aboveThreshold_l=cellfun(@(indiv) (indiv(:,6)>pi/6),ind_data,'UniformOutput',false);
  aboveThreshold_l=cellfun(@(above) [false;above;false],aboveThreshold_l,'uni',false);
  edges_l = cellfun(@(above) diff(above),aboveThreshold_l,'UniformOutput',false);
  rising_l = cellfun(@(edge) find(edge==1),edges_l,'UniformOutput',false);    %rising/falling edges
