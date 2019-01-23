@@ -6,13 +6,29 @@ load(featfilename);
 load(trackfilename);
 %  pos x=trk.data(:,:,1);
 %  pos y=trk.data(:,:,2);
+%ori = track.data(:,:,3);
+
 % right_wing_ang=trk.data(:,:,16);
 %  left_wing_ang=trk.data(:,:,14);
  %dist_to_other=feat.data(:,:,10);
+ %facing_angle=feat.data(:,:,12);
 %all DATA
 indices=transpose(1:size(trk.data,1));
 ind2=arrayfun(@(ind)ind-(~isOdd(ind))+(isOdd(ind)),indices);
-ind_data=arrayfun(@(x,x2) horzcat(transpose(trk.data(x2,:,1)),transpose(trk.data(x2,:,2)),transpose(trk.data(x,:,3)),transpose(trk.data(x,:,4)),transpose(trk.data(x,:,5)),transpose(trk.data(x,:,6)),transpose(trk.data(x,:,7)),transpose(trk.data(x,:,8)),transpose(trk.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(trk.data(x,:,11)),transpose(trk.data(x,:,12)),transpose(trk.data(x,:,13)),transpose(trk.data(x,:,14)),transpose(trk.data(x,:,15)),transpose(trk.data(x,:,16))),indices,ind2,'UniformOutput',false);
+ind_data=arrayfun(@(x,x2) horzcat(transpose(trk.data(x,:,1)),transpose(trk.data(x,:,2)),transpose(trk.data(x,:,3)),transpose(trk.data(x2,:,1)),transpose(trk.data(x2,:,2)),transpose(trk.data(x,:,6)),transpose(trk.data(x,:,7)),transpose(trk.data(x,:,8)),transpose(trk.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(trk.data(x,:,11)),transpose(trk.data(x,:,12)),transpose(trk.data(x,:,13)),transpose(trk.data(x,:,14)),transpose(trk.data(x,:,15)),transpose(trk.data(x,:,16))),indices,ind2,'UniformOutput',false);
+%ind_data contains:
+    %  pos x=ind_data(:,:,1);
+    %  pos y=ind_data(:,:,2);
+    %ori = ind_data(:,:,3);
+    %  pos x of target fly=ind_data(:,:,4);
+    %  pos y of target fly=ind_data(:,:,5);
+
+
+    %dist_to_other=ind_data(:,:,10);
+    %facing_angle=ind_data(:,:,12);
+    
+    % left_wing_ang=ind_data(:,:,14);
+    % right_wing_ang=ind_data(:,:,16);
  %right wing extension
  wing_ext_frames_right=cellfun(@(indiv) indiv(indiv(:,16)>pi/6,:),ind_data,'UniformOutput',false);
  aboveThreshold_r=cellfun(@(indiv) (indiv(:,16)>pi/6),ind_data,'UniformOutput',false);
