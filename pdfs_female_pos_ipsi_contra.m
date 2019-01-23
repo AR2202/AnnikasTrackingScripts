@@ -9,11 +9,11 @@ wing_ext_frames_indexed=cellfun(@(input)rmmissing(input{1,1}), wing_ext_frames_i
 wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, wing_ext_frames_indexed,num2cell(indices),'UniformOutput',false);
 wing_ext_frames_nonempty=wing_ext_frames_indexed(~cellfun(@(cells) isempty(cells{1}),wing_ext_frames_indexed));
 yrel=cellfun(@(indiv)arrayfun(@(theta,dist)calculate_yrel(theta,dist),indiv{1}(:,12),indiv{1}(:,10)),wing_ext_frames_nonempty,'uni',false);
-xrel=cellfun(@(indiv,ind)arrayfun(@(ori,xmale,xfemale,yrel)calculate_xrel(ori,xmale,xfemale,right,left,yrel,ppm),indiv{1}(:,3),indiv{1}(:,1),indiv{1}(:,4),indiv{1}(:,16),indiv{1}(:,14),ind),wing_ext_frames_nonempty,yrel_r,'uni',false);
+xrel=cellfun(@(indiv,ind)arrayfun(@(ori,xmale,xfemale,right,left,y_rel)calculate_xrel(ori,xmale,xfemale,right,left,y_rel,ppm),indiv{1}(:,3),indiv{1}(:,1),indiv{1}(:,4),indiv{1}(:,16),indiv{1}(:,14),ind),wing_ext_frames_nonempty,yrel,'uni',false);
 
 
   female_pos=cellfun(@(x, y) struct('data',{x,y}),xrel, yrel,'UniformOutput',false);
-  cellfun(@(data,index)savefemalepos(outputdir,strcat(inputfilename,'_',num2str(index{1,2}),'_female_pos.mat')),female_pos,wing_ext_frames_nonempty,'UniformOutput',false);
+  cellfun(@(data,index)savefemalepos(outputdir,strcat(inputfilename,'_',num2str(index{1,2}),'_female_pos.mat'),female_pos),female_pos,wing_ext_frames_nonempty,'UniformOutput',false);
 % close all;
 
 function [xrel,yrel]=female_pos(theta,dist,ori,xmale,xfemale)
@@ -35,7 +35,7 @@ if abs(right_angle)>abs(left_angle)
 else
     xrel = -(xfemale_mm - (cos(ori)*yrel+xmale_mm))/(sin(ori));
 end  
-function savefemalepos(outputdir,filename)
+function savefemalepos(outputdir,filename,female_pos)
 currentdir=pwd;
  if ~exist(outputdir,'dir')
      mkdir (outputdir);
