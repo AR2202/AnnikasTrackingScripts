@@ -1,16 +1,17 @@
-%Annika Rings, Nov 2018
+%Annika Rings, Jan 2019
 %this function reads in a .xlsx file containing a list of experiments
 %belonging to a genotype
-%it then finds all the data of the experiments and averages them
+%it then finds all the data of the experiments and saves them to a .mat
+%file
 %the arguments are:
 %genotyplist = the .xlsx file containing the experiments
-%path=path to the subdirectory that contains the pdfdata - directory that
-%must contain .mat files with structures called pdfdata in them
-%expname=name of the field in the structure that contains the desired data
+
 %genotype=genotype of the flies - is only used for labelling the figure(and
 %naming the output file)
 %xlsx file must have the following columns
 %videoname,fly-id,delimitor(in file name, usually '_')
+%must be run inside the directory that contains the folders named
+%xxx_Courtship which contain the video folders
 
 function find_videos_Indices_other(genotypelist,genotype)
 outputtable=readtable(genotypelist,'readvariablenames',false);
