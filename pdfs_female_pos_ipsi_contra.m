@@ -1,5 +1,5 @@
 
-function [yrel,xrel]=pdfs_female_pos_ipsi_contra(inputfilename,outputdir)
+function pdfs_female_pos_ipsi_contra(inputfilename,outputdir)
 [wing_ext_frames_indexed]= handle_track_and_feat_outputs(inputfilename);
 calibfilename=strcat(inputfilename,'-calibration.mat');
 load(calibfilename);
@@ -13,7 +13,7 @@ xrel=cellfun(@(indiv,ind)arrayfun(@(ori,xmale,xfemale,right,left,y_rel)calculate
 
 
   female_pos=cellfun(@(x, y) struct('data',{x,y}),xrel, yrel,'UniformOutput',false);
-  cellfun(@(data,index)savefemalepos(outputdir,strcat(inputfilename,'_',num2str(index{1,2}),'_female_pos.mat'),female_pos),female_pos,wing_ext_frames_nonempty,'UniformOutput',false);
+  cellfun(@(data,index)savefemalepos(outputdir,strcat(inputfilename,'_',num2str(index{1,2}),'_female_pos.mat'),data),female_pos,wing_ext_frames_nonempty,'UniformOutput',false);
 % close all;
 
 function [xrel,yrel]=female_pos(theta,dist,ori,xmale,xfemale)
