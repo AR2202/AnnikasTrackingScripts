@@ -13,6 +13,7 @@ xrel=cellfun(@(indiv,ind)arrayfun(@(ori,xmale,xfemale,right,left,y_rel)calculate
 
 
   female_pos=cellfun(@(x, y) struct('data',{x,y}),xrel, yrel,'UniformOutput',false);
+ % female_pos=cellfun(@(input)rmmissing(input{1,1}), female_pos,'UniformOutput',false);
   cellfun(@(data,index)savefemalepos(outputdir,strcat(inputfilename,'_',num2str(index{1,2}),'_female_pos.mat'),data),female_pos,wing_ext_frames_nonempty,'UniformOutput',false);
 % close all;
 
@@ -34,7 +35,10 @@ if abs(right_angle)>abs(left_angle)
     xrel = (xfemale_mm - (cos(ori)*yrel+xmale_mm))/(sin(ori));
 else
     xrel = -(xfemale_mm - (cos(ori)*yrel+xmale_mm))/(sin(ori));
-end  
+end 
+if xrel >20||xrel<-20
+    xrel=nan;
+end
 function savefemalepos(outputdir,filename,female_pos)
 currentdir=pwd;
  if ~exist(outputdir,'dir')

@@ -43,10 +43,11 @@ for p = 1:numel(dirs)
    
     if size(videonames,2)>0
         for q = 1:size(videonames,1)
-            if exist (string(videonames{q}{1}),'dir')
+            if exist (videonames{q}{1},'dir')
                 disp(videonames{q}{1});
                 cd(videonames{q}{1});
                 cd(videonames{q}{1});
+                if exist (path,'dir')
                 cd(path);
                 
 
@@ -62,6 +63,7 @@ for p = 1:numel(dirs)
             data(end+1,:) = arrayfun(@(F)eval(fieldname),female_pos,'UniformOutput',false);
         end
                
+                end
             end
             cd(startdir);
             cd(dirname);
@@ -77,11 +79,11 @@ x=cell2mat(data(:,1));
 xmean=mean(x);
 dataSEM=std(matdata)/sqrt(size(matdata,1));
 data_n=size(matdata,1);
-figuredata.x=xmean;
+figuredata.x=x;
 figuredata.mean=meandata;
 figuredata.SEM=dataSEM;
 figuredata.n=data_n;
-figuredata.data=matdata;
+figuredata.y=matdata;
 fullfigname=strcat(genotype,'_female_pos');
 datafilename=strcat(fullfigname,'.mat');
  
