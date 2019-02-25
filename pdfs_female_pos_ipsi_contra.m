@@ -19,7 +19,7 @@ xrel_from_feat=cellfun(@(indiv)arrayfun(@(theta,dist)calculate_xrel_from_feat(th
 
 
   female_pos=cellfun(@(x, y,x2) struct('data',{x,y,x2}),xrel, yrel,xrel_from_feat,'UniformOutput',false);
-  cellfun(@(data,index)savefemalepos(outputdir,strcat(inputfilename,'_',num2str(index{1,2}),'_female_pos.mat'),female_pos),female_pos,wing_ext_frames_nonempty,'UniformOutput',false);
+  cellfun(@(data,index)savefemalepos(outputdir,strcat(inputfilename,'_',num2str(index{1,2}),'_female_pos.mat'),data),female_pos,wing_ext_frames_nonempty,'UniformOutput',false);
 
 % close all;
 
@@ -34,7 +34,7 @@ yrel=dist*cos(theta);
 
 
 function xrel=calculate_xrel_from_feat(theta,dist)
-yrel=dist*sin(theta);
+xrel=dist*sin(theta);
 
 function xrel=calculate_xrel(ori,xmale,xfemale,right_angle,left_angle,yrel,ppm)
 xmale_mm=xmale/ppm;
