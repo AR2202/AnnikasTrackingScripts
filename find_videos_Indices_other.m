@@ -18,7 +18,7 @@ outputtable=readtable(genotypelist,'readvariablenames',false);
 outputvar2=arrayfun(@(input) input,outputtable.Var2);
 Var4=arrayfun(@(var2)var2-(~isOdd(var2))+(isOdd(var2)),outputvar2);
 cellVar4=arrayfun(@(var2)var2-(~isOdd(var2))+(isOdd(var2)),outputvar2,'uni',false);
-
+outputtable.Var4=Var4;
 startdir=pwd;
 data=[];
 data_approach=[];
@@ -52,6 +52,12 @@ for p = 1:numel(dirs)
                 disp(videonames{q}{1});
                 cd(videonames{q}{1});
                 cd('Results');
+                variablename_video=regexprep(videonames{q}{1},'(\w+)-(\w+)_Courtship-','');
+                disp(variablename_video);
+                newtable = outputtable(strcmp(variablename_video,outputtable.Var1), : ); 
+                newtable2=outputtable(strcmp(videonames{q}{1},outputtable.Var1),:);
+                newtable3=vertcat(newtable,newtable2);
+                disp(newtable3);
                 
                 
                 
@@ -65,15 +71,21 @@ for p = 1:numel(dirs)
                     disp(datafilename)
                     outputtable2=readtable(datafilename,'readvariablenames',true);
                     %disp(outputtable2);
+                     for r=1:height(newtable3)
+                    disp('Index in newtable3');    
+                    disp(r);
+                    disp('Fly ID');
+                    disp(newtable3.Var4(r));
                     
-                    if isnumeric(outputtable2.WingIndex(outputtable2.FlyId==Var4(q)))
-                        WingIndex=outputtable2.WingIndex(outputtable2.FlyId==Var4(q));
-                    else    
-                        WingIndex=str2double(outputtable2.WingIndex(outputtable2.FlyId==Var4(q)));
+ if isnumeric(outputtable2.WingIndex(outputtable2.FlyId==newtable3.Var4(r)))
+                        WingIndex=outputtable2.WingIndex(outputtable2.FlyId==newtable3.Var4(r));
+                    else
+                       WingIndex=str2double(outputtable2.WingIndex(outputtable2.FlyId==newtable3.Var4(r))); 
                     end
+                    disp('Wing Index:');
                     disp(WingIndex);
                     
-                    if ismember(Var4(q),outputtable2.FlyId)
+                    if ismember(newtable3.Var4(r),outputtable2.FlyId)
                         
                         if (size(WingIndex)>0)
                             
@@ -81,15 +93,15 @@ for p = 1:numel(dirs)
                         end
                         
                     end
-                if isnumeric(outputtable2.ApproachingIndex(outputtable2.FlyId==Var4(q)))  
-                    ApproachingIndex=outputtable2.ApproachingIndex(outputtable2.FlyId==Var4(q));
-               
-                else
-                    ApproachingIndex=str2double(outputtable2.ApproachingIndex(outputtable2.FlyId==Var4(q)));
-                end
+                    if isnumeric(outputtable2.ApproachingIndex(outputtable2.FlyId==newtable3.Var4(r)))
+                        ApproachingIndex=outputtable2.ApproachingIndex(outputtable2.FlyId==newtable3.Var4(r));
+                    else
+                        ApproachingIndex=str2double(outputtable2.ApproachingIndex(outputtable2.FlyId==newtable3.Var4(r)));
+                    end
+                    disp('Approaching Index:');
                     disp(ApproachingIndex);
                     
-                    if ismember(Var4(q),outputtable2.FlyId)
+                    if ismember(newtable3.Var4(r),outputtable2.FlyId)
                         
                         if (size(ApproachingIndex)>0)
                             
@@ -97,15 +109,15 @@ for p = 1:numel(dirs)
                         end
                         
                     end
-                if isnumeric(outputtable2.CourtshipIndex(outputtable2.FlyId==Var4(q))) 
-                    CourtshipIndex=outputtable2.CourtshipIndex(outputtable2.FlyId==Var4(q));
-               
-                else
-                     CourtshipIndex=str2double(outputtable2.CourtshipIndex(outputtable2.FlyId==Var4(q)));
-                end
+                    if isnumeric(outputtable2.CourtshipIndex(outputtable2.FlyId==newtable3.Var4(r)))
+                        CourtshipIndex=outputtable2.CourtshipIndex(outputtable2.FlyId==newtable3.Var4(r));
+                    else
+                       CourtshipIndex=str2double(outputtable2.CourtshipIndex(outputtable2.FlyId==newtable3.Var4(r))); 
+                    end
+                    disp('Courtship Index:');
                     disp(CourtshipIndex);
                     
-                    if ismember(Var4(q),outputtable2.FlyId)
+                    if ismember(newtable3.Var4(r),outputtable2.FlyId)
                         
                         if (size(CourtshipIndex)>0)
                             
@@ -113,15 +125,15 @@ for p = 1:numel(dirs)
                         end
                         
                     end
-                if isnumeric(outputtable2.CourtshipInitiation(outputtable2.FlyId==Var4(q)))  
-                     CourtshipInit=outputtable2.CourtshipInitiation(outputtable2.FlyId==Var4(q));
-               
-                else
-                    CourtshipInit=str2double(outputtable2.CourtshipInitiation(outputtable2.FlyId==Var4(q)));
-                end
+                    if isnumeric(outputtable2.CourtshipInitiation(outputtable2.FlyId==newtable3.Var4(r)))
+                        CourtshipInit=outputtable2.CourtshipInitiation(outputtable2.FlyId==newtable3.Var4(r));
+                    else
+                        CourtshipInit=outputtable2.CourtshipInitiation(outputtable2.FlyId==newtable3.Var4(r));
+                    end
+                    disp('Courtship Initiation:');
                     disp(CourtshipInit);
                     
-                    if ismember(Var4(q),outputtable2.FlyId)
+                    if ismember(newtable3.Var4(r),outputtable2.FlyId)
                         
                         if (size(CourtshipInit)>0)
                             
@@ -129,22 +141,25 @@ for p = 1:numel(dirs)
                         end
                         
                     end
-                if isnumeric(outputtable2.CourtshipTermination(outputtable2.FlyId==Var4(q)) ) 
-                     CourtshipTermination=outputtable2.CourtshipTermination(outputtable2.FlyId==Var4(q));
-               
-                else
-                    CourtshipTermination=str2double(outputtable2.CourtshipTermination(outputtable2.FlyId==Var4(q)));
-                end
+                    if isnumeric(outputtable2.CourtshipTermination(outputtable2.FlyId==newtable3.Var4(r)))
+                        CourtshipTermination=outputtable2.CourtshipTermination(outputtable2.FlyId==newtable3.Var4(r));
+                    
+                    else
+                        CourtshipTermination=str2double(outputtable2.CourtshipTermination(outputtable2.FlyId==newtable3.Var4(r)));
+                    end
+                    disp('Courtship Termination:');
                     disp(CourtshipTermination);
-                if isnumeric(outputtable2.CourtshipDuration(outputtable2.FlyId==Var4(q)))
-                     CourtshipDuration=outputtable2.CourtshipDuration(outputtable2.FlyId==Var4(q));
-                else
-                    CourtshipDuration=str2double(outputtable2.CourtshipDuration(outputtable2.FlyId==Var4(q)));
-                end
+                    if isnumeric(outputtable2.CourtshipDuration(outputtable2.FlyId==newtable3.Var4(r)))
+                         CourtshipDuration=outputtable2.CourtshipDuration(outputtable2.FlyId==newtable3.Var4(r));
+                    
+                    else
+                    CourtshipDuration=str2double(outputtable2.CourtshipDuration(outputtable2.FlyId==newtable3.Var4(r)));
+                    end
+                    disp('Courtship Duration:');
                     disp(CourtshipDuration);
                     
                     
-                    if ismember(Var4(q),outputtable2.FlyId)
+                    if ismember(newtable3.Var4(r),outputtable2.FlyId)
                         
                         if (size(CourtshipTermination)>0)
                             
@@ -162,10 +177,12 @@ for p = 1:numel(dirs)
                         
                     end
                 end
+                end
             end
              cd(startdir);
             cd(dirname);
         end
+        
     end
     cd(startdir);
 end
