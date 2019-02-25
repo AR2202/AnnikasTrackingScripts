@@ -39,12 +39,12 @@ for p = 1:numel(dirs)
     
     disp(['Now looking in: ' dirname]);
     cd(dirname);
-    videos=cellfun(@(list)dir(char(strcat('*',list))),outputtable.Var1,'UniformOutput',false);
+    videos=cellfun(@(list)dir(char(strcat('*',list))),unique(outputtable.Var1),'UniformOutput',false);
     
     videonames=cellfun(@(struct)arrayfun(@(indiv) indiv.name(indiv.isdir==1,:),struct,'UniformOutput',false),videos,'UniformOutput',false);
-    filenames=cellfun(@(videoname,var3,var2) strcat(string(videoname),string(var3),string(var2),string(var3)),videonames,outputtable.Var3,cellVar4,'UniformOutput',false);
+    %filenames=cellfun(@(videoname,var3,var2) strcat(string(videoname),string(var3),string(var2),string(var3)),videonames,outputtable.Var3,cellVar4,'UniformOutput',false);
     videonames=videonames(~cellfun(@isempty,videonames));
-    filenames=filenames(~cellfun(@isempty,filenames));
+    %filenames=filenames(~cellfun(@isempty,filenames));
     
     if size(videonames,2)>0
         for q = 1:size(videonames,1)
@@ -128,7 +128,7 @@ for p = 1:numel(dirs)
                     if isnumeric(outputtable2.CourtshipInitiation(outputtable2.FlyId==newtable3.Var4(r)))
                         CourtshipInit=outputtable2.CourtshipInitiation(outputtable2.FlyId==newtable3.Var4(r));
                     else
-                        CourtshipInit=outputtable2.CourtshipInitiation(outputtable2.FlyId==newtable3.Var4(r));
+                        CourtshipInit=str2double(outputtable2.CourtshipInitiation(outputtable2.FlyId==newtable3.Var4(r)));
                     end
                     disp('Courtship Initiation:');
                     disp(CourtshipInit);

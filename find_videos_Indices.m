@@ -37,12 +37,12 @@ for p = 1:numel(dirs)
     
     disp(['Now looking in: ' dirname]);
     cd(dirname);
-    videos=cellfun(@(list)dir(char(strcat('*',list))),outputtable.Var1,'UniformOutput',false);
+    videos=cellfun(@(list)dir(char(strcat('*',list))),unique(outputtable.Var1),'UniformOutput',false);
     
     videonames=cellfun(@(struct)arrayfun(@(indiv) indiv.name(indiv.isdir==1,:),struct,'UniformOutput',false),videos,'UniformOutput',false);
-    filenames=cellfun(@(videoname,var3,var2) strcat(string(videoname),string(var3),string(var2),string(var3)),videonames,outputtable.Var3,outputvar2,'UniformOutput',false);
+    %filenames=cellfun(@(videoname,var3,var2) strcat(string(videoname),string(var3),string(var2),string(var3)),videonames,outputtable.Var3,outputvar2,'UniformOutput',false);
     videonames=videonames(~cellfun(@isempty,videonames));
-    filenames=filenames(~cellfun(@isempty,filenames));
+    %filenames=filenames(~cellfun(@isempty,filenames));
    
     if size(videonames,2)>0
         disp(videonames);
@@ -125,7 +125,7 @@ for p = 1:numel(dirs)
                     if isnumeric(outputtable2.CourtshipInitiation(outputtable2.FlyId==newtable3.Var2(r)))
                         CourtshipInit=outputtable2.CourtshipInitiation(outputtable2.FlyId==newtable3.Var2(r));
                     else
-                        CourtshipInit=outputtable2.CourtshipInitiation(outputtable2.FlyId==newtable3.Var2(r));
+                        CourtshipInit=str2double(outputtable2.CourtshipInitiation(outputtable2.FlyId==newtable3.Var2(r)));
                     end
                     disp('Courtship Initiation:');
                     disp(CourtshipInit);
@@ -133,11 +133,16 @@ for p = 1:numel(dirs)
                     if ismember(newtable3.Var2(r),outputtable2.FlyId)
                         
                         if (size(CourtshipInit)>0)
+                          
                             
-                            data_init=[data_init,CourtshipInit];
+                            init=CourtshipInit;
+                        else
+                            init=NaN;
+                        end  
+                            data_init=[data_init,init];
                         end
                         
-                    end
+                    
                     if isnumeric(outputtable2.CourtshipTermination(outputtable2.FlyId==newtable3.Var2(r)))
                         CourtshipTermination=outputtable2.CourtshipTermination(outputtable2.FlyId==newtable3.Var2(r));
                     

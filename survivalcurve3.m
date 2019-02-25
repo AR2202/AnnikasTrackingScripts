@@ -1,8 +1,8 @@
-function survivalcurve3(datafile1,datafile2,datafile3,dataname)
+function[data1_,censored1,data2,censored2,data3,censored3]= survivalcurve3(datafile1,datafile2,datafile3,dataname)
 load(datafile1);
-data1=eval(dataname);
-data1(isnan(data1))=900;
-censored1=data1==900;
+data1_=eval(dataname);
+data1_(isnan(data1_))=900;
+censored1=data1_==900;
 
 load(datafile2);
 data2=eval(dataname);
@@ -15,7 +15,7 @@ data3(isnan(data3))=900;
 censored3=data3==900;
 
 figure()
-ecdf(data1,'censoring',censored1);
+ecdf(data1_,'censoring',censored1);
 hold 'on';
 ecdf(data2,'censoring',censored2);
 ecdf(data3,'censoring',censored3);
