@@ -165,7 +165,7 @@ for p = 1:numel(dirs)
                         
                         if (size(CourtshipTermination)>0)
                             
-                            if CourtshipTermination>=900|CourtshipDuration>=600
+                            if CourtshipTermination>=900&&CourtshipDuration>=600
                                 timeToCop=NaN;
                             else
                                 
