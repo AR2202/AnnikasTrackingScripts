@@ -1,6 +1,6 @@
 
 function pdfplot(inputfilename,outputdir)
-inputfilename_full=strcat(inputfilename,'-feat_id_corrected.mat');
+inputfilename_full=strcat(inputfilename,'-feat.mat');
  [wing_ext_frames_indexed]= handle_flytracker_outputs(inputfilename_full);
 indices=transpose(1:size(wing_ext_frames_indexed,1));
 wing_ext_frames_indexed=cellfun(@(input)rmmissing(input{1,1}), wing_ext_frames_indexed,'UniformOutput',false);
