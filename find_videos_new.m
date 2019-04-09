@@ -1,20 +1,23 @@
 %Annika Rings, March 2019
 %modified version of function find_videos
-
-%this function reads in a .xlsx file containing a list of experiments
+%
+%FIND_VIDEOS_NEW reads in a .xlsx file containing a list of experiments
 %belonging to a genotype
 %it then finds all the data of the experiments and averages them
 %the arguments are:
-%genotyplist = the .xlsx file containing the experiments
-%path=path to the subdirectory that contains the pdfdata - directory that
+%GENOTYPELIST = the .xlsx file containing the experiments
+%PATH=path to the subdirectory that contains the pdfdata - directory that
 %must contain .mat files with structures called pdfdata in them
-%expname=name of the field in the structure that contains the desired data
-%genotype=genotype of the flies - is only used for labelling the figure(and
+%EXPNAME=name of the field in the structure that contains the desired data
+%STRUCTNAME = name of the structure in the .mat file that gets loaded
+%GENOTYPE=genotype of the flies - is only used for labelling the figure(and
 %naming the output file)
 %xlsx file must have the following columns
 %videoname,fly-id,delimitor(in file name, usually '_')
 
 function find_videos_new(genotypelist,path,expname,structname,genotype)
+
+
     outputtable=readtable(genotypelist,'readvariablenames',false);
   
     outputvar2=arrayfun(@(input) input,outputtable.Var2,'UniformOutput',false);

@@ -17,7 +17,6 @@ load(filename);
 %  leg_dist=feat.data(:,:,13);
 indices=transpose(1:size(feat.data,1));
 ind_data=arrayfun(@(x) horzcat(transpose(feat.data(x,:,1)),transpose(feat.data(x,:,2)),transpose(feat.data(x,:,3)),transpose(feat.data(x,:,4)),transpose(feat.data(x,:,5)),transpose(feat.data(x,:,6)),transpose(feat.data(x,:,7)),transpose(feat.data(x,:,8)),transpose(feat.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(feat.data(x,:,11)),transpose(feat.data(x,:,12)),transpose(feat.data(x,:,13))),indices,'UniformOutput',false);
-%data=transpose(feat.data(:,:,1)),transpose(feat.data(:,:,2)),transpose(feat.data(:,:,3)),transpose(feat.data(:,:,4)),transpose(feat.data(:,:,5)),transpose(feat.data(:,:,6)),transpose(feat.data(:,:,7)),transpose(feat.data(:,:,8)),transpose(feat.data(:,:,9)),transpose(feat.data(:,:,10)),transpose(feat.data(:,:,11)),transpose(feat.data(:,:,12)),transpose(feat.data(:,:,13));
 
 contact_frames=cellfun(@(indiv) indiv(indiv(:,10)<2.5,:),ind_data,'UniformOutput',false);
 contact=cellfun(@(indiv) (indiv(:,10)<2.5),ind_data,'UniformOutput',false);
