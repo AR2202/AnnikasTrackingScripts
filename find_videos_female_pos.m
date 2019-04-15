@@ -18,6 +18,7 @@ function find_videos_female_pos(genotypelist,genotype)
 
     startdir=pwd;
     data={};
+    data_male={};
     dirs = dir();
     path = 'female_pos';
     expname = 'data';
@@ -54,7 +55,8 @@ for p = 1:numel(dirs)
          
            strtofind=filenames{q};
           disp(strtofind);
-          datafile=dir(char(strcat('*',strtofind,'*','.mat')));
+          datafile=dir(char(strcat('*',strtofind,'*','female_pos.mat')));
+          datafile_male=dir(char(strcat('*',strtofind,'male_pos.mat')));
         if (size(datafile)>0)
             datafilename=datafile.name;
             disp(datafilename);
@@ -62,7 +64,13 @@ for p = 1:numel(dirs)
             load(datafilename);
             data(end+1,:) = arrayfun(@(F)eval(fieldname),female_pos,'UniformOutput',false);
         end
-               
+        if (size(datafile_male)>0)
+            datafilename_male=datafile_male.name;
+            disp(datafilename_male);
+            
+            load(datafilename_male);
+            data_male(end+1,:) = arrayfun(@(F)eval(fieldname),male_pos,'UniformOutput',false);
+        end
                 end
             end
             cd(startdir);
@@ -86,6 +94,21 @@ figuredata.n=data_n;
 figuredata.y=matdata;
 fullfigname=strcat(genotype,'_female_pos');
 datafilename=strcat(fullfigname,'.mat');
- 
+save(datafilename,'figuredata'); 
+
+%maledata
+matdata_male=cell2mat(data_male(:,2));
+meandata_male=mean(matdata_male);
+x_male=cell2mat(data_male(:,1));
+xmean_male=mean(x_male);
+dataSEM_male=std(matdata_male)/sqrt(size(matdata_male,1));
+data_n_male=size(matdata_male,1);
+figuredata.x=x_male;
+figuredata.mean=meandata_male;
+figuredata.SEM=dataSEM_male;
+figuredata.n=data_n_male;
+figuredata.y=matdata_male;
+fullfigname=strcat(genotype,'_male_pos');
+datafilename=strcat(fullfigname,'.mat');
  save(datafilename,'figuredata');
 
