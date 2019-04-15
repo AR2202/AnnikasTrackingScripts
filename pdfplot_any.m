@@ -78,7 +78,7 @@ wing_ext_frames_nonempty=wing_ext_frames_indexed(~cellfun(@(cells) isempty(cells
 [f_data,xi_data]=cellfun(@(wing_ext_frames_ind) ksdensity((wing_ext_frames_ind{1}(:,columnnumber))*scaling), wing_ext_frames_nonempty,'UniformOutput',false);
 cellfun(@(xi1,f1,index) newfigplot(xi1,f1,expname,num2str(index{1,2}),inputfilename,outputdir), xi_data,f_data,wing_ext_frames_nonempty,'UniformOutput',false);
 pdfdata=cellfun(@(xi_data, f_data) struct(expname,{xi_data,f_data}),xi_data, f_data,'UniformOutput',false);
-cellfun(@(data,index)savepdf(outputdir,strcat(inputfilename,'_',num2str(index{1,2}),expname,'_pdf.mat'),data),pdfdata,wing_ext_frames_nonempty,'UniformOutput',false);
+cellfun(@(data,index)savepdf(outputdir,strcat(inputfilename,'_',num2str(index{1,2}),'_',expname,'_pdf.mat'),data),pdfdata,wing_ext_frames_nonempty,'UniformOutput',false);
 close all;
     
 

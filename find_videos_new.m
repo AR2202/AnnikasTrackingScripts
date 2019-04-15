@@ -59,7 +59,7 @@ for p = 1:numel(dirs)
          
            strtofind=filenames{q};
           disp(strtofind);
-          datafile=dir(char(strcat('*',strtofind,'*','.mat')));
+          datafile=dir(char(strcat('*',strtofind,expname,'*','.mat')));
         if (size(datafile)>0)
             datafilename=datafile.name;
             disp(datafilename);
