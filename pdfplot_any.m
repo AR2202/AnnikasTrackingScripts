@@ -40,7 +40,7 @@
 function pdfplot_any(inputfilename,outputdir,expname,columnnumber,varargin)
 
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30);
+options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture');
 
 %# read the acceptable names
 optionNames = fieldnames(options);
@@ -66,7 +66,13 @@ wingextonly=options.wingextonly;
 scaling=options.scaling;
 minwingangle=options.minwingangle*pi/180;
 inputfilename_full=strcat(inputfilename,'-feat.mat');
-if wingextonly
+fromscores=options.fromscores;
+windowsize=options.windowsize;
+cutofffrac=options.cutofffrac;
+scorename=strcat('scores_',score,'_id_corrected.mat');
+if fromscores
+    wing_ext_frames_indexed=handle_flytracker_outputs_score(inputfilename_full,scorename,windowsize,cutofffrac);
+elseif wingextonly
  [wing_ext_frames_indexed]= handle_flytracker_outputs_var(inputfilename_full,wingdur,minwingangle);
 else
     wing_ext_frames_indexed=remove_copulation_ind(inputfilename_full);

@@ -39,7 +39,7 @@
 
 function run_pdfplots_any(expname,columnnumber,varargin)
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30);
+options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
@@ -64,6 +64,9 @@ wingdur=options.wingdur;
 wingextonly=options.wingextonly;
 scaling=options.scaling;
 minwingangle=options.minwingangle*pi/180;
+fromscores=options.fromscores;
+windowsize=options.windowsize;
+cutofffrac=options.cutofffrac;
 
 dirs = dir('*Courtship');
 
@@ -91,8 +94,12 @@ for p = 1:numel(dirs)
         cd(subdirname);
         disp(['Now making pdfs for:' subdirname]);
         cd(subdirname);
-        error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'wingdur',wingdur,'wingextonly',wingextonly,'minwingangle',minwingangle);
-      
+        if fromscores
+            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'windowsize',windowsize,'cutofffrac',cutofffrac,'scaling',scaling,'fromscores',true);
+        
+        else
+            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'wingdur',wingdur,'wingextonly',wingextonly,'minwingangle',minwingangle);
+        end
         cd (startdir);
         cd(dirname);
     end
