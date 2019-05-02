@@ -29,10 +29,16 @@
 %WINGEXTONLY: use only wing extension frames (default = true)
 %MINWINGANGLE: minimum angle of the wing to body axis to be counted as wing
 %extension (default = 30)
+%score: name of the score from JAABA (default WingGesture)
+%windowsize: size of the moving average window (in frames) (default=13)
+%cutofffrac: fraction of the frames that have to be positive for the event
+%in the specified window (default 0.5)
+%fromscores: if true, the data are taken from a JAABA scores file (default false)
 %
 %DEPENDENCIES: depends on the following functions (which have to be in the
 %current path or the MATLAB search path):
 %handle_flytracker_outputs_var
+%handle_flytracker_outputs_score
 %remove_copulation_ind
 %newfigplot
 %savepdf

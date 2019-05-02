@@ -27,11 +27,18 @@
 %WINGEXTONLY: use only wing extension frames (default = true)
 %MINWINGANGLE: minimum angle of the wing to body axis to be counted as wing
 %extension (default = 30)
+%score: name of the score from JAABA
+%windowsize: size of the moving average window (in frames)
+%cutofffrac: fraction of the frames that have to be positive for the event
+%in the specified window
+%fromscores: if true, the data are taken from a JAABA scores file (default false)
+%
 %
 %DEPENDENCIES: depends on the following functions (which have to be in the
 %current path or the MATLAB search path):
 %pdfplot_any
 %handle_flytracker_outputs_var
+%handle_flytracker_outputs_score
 %remove_copulation_ind
 %newfigplot
 %savepdf
@@ -39,7 +46,7 @@
 
 function run_pdfplots_any(expname,columnnumber,varargin)
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5);
+options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture');
 
 %# read the acceptable names
 optionNames = fieldnames(options);
@@ -67,6 +74,7 @@ minwingangle=options.minwingangle*pi/180;
 fromscores=options.fromscores;
 windowsize=options.windowsize;
 cutofffrac=options.cutofffrac;
+score=options.score;
 
 dirs = dir('*Courtship');
 
@@ -95,7 +103,7 @@ for p = 1:numel(dirs)
         disp(['Now making pdfs for:' subdirname]);
         cd(subdirname);
         if fromscores
-            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'windowsize',windowsize,'cutofffrac',cutofffrac,'scaling',scaling,'fromscores',true);
+            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'windowsize',windowsize,'cutofffrac',cutofffrac,'scaling',scaling,'fromscores',true,'score',score);
         
         else
             error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'wingdur',wingdur,'wingextonly',wingextonly,'minwingangle',minwingangle);
