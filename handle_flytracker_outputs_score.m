@@ -37,7 +37,6 @@ end
 
 indices=transpose(1:size(feat.data,1));
 ind_data=arrayfun(@(x) horzcat(transpose(feat.data(x,:,1)),transpose(feat.data(x,:,2)),transpose(feat.data(x,:,3)),transpose(feat.data(x,:,4)),transpose(feat.data(x,:,5)),transpose(feat.data(x,:,6)),transpose(feat.data(x,:,7)),transpose(feat.data(x,:,8)),transpose(feat.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(feat.data(x,:,11)),transpose(feat.data(x,:,12)),transpose(feat.data(x,:,13)),transpose(scoresflat(x,:))),indices,'UniformOutput',false);
-mind_data=arrayfun(@(x) horzcat(transpose(feat.data(x,:,1)),transpose(feat.data(x,:,2)),transpose(feat.data(x,:,3)),transpose(feat.data(x,:,4)),transpose(feat.data(x,:,5)),transpose(feat.data(x,:,6)),transpose(feat.data(x,:,7)),transpose(feat.data(x,:,8)),transpose(feat.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(feat.data(x,:,11)),transpose(feat.data(x,:,12)),transpose(feat.data(x,:,13)),transpose(scoresflat(x,:))),indices,'UniformOutput',false);
 moving_avg=cellfun(@(indiv) movmean(indiv(:,14),windowsize),ind_data,'UniformOutput',false);
 event=cellfun(@(avg) (avg>cutofffrac),moving_avg,'UniformOutput',false);
 event=cellfun(@(above) [false;above;false],event,'uni',false);
@@ -47,7 +46,7 @@ rising = cellfun(@(edge) find(edge==1),edges,'UniformOutput',false);    %rising/
 falling = cellfun(@(edge) find(edge==-1),edges,'UniformOutput',false);    %rising/falling edges
 
 
-allInSpan = cellfun(@(starts,ends) arrayfun(@(x,y) (x:1:y), starts, ends, 'uni', false),rising,falling,'uni',false);  
+allInSpan = cellfun(@(starts,ends) arrayfun(@(x,y) (x:1:(y-1)), starts, ends, 'uni', false),rising,falling,'uni',false);  
 catspans=cellfun(@(spans) [spans{:}], allInSpan,'uni',false);
 
 
