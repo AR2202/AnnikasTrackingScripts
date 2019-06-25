@@ -30,7 +30,11 @@ function [wing_ext_frames_indexed]= handle_flytracker_outputs_score(filename,sco
 %allScores.postprocessed{1,index}
 load(filename);
 load(score);
-scoresflat=vertcat(allScores.postprocessed{:});
+scoresflat = zeros(40,22500);
+for i=1:size(allScores.postprocessed,2)
+    scoresflat(i,1:size(allScores.postprocessed{i},2))=allScores.postprocessed{i};
+end
+
 indices=transpose(1:size(feat.data,1));
 ind_data=arrayfun(@(x) horzcat(transpose(feat.data(x,:,1)),transpose(feat.data(x,:,2)),transpose(feat.data(x,:,3)),transpose(feat.data(x,:,4)),transpose(feat.data(x,:,5)),transpose(feat.data(x,:,6)),transpose(feat.data(x,:,7)),transpose(feat.data(x,:,8)),transpose(feat.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(feat.data(x,:,11)),transpose(feat.data(x,:,12)),transpose(feat.data(x,:,13)),transpose(scoresflat(x,:))),indices,'UniformOutput',false);
 mind_data=arrayfun(@(x) horzcat(transpose(feat.data(x,:,1)),transpose(feat.data(x,:,2)),transpose(feat.data(x,:,3)),transpose(feat.data(x,:,4)),transpose(feat.data(x,:,5)),transpose(feat.data(x,:,6)),transpose(feat.data(x,:,7)),transpose(feat.data(x,:,8)),transpose(feat.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(feat.data(x,:,11)),transpose(feat.data(x,:,12)),transpose(feat.data(x,:,13)),transpose(scoresflat(x,:))),indices,'UniformOutput',false);
