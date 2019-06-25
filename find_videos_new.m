@@ -49,7 +49,7 @@ for p = 1:numel(dirs)
    
     if size(videonames,2)>0
         for q = 1:size(videonames,1)
-            if exist (string(videonames{q}{1}),'dir')
+            if exist (videonames{q}{1},'dir')
                 disp(videonames{q}{1});
                 cd(videonames{q}{1});
                 cd(videonames{q}{1});
@@ -59,7 +59,7 @@ for p = 1:numel(dirs)
          
            strtofind=filenames{q};
           disp(strtofind);
-          datafile=dir(char(strcat('*',strtofind,expname,'*','.mat')));
+          datafile=dir(char(strcat('*',strtofind,expname,'_','*','.mat')));
         if (size(datafile)>0)
             datafilename=datafile.name;
             disp(datafilename);

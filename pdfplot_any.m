@@ -75,7 +75,9 @@ inputfilename_full=strcat(inputfilename,'-feat.mat');
 fromscores=options.fromscores;
 windowsize=options.windowsize;
 cutofffrac=options.cutofffrac;
-scorename=strcat('scores_',score,'_id_corrected.mat');
+score=options.score;
+
+scorename=strcat(inputfilename,'_JAABA/','scores_',score,'_id_corrected.mat');
 if fromscores
     wing_ext_frames_indexed=handle_flytracker_outputs_score(inputfilename_full,scorename,windowsize,cutofffrac);
 elseif wingextonly
