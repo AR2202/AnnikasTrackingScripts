@@ -32,6 +32,11 @@
 %cutofffrac: fraction of the frames that have to be positive for the event
 %in the specified window
 %fromscores: if true, the data are taken from a JAABA scores file (default false)
+%specificframes: if true, it expects a .csv file that contains the start
+%and end frames that should be analyzed. The start needs to be in column 3
+%and the end in column 4 of the .csv file. The file has to be located in
+%the video directory and be called '<videoname>_frames.csv' where videoname
+%is the name of the videodirectory it is in.
 %
 %
 %DEPENDENCIES: depends on the following functions (which have to be in the
@@ -46,7 +51,7 @@
 
 function run_pdfplots_any(expname,columnnumber,varargin)
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture');
+options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
@@ -75,6 +80,7 @@ fromscores=options.fromscores;
 windowsize=options.windowsize;
 cutofffrac=options.cutofffrac;
 score=options.score;
+specificframes=options.specificframes;
 
 dirs = dir('*Courtship');
 
@@ -102,7 +108,10 @@ for p = 1:numel(dirs)
         cd(subdirname);
         disp(['Now making pdfs for:' subdirname]);
         cd(subdirname);
-        if fromscores
+        if specificframes
+            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'specificframes',true);
+        
+        elseif fromscores
             error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'windowsize',windowsize,'cutofffrac',cutofffrac,'scaling',scaling,'fromscores',true,'score',score);
         
         else
