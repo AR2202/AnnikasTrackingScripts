@@ -51,7 +51,7 @@
 
 function run_pdfplots_any(expname,columnnumber,varargin)
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false);
+options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false,'filterby',0,'cutoffval',2,'above',true);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
@@ -81,6 +81,9 @@ windowsize=options.windowsize;
 cutofffrac=options.cutofffrac;
 score=options.score;
 specificframes=options.specificframes;
+filterby = options.filterby;
+cutoffval = options.cutoffval;
+above = options.above;
 
 dirs = dir('*Courtship');
 
@@ -109,8 +112,9 @@ for p = 1:numel(dirs)
         disp(['Now making pdfs for:' subdirname]);
         cd(subdirname);
         if specificframes
-            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'specificframes',true);
-        
+            
+             error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'specificframes',true,'filterby',filterby,'cutoffval',cutoffval,'above',above);
+            
         elseif fromscores
             error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'windowsize',windowsize,'cutofffrac',cutofffrac,'scaling',scaling,'fromscores',true,'score',score);
         

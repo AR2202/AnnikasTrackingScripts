@@ -46,7 +46,7 @@
 function pdfplot_any(inputfilename,outputdir,expname,columnnumber,varargin)
 
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false);
+options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false,'filterby',0,'cutoffval',2,'above',true);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
@@ -78,11 +78,23 @@ windowsize=options.windowsize;
 cutofffrac=options.cutofffrac;
 score=options.score;
 specificframes=options.specificframes;
+filterby = options.filterby;
+cutoffval = options.cutoffval;
+above = options.above;
 
+filter =0;
+if 0< filterby <14
+    filter =1;
+end
 scorename=strcat(inputfilename,'_JAABA/','scores_',score,'_id_corrected.mat');
 if specificframes
-    wing_ext_frames_indexed=handle_flytracker_output_frame(inputfilename_full,inputfilename_frames);
-elseif fromscores
+    if filter
+         wing_ext_frames_indexed=handle_flytracker_output_frame_filtered(inputfilename_full,inputfilename_frames,filterby,cutoffval,above);
+
+    else
+     wing_ext_frames_indexed=handle_flytracker_output_frame(inputfilename_full,inputfilename_frames);
+    end
+    elseif fromscores
     wing_ext_frames_indexed=handle_flytracker_outputs_score(inputfilename_full,scorename,windowsize,cutofffrac);
 elseif wingextonly
  [wing_ext_frames_indexed]= handle_flytracker_outputs_var(inputfilename_full,wingdur,minwingangle);
