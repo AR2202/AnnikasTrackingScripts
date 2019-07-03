@@ -18,8 +18,7 @@ frametable=readtable(framefilename);
 %  leg_dist=feat.data(:,:,13);
 indices=transpose(1:size(feat.data,1));
 ind_data=arrayfun(@(x) horzcat(transpose(feat.data(x,:,1)),transpose(feat.data(x,:,2)),transpose(feat.data(x,:,3)),transpose(feat.data(x,:,4)),transpose(feat.data(x,:,5)),transpose(feat.data(x,:,6)),transpose(feat.data(x,:,7)),transpose(feat.data(x,:,8)),transpose(feat.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(feat.data(x,:,11)),transpose(feat.data(x,:,12)),transpose(feat.data(x,:,13))),indices,'UniformOutput',false);
-%starts=cell(40,1);
-%ends=cell(40,1);
+
 frames_e = cell(40,1);
 for i=1:height(frametable)
     for j=3:2:width(frametable)
@@ -29,8 +28,7 @@ for i=1:height(frametable)
         ending=ending(ending>0);
     frames_e{frametable.Var2(i)}=[frames_e{frametable.Var2(i)},[start:ending]];
     
-%     starts{frametable.Var2(i)}=frametable.Var3(i);
-%     ends{frametable.Var2(i)}=frametable.Var4(i);
+
     end
 end
 

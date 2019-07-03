@@ -27,8 +27,7 @@ for i=1:height(frametable)
         ending=ending(ending>0);
     frames_e{frametable.Var2(i)}=[frames_e{frametable.Var2(i)},[start:ending]];
     
-%     starts{frametable.Var2(i)}=frametable.Var3(i);
-%     ends{frametable.Var2(i)}=frametable.Var4(i);
+
     end
 end
 
