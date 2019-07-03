@@ -6,7 +6,7 @@
 %
 %EXPNAME: name of the parameter of which the pdf is to be plotted (only
 %used for nameing the figure and the field in the output data structure)
-%COLUMNNUMBER: number of the column in the -feat.mat file that the desired parameter is stored in 
+%COLUMNNUMBER: number of the column in the -feat.mat file that the desired parameter is stored in
 %  vel=1;
 %  ang_vel=2;
 %  min_wing_ang=3;
@@ -33,11 +33,23 @@
 %in the specified window
 %fromscores: if true, the data are taken from a JAABA scores file (default false)
 %specificframes: if true, it expects a .csv file that contains the start
-%and end frames that should be analyzed. The start needs to be in column 3
-%and the end in column 4 of the .csv file. The file has to be located in
+%and end frames of the frame ranges that should be analyzed. Several frame ranges can be
+%specified, starting from column 3 in the .csv file. Each pair of 2 columns
+%has to be a pair of start and endframes for the desired range.
+%The flyID needs to be in column 2
+%The file has to be located in
 %the video directory and be called '<videoname>_frames.csv' where videoname
-%is the name of the videodirectory it is in.
+%is the name of the videodirectory it is in. (default false)
+%filterby: column number (of the feat.mat file) which should be used for
+%filtering frames. Must be a number between 1-13. Allows for additional
+%filtering when the 'specificframes' option
+%is set. (default: no additional filtering)
+%cutoffval: if filterby is selected, this is the value above or below which
+%the feature should be for the frames to be selected. (default:2)
+%above: if filterby is selected, this specifies whether you want to use
+%frames that are above or below cutoffval (default: true)
 %
+%if specificframes is set to false (default), copulationframes are removed
 %
 %DEPENDENCIES: depends on the following functions (which have to be in the
 %current path or the MATLAB search path):
@@ -56,22 +68,26 @@ options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'
 %# read the acceptable names
 optionNames = fieldnames(options);
 
-%# count arguments
+%# count arguments - throw exception if the number is not divisible by 2
 nArgs = length(varargin);
 if round(nArgs/2)~=nArgs/2
-   error('pdfplot_any called with wrong number of arguments: expected Name/Value pair arguments')
+    error('pdfplot_any called with wrong number of arguments: expected Name/Value pair arguments')
 end
 
 for pair = reshape(varargin,2,[]) %# pair is {propName;propValue}
-   inpName = lower(pair{1}); %# make case insensitive
-
-   if any(strcmp(inpName,optionNames))
-     
-      options.(inpName) = pair{2};
-   else
-      error('%s is not a recognized parameter name',inpName)
-   end
+    inpName = lower(pair{1}); %# make case insensitive
+    %check if the entered key is a valid key
+    %check if the entered key is a valid key. If yes, replace the default by
+    %the caller specified value. Otherwise, throw and exception
+    if any(strcmp(inpName,optionNames))
+        
+        options.(inpName) = pair{2};
+    else
+        error('%s is not a recognized parameter name',inpName)
+    end
 end
+%this block gets all the values from the optional function arguments
+%for all arguments that were not specified, the default is used
 wingdur=options.wingdur;
 wingextonly=options.wingextonly;
 scaling=options.scaling;
@@ -84,7 +100,7 @@ specificframes=options.specificframes;
 filterby = options.filterby;
 cutoffval = options.cutoffval;
 above = options.above;
-
+%select all directories that end in the string 'Courtship'
 dirs = dir('*Courtship');
 
 for p = 1:numel(dirs)
@@ -97,7 +113,8 @@ for p = 1:numel(dirs)
     end
     startdir = pwd;
     cd(dirname);
-    
+    %get all subdirectories of the Courtship directory - these are the
+    %video directories
     subdirs=dir();
     for q = 1:numel(subdirs)
         if ~subdirs(q).isdir
@@ -107,23 +124,33 @@ for p = 1:numel(dirs)
         if ismember(subdirname,{'.','..'})
             continue;
         end
-       
+        %go into the video directory
         cd(subdirname);
         disp(['Now making pdfs for:' subdirname]);
+        %go into the second directory level (also named the same as the
+        %video directory)
         cd(subdirname);
+        %test which options are set and call the pdfplot_any function with
+        %the respective parameters. The function is called wrapped in the
+        %error_handling_wrapper, which catches any errors and writes them
+        %to a file called 'pdfplot_errors.log'
         if specificframes
             
-             error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'specificframes',true,'filterby',filterby,'cutoffval',cutoffval,'above',above);
+            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'specificframes',true,'filterby',filterby,'cutoffval',cutoffval,'above',above);
             
         elseif fromscores
             error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'windowsize',windowsize,'cutofffrac',cutofffrac,'scaling',scaling,'fromscores',true,'score',score);
-        
+            
         else
             error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'wingdur',wingdur,'wingextonly',wingextonly,'minwingangle',minwingangle);
         end
+        %go back to the courtship directory and continue with the next
+        %video
         cd (startdir);
         cd(dirname);
     end
+    %go back to the start directory and continue with the next courtship
+    %directory
     cd (startdir);
 end
 
