@@ -29,9 +29,11 @@ for i=1:height(frametable)
     for j=3:2:width(frametable)
         start=frametable{i,j};
         %remove 0's
+        start(isnan(start))=0;
         start=start(start>0);
         ending=frametable{i,(j+1)};
         %remove 0's
+        ending(isnan(ending))=0;
         ending=ending(ending>0);
     frames_e{frametable.Var2(i)}=[frames_e{frametable.Var2(i)},[start:ending]];
     

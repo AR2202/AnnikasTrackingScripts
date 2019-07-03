@@ -110,7 +110,7 @@ above = options.above;
 %set filter to true -otherwise set
 %filter to false
 filter =0;
-if 0< filterby <14
+if (0< filterby && filterby <14)
     filter =1;
 end
 %make the pathname for the scoresfile out of the inputfilename
