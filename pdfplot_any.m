@@ -106,6 +106,12 @@ specificframes=options.specificframes;
 filterby = options.filterby;
 cutoffval = options.cutoffval;
 above = options.above;
+%array of the maximum expected values for the features;
+maxs=[100;30;pi;pi;20;5;10;1;20;20;pi;pi;20];
+max=maxs(columnnumber)*scaling;
+pts=(0:(max/99):max);
+
+
 %check if the filterby option was set to a valid value and if so,
 %set filter to true -otherwise set
 %filter to false
@@ -150,7 +156,7 @@ wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, wing_ext_frames_in
 %remove empty cells
 wing_ext_frames_nonempty=wing_ext_frames_indexed(~cellfun(@(cells) isempty(cells{1}),wing_ext_frames_indexed));
 %make the kernel density estimation for each individual
-[f_data,xi_data]=cellfun(@(wing_ext_frames_ind) ksdensity((wing_ext_frames_ind{1}(:,columnnumber))*scaling), wing_ext_frames_nonempty,'UniformOutput',false);
+[f_data,xi_data]=cellfun(@(wing_ext_frames_ind) ksdensity((wing_ext_frames_ind{1}(:,columnnumber))*scaling,pts), wing_ext_frames_nonempty,'UniformOutput',false);
 %plot the data for each individual
 %this calls the newfigplot function
 cellfun(@(xi1,f1,index) newfigplot(xi1,f1,expname,num2str(index{1,2}),inputfilename,outputdir), xi_data,f_data,wing_ext_frames_nonempty,'UniformOutput',false);
