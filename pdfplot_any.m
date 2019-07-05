@@ -108,8 +108,8 @@ cutoffval = options.cutoffval;
 above = options.above;
 %array of the maximum expected values for the features;
 maxs=[100;30;pi;pi;20;5;10;1;20;20;pi;pi;20];
-max=maxs(columnnumber)*scaling;
-pts=(0:(max/99):max);
+max_=maxs(columnnumber)*scaling;
+pts=(0:(max_/99):max_);
 
 
 %check if the filterby option was set to a valid value and if so,
