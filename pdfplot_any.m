@@ -145,7 +145,11 @@ elseif fromscores
 elseif wingextonly
     [wing_ext_frames_indexed]= handle_flytracker_outputs_var(inputfilename_full,wingdur,minwingangle);
 else
+    if filter
+        wing_ext_frames_indexed=remove_copulation_ind_filtered(inputfilename_full,filterby, cutoffval, above);
+    else
     wing_ext_frames_indexed=remove_copulation_ind(inputfilename_full);
+    end
 end
 %make indices to remember the flyID if rows are removed from the matrix
 indices=transpose(1:size(wing_ext_frames_indexed,1));
