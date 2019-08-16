@@ -142,7 +142,7 @@ for p = 1:numel(dirs)
             error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'windowsize',windowsize,'cutofffrac',cutofffrac,'scaling',scaling,'fromscores',true,'score',score);
             
         else
-            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'wingdur',wingdur,'wingextonly',wingextonly,'minwingangle',minwingangle);
+            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'wingdur',wingdur,'wingextonly',wingextonly,'minwingangle',minwingangle,'filterby', filterby,'cutoffval',cutoffval,'above',above);
         end
         %go back to the courtship directory and continue with the next
         %video

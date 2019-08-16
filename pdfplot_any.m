@@ -118,6 +118,7 @@ pts=(0:(max_/99):max_);
 filter =0;
 if (0< filterby && filterby <14)
     filter =1;
+    wingextonly= false;
 end
 %make the pathname for the scoresfile out of the inputfilename
 scorename=strcat(inputfilename,'_JAABA/','scores_',score,'_id_corrected.mat');
