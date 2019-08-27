@@ -119,6 +119,8 @@ filter =0;
 if (0< filterby && filterby <14)
     filter =1;
     wingextonly= false;
+    disp('filtering data by');
+    disp(string(filterby));
 end
 %make the pathname for the scoresfile out of the inputfilename
 scorename=strcat(inputfilename,'_JAABA/','scores_',score,'_id_corrected.mat');
