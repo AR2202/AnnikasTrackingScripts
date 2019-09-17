@@ -12,7 +12,7 @@ outputdir = 'distance_travelled';
 columnnumber =1;  %for vel
 framerate =25; %fps
 %turn the inputfilename into the specific names for the feat.mat and the
-%frames.csv file
+
 inputfilename_full=strcat(inputfilename,'-feat.mat');
 
 
@@ -26,7 +26,7 @@ ind_data=arrayfun(@(x) horzcat(transpose(feat.data(x,:,1)),transpose(feat.data(x
 
 
     
-%select only the frames that are specified in frames_e
+%select only the frames until endframe
 frames=cellfun(@(indiv) indiv(1:endframe,:),ind_data,'UniformOutput',false);
 wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, frames,num2cell(indices),'UniformOutput',false);
 
