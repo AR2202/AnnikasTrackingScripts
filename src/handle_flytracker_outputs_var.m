@@ -29,7 +29,8 @@ function [wing_ext_frames_indexed]= handle_flytracker_outputs_var(filename,winge
 %  leg_dist=feat.data(:,:,13);
 load(filename);
 indices=transpose(1:size(feat.data,1));
-ind_data=arrayfun(@(x) horzcat(transpose(feat.data(x,:,1)),transpose(feat.data(x,:,2)),transpose(feat.data(x,:,3)),transpose(feat.data(x,:,4)),transpose(feat.data(x,:,5)),transpose(feat.data(x,:,6)),transpose(feat.data(x,:,7)),transpose(feat.data(x,:,8)),transpose(feat.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(feat.data(x,:,11)),transpose(feat.data(x,:,12)),transpose(feat.data(x,:,13))),indices,'UniformOutput',false);
+featnumber = size(feat.data,3);
+ind_data=arrayfun(@(x) concatenate_data(x,featnumber, feat),indices,'UniformOutput',false);
 wing_ext_frames_all=cellfun(@(indiv) indiv(indiv(:,4)>minwingangle,:),ind_data,'UniformOutput',false);
 aboveThreshold=cellfun(@(indiv) (indiv(:,4)>minwingangle),ind_data,'UniformOutput',false);
 aboveThreshold=cellfun(@(above) [false;above;false],aboveThreshold,'uni',false);
@@ -57,3 +58,5 @@ startPos_contact(tf) = {15000} ;
 catspans_no_cop=cellfun(@(catspan,startPos_c) catspan(catspan<startPos_c(1)),catspans,startPos_contact,'uni',false);
 removed_copulation=cellfun(@(indiv,catspan) indiv(catspan,:),ind_data,catspans_no_cop,'UniformOutput',false);
 wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, removed_copulation,num2cell(indices),'UniformOutput',false);
+end
+
