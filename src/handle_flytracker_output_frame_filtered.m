@@ -23,6 +23,9 @@ featnumber = size(feat.data,3);
 ind_data=arrayfun(@(x) concatenate_data(x,featnumber, feat),indices,'UniformOutput',false);
 %initialize the frames_e cell array
 frames_e = cell(40,1);
+if featnumber < filterby
+    error (strcat('feature ',string(filterby),' does not exist. Please select a different feature for filtering or no filtering'))
+end
 %go through the frametable and add the data into the frames_e array
 %the frames_e array should contain all the frame numbers of the frames to be
 %analyzed. It will further be used to index into the data array

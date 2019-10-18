@@ -18,7 +18,16 @@ load(filename);
 indices=transpose(1:size(feat.data,1));
 featnumber = size(feat.data,3);
 ind_data=arrayfun(@(x) concatenate_data(x,featnumber, feat),indices,'UniformOutput',false);
-
+%check if feature 10 exists, which is needed for copulation frame
+%determination. If not, don't remove copulation frames
+if featnumber <10
+    frames_no_cop_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, ind_data,num2cell(indices),'UniformOutput',false);
+    
+else
+    
+    %removing copulation frames - depends on feature number 10 (distance
+    %between)
+    %if non-existent (for example, single fly) this part is not used
 contact_frames=cellfun(@(indiv) indiv(indiv(:,10)<2.5,:),ind_data,'UniformOutput',false);
 contact=cellfun(@(indiv) (indiv(:,10)<2.5),ind_data,'UniformOutput',false);
 contact=cellfun(@(above) [false;above;false],contact,'uni',false);
@@ -33,3 +42,4 @@ startPos_contact(tf) = {15000} ;
 
 frames_no_cop=cellfun(@(indiv,start_c) indiv(1:start_c,:),ind_data,startPos_contact,'UniformOutput',false);
 frames_no_cop_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, frames_no_cop,num2cell(indices),'UniformOutput',false);
+end
