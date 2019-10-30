@@ -1,7 +1,7 @@
-%  vel=1;
-
-%
-%DEPENDENCIES: 
+%DISTANCE_TRAVELLED calculates the distance the flies in 'inputfilename'
+%have travelled over the total duration specified as the 'dur'
+%input parameter
+%does not remove copulation frames or filter by wingextension
 
 function distance_travelled(inputfilename,dur)
 
@@ -22,8 +22,8 @@ load(inputfilename_full);
 
 indices=transpose(1:size(feat.data,1));
 %concatenate all the data into a cell array with the right structure
-ind_data=arrayfun(@(x) horzcat(transpose(feat.data(x,:,1)),transpose(feat.data(x,:,2)),transpose(feat.data(x,:,3)),transpose(feat.data(x,:,4)),transpose(feat.data(x,:,5)),transpose(feat.data(x,:,6)),transpose(feat.data(x,:,7)),transpose(feat.data(x,:,8)),transpose(feat.data(x,:,9)),transpose(feat.data(x,:,10)),transpose(feat.data(x,:,11)),transpose(feat.data(x,:,12)),transpose(feat.data(x,:,13))),indices,'UniformOutput',false);
-
+featnumber = size(feat.data,3);
+ind_data=arrayfun(@(x) concatenate_data(x,featnumber, feat),indices,'UniformOutput',false);
 
     
 %select only the frames until endframe
