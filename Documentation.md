@@ -1,5 +1,5 @@
-## Short User Guide
-#Annikas Tracking Scripts
+### Short User Guide
+# Annikas Tracking Scripts
 
 This is a collection of scripts for post-tracking data analysis of fly courtship videos tracked with the Goodwin Lab tracking system
 
@@ -48,25 +48,39 @@ Experiments with 1 fly per chamber will have only features 1-9.
 
 2. run the run_pdfplots_any function in the Matlab command window by typing:
 
-run_pdfplots_any(EXPNAME,NUMBER,optional key-value pair arguments)
+`run_pdfplots_any(EXPNAME,NUMBER,optional key-value pair arguments)`
 
 
-where
+# Required and optional arguments:
+
 EXPNAME = what you want the experiment to be called (one word only please) Datatype: string
+
 NUMBER = the number of the feature you want to plot as indicated above in no5. Datatype: integer
+
 Key-value-pair arguments: are optional, if entered, the key has to be in single quotes like this: ‘key’ and is followed by a comma , and its value. The following keys are defined (their default values are indicated in brackets and are used if not specified):
+
 SCALING: scaling to be applied to the data (default = 1) Datatype: double (a  numeric type)
+
 WINGDUR: minimum number of contiguous frames of wing extension to be
 counted as wing extension bouts (default = 13) Datatype: integer
+
 WINGEXTONLY: use only wing extension frames (default = true) Datatype: Bool
+
 MINWINGANGLE: minimum angle of the wing to body axis (in degrees) to be counted as wing extension (default = 30) Datatype: double
 
-the following are used only if fromscores is set to true:
-score: name of the score from JAABA (if fromscores is set to true) (default = WingGesture) Datatype: string
-windowsize: size of the moving average window (in frames, default = 13) Datatype: integer
-cutofffrac: fraction of the frames that have to be positive for the event
+# The following apply to JAABA scores and are used only if fromscores is set to true:
+
+SCORE: name of the score from JAABA (if fromscores is set to true) (default = WingGesture) Datatype: string
+
+WINDOWSIZE: size of the moving average window (in frames, default = 13) Datatype: integer
+
+CUTOFFRAC: fraction of the frames that have to be positive for the event
 in the specified window (default = 0.5) Datatype: Double
-fromscores: if true, the data are taken from a JAABA scores file (default = false) Datatype: Bool
+
+FROMSCORES: if true, the data are taken from a JAABA scores file (default = false) Datatype: Bool
+
+# analysing only specific tracking frames
+
 SPECIFICFRAMES: if true, it expects a .csv file that contains the start
 nd end frames of the frame ranges that should be analyzed. Several frame ranges can be
 specified, starting from column 3 in the .csv file. Each pair of 2 columns
@@ -75,28 +89,38 @@ The flyID needs to be in column 2
 The file has to be located in
 the video directory and be called '<videoname>_frames.csv' where videoname
 is the name of the videodirectory it is in. (default false)
-if specificframes is set to false (default), copulationframes are removed
+if specificframes is set to false (default), copulationframes are removed (for 2-fly experiments)
+
+#Filtering frames by a different feature
 
 FILTERBY: column number (of the feat.mat file) which should be used for
-filtering frames. Must be a number between 1-13. Allows for additional
+filtering frames. Must be a number between 1-13 (between 1-9 for single fly experiments). Allows for additional
 filtering. (default: no additional filtering)
+
 CUTOFFVAL: if filterby is selected, this is the value above or below which
 the feature should be for the frames to be selected. (default:2)
+
 ABOVE: if filterby is selected, this specifies whether you want to use
-frames that are above or below cutoffval (default: true, meaning values have to be avoe)
+frames that are above or below cutoffval (default: true, meaning values have to be above)
 
 3. A probability density plot is created for each fly in all the videos in all the folders ending in ‘Courtship’ and saved to a subdirectory called ‘pdfs’
 
+# Averaging probability density plots
+
 4. To average all the pdfs from one genotype, use the following function:
 
-    find_videos_new (genotypelist,path,expname,structname,genotype)
+    `find_videos_new (genotypelist,path,expname,structname,genotype)`
 
-the arguments are:
+#the arguments are:
+
 GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
 PATH=path to the subdirectory that contains the pdfdata - directory that
 must contain .mat files with structures called pdfdata in them – is currently called ‘pdfs’ and has to be entered like that with single quotes Datatype: string
+
 EXPNAME=name of the field in the structure that contains the desired data – this is the same as you used when running the run_pdfplots_any function (in single quotes). Datatype: string
+
 STRUCTNAME = name of the structure in the .mat file that gets loaded it is currently called ‘pdfdata’ (enter it including the single quotes) Datatype: string
+
 GENOTYPE = genotype of the flies - is only used for labelling the figure(and
 naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
 
@@ -114,19 +138,19 @@ To use this function, you first need to make a genotypelist in Excel that contai
 Suppose you want to plot probability distributions of the velocity of the flies, in all frames where they don’t copulate, not just the wing extension frames.
 Navigate to the folder that contains the Courtship directories and type:
 
-run_pdfplots_any(‘velocity’,1,’wingextonly’,false)
+`run_pdfplots_any(‘velocity’,1,’wingextonly’,false)`
 
 when it’s finished, make an excel table as outlined above. Assuming your table is called ‘simfemales.xlsx’, and you want the output to be called ‘SimulansFemales’, type the following:
 
-find_videos_new(‘simfemales.xlsx’,’pdfs’,’velocity’,’pdfdata’,’SimulansFemales’)
+`find_videos_new(‘simfemales.xlsx’,’pdfs’,’velocity’,’pdfdata’,’SimulansFemales’)`
 
 
 If you want to plot the facing angle only in wing extension frames, and you want the wing extension to be taken from the JAABA classifier WingGesture, assuming you want 50% of frames in a window of 13 frames to be positive for it to be counted as wing extension, and you want to convert the angles from radients to degrees type the following:
 
 
-run_pdfplots_any(‘facingangle’,12,’scaling’,(180/pi),’fromscores’,true)
+`run_pdfplots_any(‘facingangle’,12,’scaling’,(180/pi),’fromscores’,true)`
 
 when it’s finished, make an excel table as outlined above. Assuming your table is called ‘males.xlsx’, and you want the output to be called ‘males’, type the following:
 
-find_videos_new(‘males.xlsx’,’pdfs’,’facingangle’,’pdfdata’,’males’)
+`find_videos_new(‘males.xlsx’,’pdfs’,’facingangle’,’pdfdata’,’males’)`
 
