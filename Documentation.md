@@ -29,7 +29,7 @@ https://www.mathworks.com/matlabcentral/fileexchange/2006-isodd
 
 
 
-1. Decide what you want to plot. These are the options (with their respective feature column numbers):
+Decide what you want to plot. These are the options (with their respective feature column numbers):
 * Velocity =1;
 * Angular Velocity =2;
 * Minimum wing angle =3;
@@ -46,18 +46,20 @@ https://www.mathworks.com/matlabcentral/fileexchange/2006-isodd
 
 Experiments with 1 fly per chamber will have only features 1-9.
 
-2. run the run_pdfplots_any function in the Matlab command window by typing:
+Run the run_pdfplots_any function in the Matlab command window by typing:
 
 `run_pdfplots_any(EXPNAME,NUMBER,optional key-value pair arguments)`
 
 
 ### Required and optional arguments:
 
+### Required arguments:
+
 EXPNAME = what you want the experiment to be called (one word only please) Datatype: string
 
-NUMBER = the number of the feature you want to plot as indicated above in no5. Datatype: integer
+NUMBER = the number of the feature column you want to plot as indicated above. Datatype: integer
 
-Key-value-pair arguments: are optional, if entered, the key has to be in single quotes like this: ‘key’ and is followed by a comma , and its value. The following keys are defined (their default values are indicated in brackets and are used if not specified):
+### Key-value-pair arguments: are optional, if entered, the key has to be in single quotes like this: ‘key’ and is followed by a comma , and its value. The following keys are defined (their default values are indicated in brackets and are used if not specified):
 
 SCALING: scaling to be applied to the data (default = 1) Datatype: double (a  numeric type)
 
@@ -65,6 +67,7 @@ WINGDUR: minimum number of contiguous frames of wing extension to be
 counted as wing extension bouts (default = 13) Datatype: integer
 
 WINGEXTONLY: use only wing extension frames (default = true) Datatype: Bool
+Wingextonly is true by default if no other options are specified, false if fromscores or specificframes or filterby are specified.
 
 MINWINGANGLE: minimum angle of the wing to body axis (in degrees) to be counted as wing extension (default = 30) Datatype: double
 
@@ -79,7 +82,7 @@ in the specified window (default = 0.5) Datatype: Double
 
 FROMSCORES: if true, the data are taken from a JAABA scores file (default = false) Datatype: Bool
 
-### analysing only specific tracking frames
+### Analysing only specific tracking frames
 
 SPECIFICFRAMES: if true, it expects a .csv file that contains the start
 nd end frames of the frame ranges that should be analyzed. Several frame ranges can be
@@ -103,15 +106,15 @@ the feature should be for the frames to be selected. (default:2)
 ABOVE: if filterby is selected, this specifies whether you want to use
 frames that are above or below cutoffval (default: true, meaning values have to be above)
 
-3. A probability density plot is created for each fly in all the videos in all the folders ending in ‘Courtship’ and saved to a subdirectory called ‘pdfs’
+A probability density plot is created for each fly in all the videos in all the folders ending in ‘Courtship’ and saved to a subdirectory called ‘pdfs’
 
 ### Averaging probability density plots
 
-4. To average all the pdfs from one genotype, use the following function:
+To average all the pdfs from one genotype, use the following function:
 
     `find_videos_new (genotypelist,path,expname,structname,genotype)`
 
-### the arguments are:
+### The arguments are (all arguments are required):
 
 GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
 
@@ -127,6 +130,7 @@ naming the output file) you can enter whatever you want here (in single quotes l
 
 
 To use this function, you first need to make a genotypelist in Excel that contains the flies that belong to the same genotype, which you want to average, ending in the fileextension .xlsx with the following structure:
+
 *Column 1: videoname (This can be either your original video name or the full name with the extensions created by the tracker)
 *Column 2: fly-id
 *Column 3: delimitor (for now, use _ )
