@@ -1,7 +1,7 @@
-### Short User Guide
-# Annikas Tracking Scripts
+# Short User Guide
+### Annikas Tracking Scripts
 
-This is a collection of scripts for post-tracking data analysis of fly courtship videos tracked with the Goodwin Lab tracking system
+This is a collection of MATLAB scripts for post-tracking data analysis of fly courtship videos tracked with the Goodwin Lab tracking system. Currently there is no GUI. All functions have to be called from the MATLAB command line. 
 
 ## Requirements
 * MATLAB R2016a or later. MATLAB R2017a or later recommended.
@@ -51,7 +51,7 @@ Experiments with 1 fly per chamber will have only features 1-9.
 `run_pdfplots_any(EXPNAME,NUMBER,optional key-value pair arguments)`
 
 
-# Required and optional arguments:
+### Required and optional arguments:
 
 EXPNAME = what you want the experiment to be called (one word only please) Datatype: string
 
@@ -68,7 +68,7 @@ WINGEXTONLY: use only wing extension frames (default = true) Datatype: Bool
 
 MINWINGANGLE: minimum angle of the wing to body axis (in degrees) to be counted as wing extension (default = 30) Datatype: double
 
-# The following apply to JAABA scores and are used only if fromscores is set to true:
+### The following apply to JAABA scores and are used only if fromscores is set to true:
 
 SCORE: name of the score from JAABA (if fromscores is set to true) (default = WingGesture) Datatype: string
 
@@ -79,7 +79,7 @@ in the specified window (default = 0.5) Datatype: Double
 
 FROMSCORES: if true, the data are taken from a JAABA scores file (default = false) Datatype: Bool
 
-# analysing only specific tracking frames
+### analysing only specific tracking frames
 
 SPECIFICFRAMES: if true, it expects a .csv file that contains the start
 nd end frames of the frame ranges that should be analyzed. Several frame ranges can be
@@ -91,7 +91,7 @@ the video directory and be called '<videoname>_frames.csv' where videoname
 is the name of the videodirectory it is in. (default false)
 if specificframes is set to false (default), copulationframes are removed (for 2-fly experiments)
 
-#Filtering frames by a different feature
+### Filtering frames by a different feature
 
 FILTERBY: column number (of the feat.mat file) which should be used for
 filtering frames. Must be a number between 1-13 (between 1-9 for single fly experiments). Allows for additional
@@ -105,15 +105,16 @@ frames that are above or below cutoffval (default: true, meaning values have to 
 
 3. A probability density plot is created for each fly in all the videos in all the folders ending in ‘Courtship’ and saved to a subdirectory called ‘pdfs’
 
-# Averaging probability density plots
+### Averaging probability density plots
 
 4. To average all the pdfs from one genotype, use the following function:
 
     `find_videos_new (genotypelist,path,expname,structname,genotype)`
 
-#the arguments are:
+### the arguments are:
 
 GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
+
 PATH=path to the subdirectory that contains the pdfdata - directory that
 must contain .mat files with structures called pdfdata in them – is currently called ‘pdfs’ and has to be entered like that with single quotes Datatype: string
 
@@ -133,7 +134,7 @@ To use this function, you first need to make a genotypelist in Excel that contai
 
 
 
-# Examples:
+### Examples:
 
 Suppose you want to plot probability distributions of the velocity of the flies, in all frames where they don’t copulate, not just the wing extension frames.
 Navigate to the folder that contains the Courtship directories and type:
@@ -154,3 +155,35 @@ when it’s finished, make an excel table as outlined above. Assuming your table
 
 `find_videos_new(‘males.xlsx’,’pdfs’,’facingangle’,’pdfdata’,’males’)`
 
+## Calculating Distance travelled
+
+Run the following in the MATLAB command line:
+
+`run_distance_travelled(dur)`
+
+DUR: duration for how long you want to calculate the distance travelled in s. Must not exceed the total tracking time of the video.
+
+## Averaging distance travelled
+
+Run the following in the MATLAB command line:
+
+`find_videos_dist (genotypelist, genotype)`
+
+GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
+
+see above for requirements for this file
+
+
+GENOTYPE = genotype of the flies - is only used for labelling the figure(and
+naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
+
+
+### Examples:
+
+Run distance travelled for 15 min (=900s):
+
+`run_distance_travelled(900)`
+
+Averaging:
+
+`find_videos_dist ('my_genotype.xlsx', 'my_genotype')`
