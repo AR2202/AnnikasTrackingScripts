@@ -112,7 +112,7 @@ A probability density plot is created for each fly in all the videos in all the 
 
 To average all the pdfs from one genotype, use the following function:
 
-    `find_videos_new (genotypelist,path,expname,structname,genotype)`
+`find_videos_new (genotypelist,path,expname,structname,genotype)`
 
 ### The arguments are (all arguments are required):
 
