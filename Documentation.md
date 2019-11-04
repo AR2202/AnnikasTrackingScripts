@@ -269,6 +269,7 @@ calculate and average bilateral wing extension:
 `find_videos_indices_other('my_genotype.xlsx', 'my_genotype')`
 
 
+
 ## Calculating the Wing extension Index from the tracking data
 
 Wing extension index is generally calculated from the scores of the JAABA classifier. If instead you want to calculate it from the tracking data, defining wing extension as at least one wing being extended > 30 deg, run either one of the following:
@@ -303,3 +304,15 @@ naming the output file) you can enter whatever you want here (in single quotes l
 
 
 `find_videos_wingindex('my_genotype.xlsx', 'my_genotype')`
+
+## Finding out the indices of flies based on relative chamber positions in first frame
+
+
+Assume you know which genotype fly you loaded on the left and right side of the recording chamber, you can determining their assigned FlyIds as follows:
+
+While in the directory that contains the XXX_XX_XX_Courtship directories, run the following script in the MATLAB command line:
+
+`run_left_right`
+
+This will add a 'videoname_left_right.csv' file to all your Results folders, which contains a table with the flyIds and 'l' for left or 'r' for right. The information refers to their relative positions to each other in the first tracking frame. 
+
