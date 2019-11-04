@@ -44,14 +44,16 @@ for p = 1:numel(dirs)
     if size(videonames,2)>0
         disp(videonames);
         for q = 1:size(videonames,1)
+            
             if exist (string(videonames{q}{1}),'dir')
                 disp(videonames{q}{1});
                 cd(videonames{q}{1});
                 cd(videonames{q}{1});
                 variablename_video=regexprep(videonames{q}{1},'(\w+)-(\w+)_Courtship-','');
                 disp(variablename_video);
+                
                 newtable = outputtable(strcmp(variablename_video,outputtable.Var1), : ); 
-                newtable2=outputtable(strcmp(videonames{q}{1},outputtable.Var1),:);
+                newtable2=outputtable(cellfun(@(x) contains(videonames{q}{1},x), outputtable.Var1),:);
                 newtable3=vertcat(newtable,newtable2);
                 disp(newtable3);
                 
@@ -82,7 +84,9 @@ for p = 1:numel(dirs)
                         
                     
                 end
-                end
+            end
+                cd(startdir);
+            cd(dirname);
             end
              cd(startdir);
             cd(dirname);
