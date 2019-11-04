@@ -248,7 +248,7 @@ Assume you have made a genotypelist with IDs of your experimental females, but y
 
 Run the follwoing in the MATLAB command line:
 
-`find_videos_indices_other(genotypelist, genotype)
+`find_videos_indices_other(genotypelist, genotype)`
 
 
 ### Required arguments:
