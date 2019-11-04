@@ -54,9 +54,10 @@ for p = 1:numel(dirs)
                 cd('Results');
                 variablename_video=regexprep(videonames{q}{1},'(\w+)-(\w+)_Courtship-','');
                 disp(variablename_video);
-                newtable = outputtable(strcmp(variablename_video,outputtable.Var1), : ); 
-                newtable2=outputtable(strcmp(videonames{q}{1},outputtable.Var1),:);
-                newtable3=vertcat(newtable,newtable2);
+                %newtable = outputtable(strcmp(variablename_video,outputtable.Var1), : ); 
+                newtable2=outputtable(cellfun(@(x) contains(videonames{q}{1},x), outputtable.Var1),:);
+                %newtable3=vertcat(newtable,newtable2);
+                newtable3=newtable2;
                 disp(newtable3);
                 
                 

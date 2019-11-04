@@ -40,9 +40,9 @@ for p = 1:numel(dirs)
     videos=cellfun(@(list)dir(char(strcat('*',list))),unique(outputtable.Var1),'UniformOutput',false);
     
     videonames=cellfun(@(struct)arrayfun(@(indiv) indiv.name(indiv.isdir==1,:),struct,'UniformOutput',false),videos,'UniformOutput',false);
-    %filenames=cellfun(@(videoname,var3,var2) strcat(string(videoname),string(var3),string(var2),string(var3)),videonames,outputtable.Var3,outputvar2,'UniformOutput',false);
+    
     videonames=videonames(~cellfun(@isempty,videonames));
-    %filenames=filenames(~cellfun(@isempty,filenames));
+   
    
     if size(videonames,2)>0
         disp(videonames);
@@ -53,9 +53,10 @@ for p = 1:numel(dirs)
                 cd('Results');
                 variablename_video=regexprep(videonames{q}{1},'(\w+)-(\w+)_Courtship-','');
                 disp(variablename_video);
-                newtable = outputtable(strcmp(variablename_video,outputtable.Var1), : ); 
-                newtable2=outputtable(strcmp(videonames{q}{1},outputtable.Var1),:);
-                newtable3=vertcat(newtable,newtable2);
+                %newtable = outputtable(strcmp(variablename_video,outputtable.Var1), : ); 
+                newtable2=outputtable(cellfun(@(x) contains(videonames{q}{1},x), outputtable.Var1),:);
+                %newtable3=vertcat(newtable,newtable2);
+                newtable3=newtable2;
                 disp(newtable3);
                 
                 strtofind=videonames{q}{1};
@@ -67,7 +68,7 @@ for p = 1:numel(dirs)
                     datafilename=datafile.name;
                     disp(datafilename)
                     outputtable2=readtable(datafilename,'readvariablenames',true);
-                    %disp(outputtable2);
+                    
                     for r=1:height(newtable3)
                     disp('Index in newtable3');    
                     disp(r);

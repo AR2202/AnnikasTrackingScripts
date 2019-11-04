@@ -173,6 +173,8 @@ Run the following in the MATLAB command line:
 
 `find_videos_dist (genotypelist, genotype)`
 
+### Required arguments:
+
 GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
 
 see above for requirements for this file
@@ -191,3 +193,77 @@ Run distance travelled for 15 min (=900s):
 Averaging:
 
 `find_videos_dist ('my_genotype.xlsx', 'my_genotype')`
+
+## Calculating bilateral wing extension
+
+Run the following in the MATLAB command line:
+
+`find_videos_bilateral(genotypelist, genotype)
+
+
+### Required arguments:
+
+GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
+
+see above for requirements for this file
+
+
+GENOTYPE = genotype of the flies - is only used for labelling the figure(and
+naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
+
+
+### Examples:
+
+calculate and average bilateral wing extension:
+
+`find_videos_bilateral('my_genotype.xlsx', 'my_genotype')`
+
+## Averaging the indices produced by the tracker in the Results.csv table
+
+Run the follwoing in the MATLAB command line:
+
+`find_videos_indices(genotypelist, genotype)
+
+
+### Required arguments:
+
+GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
+
+see above for requirements for this file
+
+
+GENOTYPE = genotype of the flies - is only used for labelling the figure(and
+naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
+
+
+### Examples:
+
+calculate and average bilateral wing extension:
+
+`find_videos_indices('my_genotype.xlsx', 'my_genotype')`
+
+## Averaging the indices for the other fly in the chamber
+
+Assume you have made a genotypelist with IDs of your experimental females, but you now want to calculate the Courtship index (or other indices) for the corresponding control males that were in the chamber with your experimental females. Without making a new genotypelist that contains the FlyIds for the males, you can run the following function:
+
+Run the follwoing in the MATLAB command line:
+
+`find_videos_indices_other(genotypelist, genotype)
+
+
+### Required arguments:
+
+GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
+
+see above for requirements for this file
+
+
+GENOTYPE = genotype of the flies - is only used for labelling the figure(and
+naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
+
+
+### Examples:
+
+calculate and average bilateral wing extension:
+
+`find_videos_indices_other('my_genotype.xlsx', 'my_genotype')`
