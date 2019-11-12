@@ -267,3 +267,39 @@ naming the output file) you can enter whatever you want here (in single quotes l
 calculate and average bilateral wing extension:
 
 `find_videos_indices_other('my_genotype.xlsx', 'my_genotype')`
+
+
+## Calculating the Wing extension Index from the tracking data
+
+Wing extension index is generally calculated from the scores of the JAABA classifier. If instead you want to calculate it from the tracking data, defining wing extension as at least one wing being extended > 30 deg, run either one of the following:
+
+`run_wing_index_tracking`
+
+or
+
+`run_wing_index_tracking_allframes`
+
+The former removes copulation frames and uses the criterion of wing extension having to persist for at least 13 frames, whereas the latter uses all frames in the tracking period. Run these scripts (without arguments) from your directory that contains the XXX_Courtship directories. It will create a directory called "wingindex" with your data for each fly in it.
+
+### Averaging the Wing Extension data
+
+run the following:
+
+`find_videos_wingindex(genotypelist, genotype)`
+
+
+### Required arguments:
+
+GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
+
+see above for requirements for this file
+
+
+GENOTYPE = genotype of the flies - is only used for labelling the figure(and
+naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
+
+
+### Examples:
+
+
+`find_videos_wingindex('my_genotype.xlsx', 'my_genotype')`
