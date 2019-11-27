@@ -1,7 +1,9 @@
 # Short User Guide
 ### Annikas Tracking Scripts
 
-This is a collection of MATLAB scripts for post-tracking data analysis of fly courtship videos tracked with the Goodwin Lab tracking system. Currently there is no GUI. All functions have to be called from the MATLAB command line. 
+This is a collection of MATLAB scripts for post-tracking data analysis of fly courtship videos tracked with the Goodwin Lab tracking system. The package includes a preliminary GUI, which is likely to be modified. Check for updates frequently.
+
+All functions can still be called from the MATLAB command line or a custom matlab script. 
 
 ## Requirements
 * MATLAB R2016a or later. MATLAB R2017a or later recommended.
@@ -24,6 +26,33 @@ https://www.mathworks.com/matlabcentral/fileexchange/2006-isodd
 
 4. Choose your analysis and run it as described below
 
+## GUI usage:
+
+To launch the GUI, type in the command window:
+
+`pdfplot`
+
+or click on the pdtplot.mlapp file
+
+
+### Analyse experiments tap
+
+* click on "select input directory" and select the directory that contains your xxx_Courtship directories
+* enter a name for our experiment, for example: facingangle
+* if you want to scale the output, enter a scaling factor (has to be a number)
+* select a feature from the dropdown menu
+* if you want to analyse only wingextensionframes, select the checkbox and enter duration and angle for wingextension
+* if you want additional filtering, select the column you want to filter by and enter a cutoff value, decide whether values above or below that value are to be selected
+* press analyse
+
+### Average experiments tap
+
+* click on the select genotype list button and select your genotypelist (must be xlsx format)
+* enter the outputname
+* enter the experiment name you previously entered as an output name when doing the analysis step
+* press Average
+
+## Calling functions from the command line:
 
 ## Making probability density plots of features
 
