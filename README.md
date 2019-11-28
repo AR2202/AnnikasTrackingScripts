@@ -2,7 +2,7 @@ AnnikasTrackingScripts
 
 Scripts for analysis of the behavioural videos tracked with the Goodwin Lab Tracking System
 
-For a preliminary GUI see the gui branch.
+A preliminary GUI is now available.
 
 It is still possible to call the functions from the command line or from a script instead of using the GUI.
 
