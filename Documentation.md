@@ -38,15 +38,24 @@ The gui looks like this:
 
 ![gui](pdfplot_gui.png)
 
+
 ### Analyse experiments tap
 
 * click on "select input directory" and select the directory that contains your xxx_Courtship directories
 * enter a name for our experiment, for example: facingangle
 * if you want to scale the output, enter a scaling factor (has to be a number)
+
+![gui1](pdfplot_gui_Step1.png)
+
 * select a feature from the dropdown menu
+
+![feat](pdfplot_gui_feature.png)
+
 * if you want to analyse only wingextensionframes, select the checkbox and enter duration and angle for wingextension
 * if you want additional filtering, select the column you want to filter by and enter a cutoff value, decide whether values above or below that value are to be selected
 * press analyse
+
+![analyse](pdfplot_gui_analyse.png)
 
 ### Average experiments tap
 
@@ -54,6 +63,8 @@ The gui looks like this:
 * enter the outputname
 * enter the experiment name you previously entered as an output name when doing the analysis step
 * press Average
+
+![gui1](pdfplot_gui_Step2.png)
 
 ## Calling functions from the command line:
 
