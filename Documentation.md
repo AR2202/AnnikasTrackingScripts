@@ -34,6 +34,9 @@ To launch the GUI, type in the command window:
 
 or click on the pdtplot.mlapp file
 
+The gui looks like this:
+
+![gui](pdfplot_gui.png)
 
 ### Analyse experiments tap
 
