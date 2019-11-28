@@ -30,17 +30,20 @@ function [wing_ext_frames_indexed]= handle_flytracker_outputs_score(filename,sco
 %allScores.postprocessed{1,index}
 load(filename);
 load(score);
-scoresflat = zeros(40,22500);
-for i=1:size(allScores.postprocessed,2)
-    scoresflat(i,1:size(allScores.postprocessed{i},2))=allScores.postprocessed{i};
-end
+%scoresflat = zeros(40,22500);
+scores=allScores.postprocessed;
+% for i=1:size(allScores.postprocessed,2)
+%     scoresflat(i,1:size(allScores.postprocessed{i},2))=allScores.postprocessed{i};
+% end
 
 indices=transpose(1:size(feat.data,1));
 featnumber = size(feat.data,3);
 ind_data=arrayfun(@(x) concatenate_data(x,featnumber, feat),indices,'UniformOutput',false);
-moving_avg=cellfun(@(indiv) movmean(indiv(:,14),windowsize),ind_data,'UniformOutput',false);
+%moving_avg=cellfun(@(indiv) movmean(indiv(:,featnumber),windowsize),ind_data,'UniformOutput',false);
+moving_avg=cellfun(@(indiv) movmean(indiv,windowsize),scores,'UniformOutput',false);
+
 event=cellfun(@(avg) (avg>cutofffrac),moving_avg,'UniformOutput',false);
-event=cellfun(@(above) [false;above;false],event,'uni',false);
+event=cellfun(@(above) [false above false],event,'uni',false);
 
 edges = cellfun(@(ev) diff(ev),event,'UniformOutput',false);
 rising = cellfun(@(edge) find(edge==1),edges,'UniformOutput',false);    %rising/falling edges
@@ -49,7 +52,7 @@ falling = cellfun(@(edge) find(edge==-1),edges,'UniformOutput',false);    %risin
 
 allInSpan = cellfun(@(starts,ends) arrayfun(@(x,y) (x:1:(y-1)), starts, ends, 'uni', false),rising,falling,'uni',false);  
 catspans=cellfun(@(spans) [spans{:}], allInSpan,'uni',false);
+catspansT= transpose(catspans);
 
-
-pos_for_score=cellfun(@(indiv,catspan) indiv(catspan,:),ind_data,catspans,'UniformOutput',false);
+pos_for_score=cellfun(@(indiv,catspan) indiv(catspan,:),ind_data,catspansT,'UniformOutput',false);
 wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, pos_for_score,num2cell(indices),'UniformOutput',false);
