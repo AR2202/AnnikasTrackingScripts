@@ -72,8 +72,10 @@ for p = 1:numel(dirs)
 end
 
 meandata=mean(dat);
-dataSEM=std(dat)/sqrt(size(dat,1));
-data_n=size(dat,1);
+dataSEM=std(dat)/sqrt(size(dat,2));
+disp(dataSEM);
+data_n=size(dat,2);
+disp(data_n);
 
 figuredata.mean=meandata;
 figuredata.SEM=dataSEM;
