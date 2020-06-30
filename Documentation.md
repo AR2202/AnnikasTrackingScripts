@@ -113,7 +113,7 @@ WINGEXTONLY: use only wing extension frames (default = true) Datatype: Bool
 Wingextonly is true by default if no other options are specified, false if fromscores or specificframes or filterby are specified.
 
 MINWINGANGLE: minimum angle of the wing to body axis (in degrees) to be counted as wing extension (default = 30) Datatype: double
-
+REMOVECOP: whether copulation frames should be removed (default = true) Datatype: Bool
 ### The following apply to JAABA scores and are used only if fromscores is set to true:
 
 SCORE: name of the score from JAABA (if fromscores is set to true) (default = WingGesture) Datatype: string
