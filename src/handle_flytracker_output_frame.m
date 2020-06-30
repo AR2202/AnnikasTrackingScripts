@@ -3,6 +3,8 @@ function [frames_indexed]= handle_flytracker_output_frame(filename, framefilenam
 
 load(filename);
 frametable=readtable(framefilename);
+%remove NaNs
+frametable=rmmissing(frametable);
 %  vel=feat.data(:,:,1);
 %  ang_vel=feat.data(:,:,2);
 %  min_wing_ang=feat.data(:,:,3);
@@ -20,22 +22,29 @@ indices=transpose(1:size(feat.data,1));
 %concatenate all the data into a cell array with the right structure
 featnumber = size(feat.data,3);
 ind_data=arrayfun(@(x) concatenate_data(x,featnumber, feat),indices,'UniformOutput',false);
+num_animals = size(feat.data,1);
 %initialize the frames_e cell array
-frames_e = cell(40,1);
+frames_e = cell(num_animals,1);
 %go through the frametable and add the data into the frames_e array
 %the frames_e array should contain all the frame numbers of the frames to be
 %analyzed. It will further be used to index into the data array
 for i=1:height(frametable)
     for j=3:2:width(frametable)
         start=frametable{i,j};
+       
         %remove 0's
         start(isnan(start))=0;
         start=start(start>0);
         ending=frametable{i,(j+1)};
+        
         %remove 0's
         ending(isnan(ending))=0;
         ending=ending(ending>0);
-    frames_e{frametable.Var2(i)}=[frames_e{frametable.Var2(i)},[start:ending]];
+       
+        frames_e{frametable.Var2(i)}=[frames_e{frametable.Var2(i)},[start:ending]];
+   
+    
+    
     
 
     end
