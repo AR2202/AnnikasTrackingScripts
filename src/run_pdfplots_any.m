@@ -63,7 +63,7 @@
 
 function run_pdfplots_any(expname,columnnumber,varargin)
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false,'filterby',0,'cutoffval',2,'above',true);
+options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false,'filterby',0,'cutoffval',2,'above',true,'removecop',true);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
@@ -100,6 +100,7 @@ specificframes=options.specificframes;
 filterby = options.filterby;
 cutoffval = options.cutoffval;
 above = options.above;
+removecop=options.removecop;
 %select all directories that end in the string 'Courtship'
 dirs = dir('*Courtship');
 
@@ -142,7 +143,7 @@ for p = 1:numel(dirs)
             error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'windowsize',windowsize,'cutofffrac',cutofffrac,'scaling',scaling,'fromscores',true,'score',score);
             
         else
-            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'wingdur',wingdur,'wingextonly',wingextonly,'minwingangle',minwingangle,'filterby', filterby,'cutoffval',cutoffval,'above',above);
+            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'wingdur',wingdur,'wingextonly',wingextonly,'minwingangle',minwingangle,'filterby', filterby,'cutoffval',cutoffval,'above',above,'removecop',removecop);
         end
         %go back to the courtship directory and continue with the next
         %video
