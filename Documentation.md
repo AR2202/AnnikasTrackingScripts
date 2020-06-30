@@ -51,7 +51,8 @@ The gui looks like this:
 
 ![feat](pdfplot_gui_feature.png)
 
-* if you want to analyse only wingextensionframes, select the checkbox and enter duration and angle for wingextension
+* if you want to analyse only wingextension frames, select the checkbox and enter duration and angle for wingextension
+* if you want to remove copulation frames, check the box (not currently displayed in the picture above)
 * if you want additional filtering, select the column you want to filter by and enter a cutoff value, decide whether values above or below that value are to be selected
 * press analyse
 
@@ -113,7 +114,9 @@ WINGEXTONLY: use only wing extension frames (default = true) Datatype: Bool
 Wingextonly is true by default if no other options are specified, false if fromscores or specificframes or filterby are specified.
 
 MINWINGANGLE: minimum angle of the wing to body axis (in degrees) to be counted as wing extension (default = 30) Datatype: double
+
 REMOVECOP: whether copulation frames should be removed (default = true) Datatype: Bool
+
 ### The following apply to JAABA scores and are used only if fromscores is set to true:
 
 SCORE: name of the score from JAABA (if fromscores is set to true) (default = WingGesture) Datatype: string
