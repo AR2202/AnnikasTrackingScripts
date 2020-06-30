@@ -65,7 +65,7 @@
 function pdfplot_any(inputfilename,outputdir,expname,columnnumber,varargin)
 
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false,'filterby',0,'cutoffval',2,'above',true);
+options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false,'filterby',0,'cutoffval',2,'above',true,'removecop',true);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
@@ -106,6 +106,7 @@ specificframes=options.specificframes;
 filterby = options.filterby;
 cutoffval = options.cutoffval;
 above = options.above;
+remove_copulation=options.removecop;
 %array of the maximum expected values for the features;
 maxs=[100;30;pi;pi;20;5;10;1;20;20;pi;pi;20];
 max_=maxs(columnnumber)*scaling;
@@ -146,12 +147,24 @@ if specificframes
 elseif fromscores
     wing_ext_frames_indexed=handle_flytracker_outputs_score(inputfilename_full,scorename,windowsize,cutofffrac);
 elseif wingextonly
-    [wing_ext_frames_indexed]= handle_flytracker_outputs_var(inputfilename_full,wingdur,minwingangle);
+    if remove_copulation
+        [wing_ext_frames_indexed]= handle_flytracker_outputs_var(inputfilename_full,wingdur,minwingangle);
+    else
+        [wing_ext_frames_indexed]= handle_flytracker_outputs_var_copulation_not_removed(inputfilename_full,wingdur,minwingangle);
+    end
 else
     if filter
-        wing_ext_frames_indexed=remove_copulation_ind_filtered(inputfilename_full,filterby, cutoffval, above);
-    else
-    wing_ext_frames_indexed=remove_copulation_ind(inputfilename_full);
+        if remove_copulation
+            wing_ext_frames_indexed=remove_copulation_ind_filtered(inputfilename_full,filterby, cutoffval, above);
+        else
+             wing_ext_frames_indexed=all_frames_ind_filtered(inputfilename_full,filterby, cutoffval, above);
+        end
+       else
+        if remove_copulation
+            wing_ext_frames_indexed=remove_copulation_ind(inputfilename_full);
+        else
+            wing_ext_frames_indexed=all_frames_ind(inputfilename_full);
+        end
     end
 end
 %make indices to remember the flyID if rows are removed from the matrix
