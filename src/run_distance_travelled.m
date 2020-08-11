@@ -4,6 +4,14 @@
 %(in s) 
 %runs the distance_travelled function for all directories ending in
 %'Courtship'
+%optional argument: specificframes (Bool, default: false)
+%specificframes: if true, it expects a .csv file that contains the start
+%and end frames of the frame ranges that should be analyzed. Several frame ranges can be
+%specified, starting from column 3 in the .csv file. Each pair of 2 columns
+%has to be a pair of start and endframes for the desired range.
+%The flyID needs to be in column 2
+%The file has to be located in
+%the video directory and be called '<videoname>_frames.csv' where videoname
 
 function run_distance_travelled(dur,varargin)
 
