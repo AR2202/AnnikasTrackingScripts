@@ -70,7 +70,7 @@
 function fraction_frames(inputfilename,outputdir,expname,columnnumber,varargin)
 
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false,'filterby',0,'cutoffval',2,'above',true,'removecop',true,'cutoff',-1);
+options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false,'filterby',0,'cutoffval',2,'above',true,'removecop',true,'cutoff',-1,'below',false,'additional',0,'additional_cutoff',-1,'additional_below',false);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
@@ -113,6 +113,10 @@ cutoffval = options.cutoffval;
 above = options.above;
 remove_copulation=options.removecop;
 cutoff = options.cutoff;
+below = options.below;
+additional = options.additional;
+additional_cutoff = options.additional_cutoff;
+additional_below = options.additional_below;
 %array of the maximum expected values for the features;
 maxs=[20;30;pi;pi;20;5;10;1;20;20;pi;pi;20];
 max_=maxs(columnnumber)*scaling;
@@ -122,7 +126,7 @@ pts=(0:(max_/99):max_);
 %check if the filterby option was set to a valid value and if so,
 %set filter to true -otherwise set
 %filter to false
-filter =0;
+filter = 0;
 if (0< filterby && filterby <14)
     filter =1;
     wingextonly= false;
@@ -130,11 +134,23 @@ if (0< filterby && filterby <14)
     disp(string(filterby));
 end
 
+additional_column =0;
+if (0< additional && additional <14)
+    additional_column = 1;
+    
+    if (additional_cutoff<0)
+    additional_cutoff = maxs(additional)/2;
+end
+additional_cutoff = additional_cutoff/scaling;
+end
+
 %check if the cutoff was set
 if (cutoff<0)
     cutoff = maxs(columnnumber)/2;
 end
 cutoff = cutoff/scaling;
+
+
 %make the pathname for the scoresfile out of the inputfilename
 scorename=strcat(inputfilename,'_JAABA/','scores_',score,'_id_corrected.mat');
 %check which options were set and call the respective function
@@ -185,13 +201,34 @@ indices=transpose(1:size(wing_ext_frames_indexed,1));
 wing_ext_frames_indexed=cellfun(@(input)rmmissing(input{1,1}), wing_ext_frames_indexed,'UniformOutput',false);
 %add indices
 wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, wing_ext_frames_indexed,num2cell(indices),'UniformOutput',false);
-
-numabove = cellfun(@(indiv) size(indiv{1}(indiv{1}(:,columnnumber)>cutoff),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+if below
+    if additional_column
+        if additional_below
+            numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+        else
+            numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+        end
+    else
+        numabove = cellfun(@(indiv) size(indiv{1}(indiv{1}(:,columnnumber)<cutoff),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+    end
+else
+    if additional_column
+        if additional_below
+            numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+        else
+            numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+        end
+    else
+        numabove = cellfun(@(indiv) size(indiv{1}(indiv{1}(:,columnnumber)>cutoff),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+    end
+end
 frac_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, numabove,num2cell(indices),'UniformOutput',false);
 %remove empty cells
 frac_frames_nonempty=frac_frames_indexed(~cellfun(@(cells) isnan(cells{1}),frac_frames_indexed));
 
-
+if ~exist(outputdir, 'dir')
+    mkdir(outputdir)
+end
 
 cellfun(@(data)save(fullfile(outputdir,strcat(inputfilename,'_',num2str(data{2}),'_',expname,'_fraction.mat')),'data'),frac_frames_nonempty,'UniformOutput',false);
 
