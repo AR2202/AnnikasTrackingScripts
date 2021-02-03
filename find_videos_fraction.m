@@ -71,7 +71,7 @@ for p = 1:numel(dirs)
 end
 %disp(frac);
 meanfrac=mean(frac);
-fracSEM=std(frac)/sqrt(size(frac,1));
+fracSEM=std(frac)/sqrt(size(frac,2));
 fullfigname=strcat(genotype,'_',expname,'_mean_fraction_frames');
 datafilename=strcat(fullfigname,'.mat');
 fignew=figure('Name',fullfigname);
