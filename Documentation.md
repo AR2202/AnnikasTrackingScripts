@@ -362,3 +362,36 @@ While in the directory that contains the XXX_XX_XX_Courtship directories, run th
 
 This will add a 'videoname_left_right.csv' file to all your Results folders, which contains a table with the flyIds and 'l' for left or 'r' for right. The information refers to their relative positions to each other in the first tracking frame. 
 
+## Determining pausing
+
+This function will determine pausing as described by Vosshall et al.. It is defined by a female velocity below 4mms/s and an angular accelaration below 15 rad/s<sup>2 while the distance between the animals is below 10 mm. In the Matlab command window, run the following:
+
+`pausing()`
+
+
+The former removes copulation. Run (without arguments) from your directory that contains the XXX_Courtship directories. It will create a directory called "fraction" with your data for each fly in it.
+
+### Averaging the pausing data
+
+run the following:
+
+`find_videos_pausing(genotypelist, genotype)`
+
+
+### Required arguments:
+
+GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
+
+see above for requirements for this file
+
+
+GENOTYPE = genotype of the flies - is only used for labelling the figure(and
+naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
+
+
+### Examples:
+
+
+`find_videos_pausing('my_genotype.xlsx', 'my_genotype')`
+
+
