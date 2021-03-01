@@ -364,7 +364,8 @@ This will add a 'videoname_left_right.csv' file to all your Results folders, whi
 
 ## Determining pausing
 
-This function will determine pausing as described by Vosshall et al.. It is defined by a female velocity below 4mms/s and an angular accelaration below 15 rad/s<sup>2 while the distance between the animals is below 10 mm. In the Matlab command window, run the following:
+This function will determine pausing as described by Vosshall et al.. It is defined by a female velocity below 4mms/s and an angular accelaration below 15 rad/s<sup>2 
+while the distance between the animals is below 10 mm. In the Matlab command window, run the following:
 
 `pausing()`
 
