@@ -70,7 +70,13 @@
 function fraction_frames(inputfilename,outputdir,expname,columnnumber,varargin)
 
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false,'filterby',0,'cutoffval',2,'above',true,'removecop',true,'cutoff',-1,'below',false,'additional',0,'additional_cutoff',-1,'additional_below',false);
+options = struct('scaling',1,'wingdur',13,'wingextonly',true,...
+    'minwingangle',30,'fromscores',false,'windowsize',13,...
+    'cutofffrac',0.5,'score','WingGesture','specificframes',false,...
+    'filterby',0,'cutoffval',2,'above',true,'removecop',true,'cutoff',-1,...
+    'below',false,'additional',0,'additional_cutoff',-1,...
+    'additional_below',false,'additional2',0,'additional2_cutoff',-1,...
+    'additional2_below',false);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
@@ -117,6 +123,9 @@ below = options.below;
 additional = options.additional;
 additional_cutoff = options.additional_cutoff;
 additional_below = options.additional_below;
+additional2 = options.additional2;
+additional2_cutoff = options.additional2_cutoff;
+additional2_below = options.additional2_below;
 %array of the maximum expected values for the features;
 maxs=[20;30;pi;pi;20;5;10;1;20;20;pi;pi;20];
 max_=maxs(columnnumber)*scaling;
@@ -139,9 +148,19 @@ if (0< additional && additional <14)
     additional_column = 1;
     
     if (additional_cutoff<0)
-    additional_cutoff = maxs(additional)/2;
+        additional_cutoff = maxs(additional)/2;
+    end
+    additional_cutoff = additional_cutoff/scaling;
 end
-additional_cutoff = additional_cutoff/scaling;
+
+additional2_column =0;
+if (0< additional2 && additional2 <14)
+    additional2_column = 1;
+    
+    if (additional2_cutoff<0)
+        additional2_cutoff = maxs(additional2)/2;
+    end
+    additional2_cutoff = additional2_cutoff/scaling;
 end
 
 %check if the cutoff was set
@@ -185,9 +204,9 @@ else
         if remove_copulation
             wing_ext_frames_indexed=remove_copulation_ind_filtered(inputfilename_full,filterby, cutoffval, above);
         else
-             wing_ext_frames_indexed=all_frames_ind_filtered(inputfilename_full,filterby, cutoffval, above);
+            wing_ext_frames_indexed=all_frames_ind_filtered(inputfilename_full,filterby, cutoffval, above);
         end
-       else
+    else
         if remove_copulation
             wing_ext_frames_indexed=remove_copulation_ind(inputfilename_full);
         else
@@ -201,12 +220,29 @@ indices=transpose(1:size(wing_ext_frames_indexed,1));
 wing_ext_frames_indexed=cellfun(@(input)rmmissing(input{1,1}), wing_ext_frames_indexed,'UniformOutput',false);
 %add indices
 wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, wing_ext_frames_indexed,num2cell(indices),'UniformOutput',false);
+%this is a bit of a mess - needs some refactoring
 if below
     if additional_column
         if additional_below
-            numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+            if additional2_column
+                if additional2_below
+                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional2)<additional2_cutoff) &(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                else
+                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional2)>additional2_cutoff) &(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                end
+            else
+                numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+            end
         else
+            if additional2_column
+                if additional2_below
+                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional2)<additional2_cutoff) &(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                else
+                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional2)>additional2_cutoff) &(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                end
+            else
             numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+            end
         end
     else
         numabove = cellfun(@(indiv) size(indiv{1}(indiv{1}(:,columnnumber)<cutoff),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
@@ -214,12 +250,31 @@ if below
 else
     if additional_column
         if additional_below
-            numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+            if additional2_column
+                if additional2_below
+                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional2)<additional2_cutoff) &(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                else
+           numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional2)>additional2_cutoff) &(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                end
+                else
+                 numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+            end
         else
+                if additional2_column
+                if additional2_below
+                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional2)<additional2_cutoff) &(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                else
+                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional2)>additional2_cutoff) &(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                end
+            
+            else
+       
             numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                end
         end
     else
         numabove = cellfun(@(indiv) size(indiv{1}(indiv{1}(:,columnnumber)>cutoff),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+    
     end
 end
 frac_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, numabove,num2cell(indices),'UniformOutput',false);
