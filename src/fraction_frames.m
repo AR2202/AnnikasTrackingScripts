@@ -136,7 +136,7 @@ pts=(0:(max_/99):max_);
 %set filter to true -otherwise set
 %filter to false
 filter = 0;
-if (0< filterby && filterby <14)
+if (0< filterby && filterby <15)
     filter =1;
     wingextonly= false;
     disp('filtering data by');
@@ -144,7 +144,7 @@ if (0< filterby && filterby <14)
 end
 
 additional_column =0;
-if (0< additional && additional <14)
+if (0< additional && additional <15)
     additional_column = 1;
     
     if (additional_cutoff<0)
@@ -154,7 +154,7 @@ if (0< additional && additional <14)
 end
 
 additional2_column =0;
-if (0< additional2 && additional2 <14)
+if (0< additional2 && additional2 <15)
     additional2_column = 1;
     
     if (additional2_cutoff<0)
@@ -218,6 +218,8 @@ end
 indices=transpose(1:size(wing_ext_frames_indexed,1));
 %remove NaNs
 wing_ext_frames_indexed=cellfun(@(input)rmmissing(input{1,1}), wing_ext_frames_indexed,'UniformOutput',false);
+%add radial acceleration
+wing_ext_frames_indexed=cellfun(@(indiv) [indiv(:,:),([diff(indiv(:,2));1]*25)],wing_ext_frames_indexed,'uni',false);
 %add indices
 wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, wing_ext_frames_indexed,num2cell(indices),'UniformOutput',false);
 %this is a bit of a mess - needs some refactoring
