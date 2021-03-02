@@ -26,7 +26,14 @@ https://www.mathworks.com/matlabcentral/fileexchange/2006-isodd
 
 4. Choose your analysis and run it as described below
 
+## Analysis Documentation
+1. [ GUI usage ](#gui)
+2. [ Calling functions from the command line ](#cli)
+
+<a name="gui"></a>
+
 ## GUI usage:
+
 
 To launch the GUI, type in the command window:
 
@@ -38,6 +45,10 @@ The gui looks like this:
 
 ![gui](pdfplot_gui.png)
 
+1. [ Analyse experiments tap ](#anatab)
+2. [ Average experiments tap ](#avtab)
+
+<a name="anatab"></a>
 
 ### Analyse experiments tap
 
@@ -58,6 +69,8 @@ The gui looks like this:
 
 ![analyse](pdfplot_gui_analyse.png)
 
+<a name="avtab"></a>
+
 ### Average experiments tap
 
 * click on the select genotype list button and select your genotypelist (must be xlsx format)
@@ -67,7 +80,15 @@ The gui looks like this:
 
 ![gui1](pdfplot_gui_Step2.png)
 
+<a name="cli"></a>
+
 ## Calling functions from the command line:
+
+1. [ Making probability density plots of features ](#pdfplot)
+2. [ Averaging probability density plots ](#av)
+3. [ Examples](#cliexamples)
+
+<a name="pdfplot"></a>
 
 ## Making probability density plots of features
 
@@ -97,13 +118,26 @@ Run the run_pdfplots_any function in the Matlab command window by typing:
 
 ### Required and optional arguments:
 
+1. [ Required arguments ](#args)
+2. [ Key-value-pair arguments ](#kvargs)
+3. [ JAABA scores ](#jaaba)
+4. [ Analysing only specific tracking frames](#specificframes)
+5. [Filtering frames by a different feature](#filtering)
+
+
+<a name="args"></a>
+
 ### Required arguments:
 
 EXPNAME = what you want the experiment to be called (one word only please) Datatype: string
 
 NUMBER = the number of the feature column you want to plot as indicated above. Datatype: integer
 
-### Key-value-pair arguments: are optional, if entered, the key has to be in single quotes like this: ‘key’ and is followed by a comma , and its value. The following keys are defined (their default values are indicated in brackets and are used if not specified):
+<a name="kvargs"></a>
+
+### Key-value-pair arguments: 
+
+are optional, if entered, the key has to be in single quotes like this: ‘key’ and is followed by a comma , and its value. The following keys are defined (their default values are indicated in brackets and are used if not specified):
 
 SCALING: scaling to be applied to the data (default = 1) Datatype: double (a  numeric type)
 
@@ -117,6 +151,8 @@ MINWINGANGLE: minimum angle of the wing to body axis (in degrees) to be counted 
 
 REMOVECOP: whether copulation frames should be removed (default = true) Datatype: Bool
 
+<a name="jaaba"></a>
+
 ### The following apply to JAABA scores and are used only if fromscores is set to true:
 
 SCORE: name of the score from JAABA (if fromscores is set to true) (default = WingGesture) Datatype: string
@@ -127,6 +163,8 @@ CUTOFFRAC: fraction of the frames that have to be positive for the event
 in the specified window (default = 0.5) Datatype: Double
 
 FROMSCORES: if true, the data are taken from a JAABA scores file (default = false) Datatype: Bool
+
+<a name="specificframes"></a>
 
 ### Analysing only specific tracking frames
 
@@ -139,6 +177,8 @@ The file has to be located in
 the video directory and be called '<videoname>_frames.csv' where videoname
 is the name of the videodirectory it is in. (default false)
 if specificframes is set to false (default), copulationframes are removed (for 2-fly experiments)
+
+<a name="filtering"></a>
 
 ### Filtering frames by a different feature
 
@@ -154,7 +194,9 @@ frames that are above or below cutoffval (default: true, meaning values have to 
 
 A probability density plot is created for each fly in all the videos in all the folders ending in ‘Courtship’ and saved to a subdirectory called ‘pdfs’
 
-### Averaging probability density plots
+<a name="av"></a>
+
+## Averaging probability density plots
 
 To average all the pdfs from one genotype, use the following function:
 
@@ -181,8 +223,7 @@ To use this function, you first need to make a genotypelist in Excel that contai
 *Column 2: fly-id
 *Column 3: delimitor (for now, use _ )
 
-
-
+<a name="cliexamples"></a>
 
 ### Examples:
 
