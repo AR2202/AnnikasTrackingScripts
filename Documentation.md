@@ -1,11 +1,13 @@
 # Short User Guide
-### Annikas Tracking Scripts
+
+## Annikas Tracking Scripts
 
 This is a collection of MATLAB scripts for post-tracking data analysis of fly courtship videos tracked with the Goodwin Lab tracking system. The package includes a preliminary GUI, which is likely to be modified. Check for updates frequently.
 
-All functions can still be called from the MATLAB command line or a custom matlab script. 
+All functions can still be called from the MATLAB command line or a custom matlab script.
 
 ## Requirements
+
 * MATLAB R2016a or later. MATLAB R2017a or later recommended.
 * All of the scripts in this package need to be in the MATLAB path
 * Boundedline package available from:
@@ -18,6 +20,7 @@ https://www.mathworks.com/matlabcentral/fileexchange/2006-isodd
 
 
 ## Usage
+
 1. Track your videos with the Goodwin Lab Tracking System
   
 2. Download your entire results folder (which should be called: XXX_Courtship)
@@ -27,13 +30,21 @@ https://www.mathworks.com/matlabcentral/fileexchange/2006-isodd
 4. Choose your analysis and run it as described below
 
 ## Analysis Documentation
+
 1. [ GUI usage ](#gui)
 2. [ Calling functions from the command line ](#cli)
 
 <a name="gui"></a>
 
-## GUI usage:
+## GUI usage
 
+1. [GUI overview](#overview)
+2. [ Analyse experiments tap ](#anatab)
+3. [ Average experiments tap ](#avtab)
+
+<a name="overview"></a>
+
+###GUI overview
 
 To launch the GUI, type in the command window:
 
@@ -87,6 +98,12 @@ The gui looks like this:
 1. [ Making probability density plots of features ](#pdfplot)
 2. [ Averaging probability density plots ](#av)
 3. [ Examples](#cliexamples)
+4. [Calculating Distance travelled](#dist)
+5. [Calculating bilateral wing extension](#bilat)
+6. [Averaging Tracking Indices](#indices)
+7. [Calculating Wing Extension from Tracking Data](#wefromtracking)
+8. [Determining fly IDs based on relative chamber positions in first frame](#flyIDs)
+9. [Determining Pausing](#pausing)
 
 <a name="pdfplot"></a>
 
@@ -225,7 +242,7 @@ To use this function, you first need to make a genotypelist in Excel that contai
 
 <a name="cliexamples"></a>
 
-### Examples:
+### Examples
 
 Suppose you want to plot probability distributions of the velocity of the flies, in all frames where they don’t copulate, not just the wing extension frames.
 Navigate to the folder that contains the Courtship directories and type:
@@ -236,15 +253,24 @@ when it’s finished, make an excel table as outlined above. Assuming your table
 
 `find_videos_new(‘simfemales.xlsx’,’pdfs’,’velocity’,’pdfdata’,’SimulansFemales’)`
 
-
 If you want to plot the facing angle only in wing extension frames, and you want the wing extension to be taken from the JAABA classifier WingGesture, assuming you want 50% of frames in a window of 13 frames to be positive for it to be counted as wing extension, and you want to convert the angles from radients to degrees type the following:
-
 
 `run_pdfplots_any(‘facingangle’,12,’scaling’,(180/pi),’fromscores’,true)`
 
 when it’s finished, make an excel table as outlined above. Assuming your table is called ‘males.xlsx’, and you want the output to be called ‘males’, type the following:
 
 `find_videos_new(‘males.xlsx’,’pdfs’,’facingangle’,’pdfdata’,’males’)`
+
+<a name="dist"></a>
+
+## Distance travelled
+
+1. [Calculating Distance travelled](#calcdist)
+2. [Averaging distance travelled](#avdist)
+3. [Required arguments](#distarg)
+4. [Examples](#distexamples)
+
+<a name="calcdist"></a>
 
 ## Calculating Distance travelled
 
@@ -254,11 +280,15 @@ Run the following in the MATLAB command line:
 
 DUR: duration for how long you want to calculate the distance travelled in s. Must not exceed the total tracking time of the video.
 
+<a name="avdist"></a>
+
 ## Averaging distance travelled
 
 Run the following in the MATLAB command line:
 
 `find_videos_dist (genotypelist, genotype)`
+
+<a name="distarg"></a>
 
 ### Required arguments:
 
@@ -266,12 +296,12 @@ GENOTYPELIST = the .xlsx file containing the experiments – must be entered in 
 
 see above for requirements for this file
 
-
 GENOTYPE = genotype of the flies - is only used for labelling the figure(and
 naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
 
+<a name="distexamples"></a>
 
-### Examples:
+### Examples
 
 Run distance travelled for 15 min (=900s):
 
@@ -281,53 +311,78 @@ Averaging:
 
 `find_videos_dist ('my_genotype.xlsx', 'my_genotype')`
 
-## Calculating bilateral wing extension
+<a name="bilat"></a>
+
+## Bilateral wing extension
+
+1. [Calculating Bilateral Wing Extension](#calcbilat)
+2. [Required arguments](#bilatarg)
+3. [Examples](#bilatexamples)
+
+<a name="calcbilat"></a>
+
+### Calculating bilateral wing extension
 
 Run the following in the MATLAB command line:
 
 `find_videos_bilateral(genotypelist, genotype)
 
+<a name="bilatarg"></a>
 
-### Required arguments:
+### Required arguments
 
 GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
 
 see above for requirements for this file
 
-
 GENOTYPE = genotype of the flies - is only used for labelling the figure(and
 naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
 
+<a name="bilatexamples"></a>
 
-### Examples:
+### Examples
 
 calculate and average bilateral wing extension:
 
 `find_videos_bilateral('my_genotype.xlsx', 'my_genotype')`
 
-## Averaging the indices produced by the tracker in the Results.csv table
+<a name="indices"></a>
+
+## Averaging Tracking Indices
+
+1. [Averaging the indices produced by the tracker in the Results.csv table](#avindices)
+2. [Required arguments](#indicesarg)
+3. [Examples](#indicesexamples)
+4. [Averaging the indices for the other fly in the chamber](#indicesother)
+
+
+<a name="avindices"></a>
+
+### Averaging the indices produced by the tracker in the Results.csv table
 
 Run the follwoing in the MATLAB command line:
 
 `find_videos_indices(genotypelist, genotype)
 
-
-### Required arguments:
+<a name="indicesarg"></a>
+### Required arguments
 
 GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
 
 see above for requirements for this file
 
-
 GENOTYPE = genotype of the flies - is only used for labelling the figure(and
 naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
 
+<a name="indicesexamples"></a>
 
-### Examples:
+### Examples
 
 calculate and average bilateral wing extension:
 
 `find_videos_indices('my_genotype.xlsx', 'my_genotype')`
+
+<a name="indicesother"></a>
 
 ## Averaging the indices for the other fly in the chamber
 
@@ -355,9 +410,20 @@ calculate and average bilateral wing extension:
 
 `find_videos_indices_other('my_genotype.xlsx', 'my_genotype')`
 
+<a name="wefromtracking"></a>
 
+## Calculating Wing Extension from Tracking Data
 
-## Calculating the Wing extension Index from the tracking data
+Wing extension index is generally calculated from the scores of the JAABA classifier. These examples show how to calculate them from the tracking data instead.
+
+1. [Calculating the Wing extension Index from the tracking data](#calcwetrack)
+2. [Averaging the Wing Extension data](#avwetrack)
+3. [Required arguments](#wearg)
+4. [Examples](#weamples)
+
+<a name="calcwetrack"></a>
+
+### Calculating the Wing extension Index from the tracking data
 
 Wing extension index is generally calculated from the scores of the JAABA classifier. If instead you want to calculate it from the tracking data, defining wing extension as at least one wing being extended > 30 deg, run either one of the following:
 
@@ -369,12 +435,15 @@ or
 
 The former removes copulation frames and uses the criterion of wing extension having to persist for at least 13 frames, whereas the latter uses all frames in the tracking period. Run these scripts (without arguments) from your directory that contains the XXX_Courtship directories. It will create a directory called "wingindex" with your data for each fly in it.
 
+<a name="#avwetrack"></a>
+
 ### Averaging the Wing Extension data
 
 run the following:
 
 `find_videos_wingindex(genotypelist, genotype)`
 
+<a name="#wearg"></a>
 
 ### Required arguments:
 
@@ -386,14 +455,15 @@ see above for requirements for this file
 GENOTYPE = genotype of the flies - is only used for labelling the figure(and
 naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
 
+<a name="#weamples"></a>
 
-### Examples:
-
+### Examples
 
 `find_videos_wingindex('my_genotype.xlsx', 'my_genotype')`
 
-## Finding out the indices of flies based on relative chamber positions in first frame
+<a name="#FlyIDs"></a>
 
+## Determining fly IDs based on relative chamber positions in first frame
 
 Assume you know which genotype fly you loaded on the left and right side of the recording chamber, you can determining their assigned FlyIds as follows:
 
@@ -403,15 +473,29 @@ While in the directory that contains the XXX_XX_XX_Courtship directories, run th
 
 This will add a 'videoname_left_right.csv' file to all your Results folders, which contains a table with the flyIds and 'l' for left or 'r' for right. The information refers to their relative positions to each other in the first tracking frame. 
 
+<a name="#pausing"></a>
+
 ## Determining pausing
 
 This function will determine pausing as described by Vosshall et al.. It is defined by a female velocity below 4mms/s and an angular accelaration below 15 rad/s<sup>2 </sup>
-while the distance between the animals is below 10 mm. In the Matlab command window, run the following:
+while the distance between the animals is below 10 mm. 
+
+1. [Calculating pausing](#calcpausing)
+2. [Averaging Pausing data](#avpausing)
+3. [Required arguments](#pausearg)
+4. [Examples](#pauseamples)
+
+<a name="#calcpausing"></a>
+
+### Calculating Pausing
+
+In the Matlab command window, run the following:
 
 `pausing()`
 
-
 The former removes copulation. Run (without arguments) from your directory that contains the XXX_Courtship directories. It will create a directory called "fraction" with your data for each fly in it.
+
+<a name="#avpausing"></a>
 
 ### Averaging the pausing data
 
@@ -419,6 +503,7 @@ run the following:
 
 `find_videos_pausing(genotypelist, genotype)`
 
+<a name="#pausearg"></a>
 
 ### Required arguments:
 
@@ -426,14 +511,11 @@ GENOTYPELIST = the .xlsx file containing the experiments – must be entered in 
 
 see above for requirements for this file
 
-
 GENOTYPE = genotype of the flies - is only used for labelling the figure(and
 naming the output file) you can enter whatever you want here (in single quotes like ‘my_genotype’) Datatype: string
 
+<a name="#pauseamples"></a>
 
 ### Examples:
 
-
 `find_videos_pausing('my_genotype.xlsx', 'my_genotype')`
-
-
