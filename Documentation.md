@@ -18,7 +18,6 @@ https://www.mathworks.com/matlabcentral/fileexchange/27485-boundedline-m
 
 https://www.mathworks.com/matlabcentral/fileexchange/2006-isodd
 
-
 ## Usage
 
 1. Track your videos with the Goodwin Lab Tracking System
@@ -44,7 +43,7 @@ https://www.mathworks.com/matlabcentral/fileexchange/2006-isodd
 
 <a name="overview"></a>
 
-###GUI overview
+### GUI overview
 
 To launch the GUI, type in the command window:
 
@@ -55,9 +54,6 @@ or click on the pdtplot.mlapp file
 The gui looks like this:
 
 ![gui](pdfplot_gui.png)
-
-1. [ Analyse experiments tap ](#anatab)
-2. [ Average experiments tap ](#avtab)
 
 <a name="anatab"></a>
 
@@ -95,9 +91,9 @@ The gui looks like this:
 
 ## Calling functions from the command line:
 
-1. [ Making probability density plots of features ](#pdfplot)
-2. [ Averaging probability density plots ](#av)
-3. [ Examples](#cliexamples)
+1. [Making probability density plots of features](#pdfplot)
+2. [Averaging probability density plots](#av)
+3. [Examples](#cliexamples)
 4. [Calculating Distance travelled](#dist)
 5. [Calculating bilateral wing extension](#bilat)
 6. [Averaging Tracking Indices](#indices)
@@ -109,22 +105,21 @@ The gui looks like this:
 
 ## Making probability density plots of features
 
-
-
 Decide what you want to plot. These are the options (with their respective feature column numbers):
-* Velocity =1;
-* Angular Velocity =2;
-* Minimum wing angle =3;
-* Maximum wing angle =4;
-* Mean Wing angle =5;
-* Axis Ratio =6;
-* Foreground Body Ratio =7;
-* Contrast =8;
-* Distance to wall =9;
-* Distance to the other fly =10;
-* Angle between =11;
-* Facing Angle =12;
-* Leg Distance =13;
+
+* Velocity = 1;
+* Angular Velocity = 2;
+* Minimum wing angle = 3;
+* Maximum wing angle = 4;
+* Mean Wing angle = 5;
+* Axis Ratio = 6;
+* Foreground Body Ratio = 7;
+* Contrast = 8;
+* Distance to wall = 9;
+* Distance to the other fly = 10;
+* Angle between = 11;
+* Facing Angle = 12;
+* Leg Distance = 13;
 
 Experiments with 1 fly per chamber will have only features 1-9.
 
@@ -132,8 +127,7 @@ Run the run_pdfplots_any function in the Matlab command window by typing:
 
 `run_pdfplots_any(EXPNAME,NUMBER,optional key-value pair arguments)`
 
-
-### Required and optional arguments:
+### Required and optional arguments
 
 1. [ Required arguments ](#args)
 2. [ Key-value-pair arguments ](#kvargs)
@@ -144,7 +138,7 @@ Run the run_pdfplots_any function in the Matlab command window by typing:
 
 <a name="args"></a>
 
-### Required arguments:
+### Required arguments
 
 EXPNAME = what you want the experiment to be called (one word only please) Datatype: string
 
@@ -152,7 +146,7 @@ NUMBER = the number of the feature column you want to plot as indicated above. D
 
 <a name="kvargs"></a>
 
-### Key-value-pair arguments: 
+### Key-value-pair arguments
 
 are optional, if entered, the key has to be in single quotes like this: ‘key’ and is followed by a comma , and its value. The following keys are defined (their default values are indicated in brackets and are used if not specified):
 
@@ -170,7 +164,7 @@ REMOVECOP: whether copulation frames should be removed (default = true) Datatype
 
 <a name="jaaba"></a>
 
-### The following apply to JAABA scores and are used only if fromscores is set to true:
+### The following apply to JAABA scores and are used only if fromscores is set to true
 
 SCORE: name of the score from JAABA (if fromscores is set to true) (default = WingGesture) Datatype: string
 
@@ -219,7 +213,7 @@ To average all the pdfs from one genotype, use the following function:
 
 `find_videos_new (genotypelist,path,expname,structname,genotype)`
 
-### The arguments are (all arguments are required):
+### The arguments are (all arguments are required)
 
 GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
 
@@ -290,7 +284,7 @@ Run the following in the MATLAB command line:
 
 <a name="distarg"></a>
 
-### Required arguments:
+### Required arguments
 
 GENOTYPELIST = the .xlsx file containing the experiments – must be entered in single quotes and including the file extension like this: ‘myfile.xlsx’ Dataype: string
 
