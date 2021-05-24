@@ -1,7 +1,10 @@
+
+
+function fraction_frames(inputfilename,outputdir,expname,columnnumber,varargin)
+%FRACTION_FRAMES is a more generic version of the pdfplot function
 %Annika Rings, April 2019
-%a more generic version of the pdfplot function
 %
-%PDFPLOT_ANY is a function that creates probability density plots
+%
 %the input arguments are:
 %
 %INPUTFILENAME: name of the video
@@ -66,10 +69,6 @@
 %remove_copulation_ind
 %newfigplot
 %savepdf
-
-function fraction_frames(inputfilename,outputdir,expname,columnnumber,varargin)
-
-
 options = struct('scaling',1,'wingdur',13,'wingextonly',true,...
     'minwingangle',30,'fromscores',false,'windowsize',13,...
     'cutofffrac',0.5,'score','WingGesture','specificframes',false,...
