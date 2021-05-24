@@ -126,7 +126,7 @@ additional2 = options.additional2;
 additional2_cutoff = options.additional2_cutoff;
 additional2_below = options.additional2_below;
 %array of the maximum expected values for the features;
-maxs=[20;30;pi;pi;20;5;10;1;20;20;pi;pi;20];
+maxs=[20;30;pi;pi;20;5;10;1;20;20;pi;pi;20;pi];
 max_=maxs(columnnumber)*scaling;
 pts=(0:(max_/99):max_);
 
