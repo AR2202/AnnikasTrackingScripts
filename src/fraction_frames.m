@@ -215,10 +215,11 @@ else
 end
 %make indices to remember the flyID if rows are removed from the matrix
 indices=transpose(1:size(wing_ext_frames_indexed,1));
-%remove NaNs
-wing_ext_frames_indexed=cellfun(@(input)rmmissing(input{1,1}), wing_ext_frames_indexed,'UniformOutput',false);
 %add radial acceleration
-wing_ext_frames_indexed=cellfun(@(indiv) [indiv(:,:),([diff(indiv(:,2));1]*25)],wing_ext_frames_indexed,'uni',false);
+wing_ext_frames_indexed=cellfun(@(indiv) [indiv{1}(:,:),([diff(indiv{1}(:,2));1]*25)],wing_ext_frames_indexed,'uni',false);
+
+%remove NaNs
+wing_ext_frames_indexed=cellfun(@(input)rmmissing(input), wing_ext_frames_indexed,'UniformOutput',false);
 %add indices
 wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, wing_ext_frames_indexed,num2cell(indices),'UniformOutput',false);
 %this is a bit of a mess - needs some refactoring
