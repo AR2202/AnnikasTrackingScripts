@@ -61,52 +61,52 @@
 %savepdf
 %error_handling_wrapper
 
-function run_fraction(expname,columnnumber,varargin)
+function run_fraction(expname, columnnumber, varargin)
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,...
-    'minwingangle',30,'fromscores',false,'windowsize',13,...
-    'cutofffrac',0.5,'score','WingGesture','specificframes',false,...
-    'filterby',0,'cutoffval',2,'above',true,'removecop',true,'cutoff',-1,...
-    'below',false,'additional',0,'additional_cutoff',-1,...
-    'additional_below',false,'additional2',0,'additional2_cutoff',-1,...
-    'additional2_below',false,'outdirname','fraction');
+options = struct('scaling', 1, 'wingdur', 13, 'wingextonly', true, ...
+    'minwingangle', 30, 'fromscores', false, 'windowsize', 13, ...
+    'cutofffrac', 0.5, 'score', 'WingGesture', 'specificframes', false, ...
+    'filterby', 0, 'cutoffval', 2, 'above', true, 'removecop', true, 'cutoff', -1, ...
+    'below', false, 'additional', 0, 'additional_cutoff', -1, ...
+    'additional_below', false, 'additional2', 0, 'additional2_cutoff', -1, ...
+    'additional2_below', false, 'outdirname', 'fraction');
 
 %# read the acceptable names
 optionNames = fieldnames(options);
 
 %# count arguments - throw exception if the number is not divisible by 2
 nArgs = length(varargin);
-if round(nArgs/2)~=nArgs/2
+if round(nArgs/2) ~= nArgs / 2
     error('run_Fraction called with wrong number of arguments: expected Name/Value pair arguments')
 end
 
-for pair = reshape(varargin,2,[]) %# pair is {propName;propValue}
+for pair = reshape(varargin, 2, []) %# pair is {propName;propValue}
     inpName = lower(pair{1}); %# make case insensitive
     %check if the entered key is a valid key
     %check if the entered key is a valid key. If yes, replace the default by
     %the caller specified value. Otherwise, throw and exception
-    if any(strcmp(inpName,optionNames))
-        
+    if any(strcmp(inpName, optionNames))
+
         options.(inpName) = pair{2};
     else
-        error('%s is not a recognized parameter name',inpName)
+        error('%s is not a recognized parameter name', inpName)
     end
 end
 %this block gets all the values from the optional function arguments
 %for all arguments that were not specified, the default is used
-wingdur=options.wingdur;
-wingextonly=options.wingextonly;
-scaling=options.scaling;
-minwingangle=options.minwingangle*pi/180;
-fromscores=options.fromscores;
-windowsize=options.windowsize;
-cutofffrac=options.cutofffrac;
-score=options.score;
-specificframes=options.specificframes;
+wingdur = options.wingdur;
+wingextonly = options.wingextonly;
+scaling = options.scaling;
+minwingangle = options.minwingangle * pi / 180;
+fromscores = options.fromscores;
+windowsize = options.windowsize;
+cutofffrac = options.cutofffrac;
+score = options.score;
+specificframes = options.specificframes;
 filterby = options.filterby;
 cutoffval = options.cutoffval;
 above = options.above;
-removecop=options.removecop;
+removecop = options.removecop;
 cutoff = options.cutoff;
 below = options.below;
 additional = options.additional;
@@ -124,25 +124,25 @@ for p = 1:numel(dirs)
         continue;
     end
     dirname = dirs(p).name;
-    if ismember(dirname,{'.','..'})
+    if ismember(dirname, {'.', '..'})
         continue;
     end
     startdir = pwd;
     cd(dirname);
     %get all subdirectories of the Courtship directory - these are the
     %video directories
-    subdirs=dir();
+    subdirs = dir();
     for q = 1:numel(subdirs)
         if ~subdirs(q).isdir
             continue;
         end
-        subdirname=subdirs(q).name;
-        if ismember(subdirname,{'.','..'})
+        subdirname = subdirs(q).name;
+        if ismember(subdirname, {'.', '..'})
             continue;
         end
         %go into the video directory
         cd(subdirname);
-        disp(['Now processing:' subdirname]);
+        disp(['Now processing:', subdirname]);
         %go into the second directory level (also named the same as the
         %video directory)
         cd(subdirname);
@@ -151,25 +151,23 @@ for p = 1:numel(dirs)
         %error_handling_wrapper, which catches any errors and writes them
         %to a file called 'fraction_errors.log'
         if specificframes
-            
-            error_handling_wrapper('fraction_errors.log','fraction_frames',subdirname,outdirname,expname,columnnumber,'scaling',scaling,'specificframes',true,'filterby',filterby,'cutoffval',cutoffval,'above',above,'cutoff',cutoff,'below',below,'additional',additional,'additional_cutoff',additional_cutoff,'additional_below',additional_below,'additional2',additional2,'additional2_cutoff',additional2_cutoff,'additional2_below',additional2_below);
-            
+
+            error_handling_wrapper('fraction_errors.log', 'fraction_frames', subdirname, outdirname, expname, columnnumber, 'scaling', scaling, 'specificframes', true, 'filterby', filterby, 'cutoffval', cutoffval, 'above', above, 'cutoff', cutoff, 'below', below, 'additional', additional, 'additional_cutoff', additional_cutoff, 'additional_below', additional_below, 'additional2', additional2, 'additional2_cutoff', additional2_cutoff, 'additional2_below', additional2_below);
+
         elseif fromscores
-            error_handling_wrapper('fraction_errors.log','fraction_frames',subdirname,outdirname,expname,columnnumber,'windowsize',windowsize,'cutofffrac',cutofffrac,'scaling',scaling,'fromscores',true,'score',score,'removecop',removecop,'cutoff',cutoff,'below',below,'additional',additional,'additional_cutoff',additional_cutoff,'additional_below',additional_below,'additional2',additional2,'additional2_cutoff',additional2_cutoff,'additional2_below',additional2_below);
-            
-            
+            error_handling_wrapper('fraction_errors.log', 'fraction_frames', subdirname, outdirname, expname, columnnumber, 'windowsize', windowsize, 'cutofffrac', cutofffrac, 'scaling', scaling, 'fromscores', true, 'score', score, 'removecop', removecop, 'cutoff', cutoff, 'below', below, 'additional', additional, 'additional_cutoff', additional_cutoff, 'additional_below', additional_below, 'additional2', additional2, 'additional2_cutoff', additional2_cutoff, 'additional2_below', additional2_below);
+
+
         else
-            error_handling_wrapper('fraction_errors.log','fraction_frames',subdirname,outdirname,expname,columnnumber,'scaling',scaling,'wingdur',wingdur,'wingextonly',wingextonly,'minwingangle',minwingangle,'filterby', filterby,'cutoffval',cutoffval,'above',above,'removecop',removecop,'cutoff',cutoff,'below',below,'additional',additional,'additional_cutoff',additional_cutoff,'additional_below',additional_below,'additional2',additional2,'additional2_cutoff',additional2_cutoff,'additional2_below',additional2_below);
-            
+            error_handling_wrapper('fraction_errors.log', 'fraction_frames', subdirname, outdirname, expname, columnnumber, 'scaling', scaling, 'wingdur', wingdur, 'wingextonly', wingextonly, 'minwingangle', minwingangle, 'filterby', filterby, 'cutoffval', cutoffval, 'above', above, 'removecop', removecop, 'cutoff', cutoff, 'below', below, 'additional', additional, 'additional_cutoff', additional_cutoff, 'additional_below', additional_below, 'additional2', additional2, 'additional2_cutoff', additional2_cutoff, 'additional2_below', additional2_below);
+
         end
         %go back to the courtship directory and continue with the next
         %video
-        cd (startdir);
+        cd(startdir);
         cd(dirname);
     end
     %go back to the start directory and continue with the next courtship
     %directory
-    cd (startdir);
+    cd(startdir);
 end
-
-

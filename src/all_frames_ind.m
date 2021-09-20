@@ -1,5 +1,4 @@
-
-function [frames_indexed]= all_frames_ind(filename)
+function [frames_indexed] = all_frames_ind(filename)
 
 load(filename);
 %  vel=feat.data(:,:,1);
@@ -15,9 +14,8 @@ load(filename);
 %  angle_between=feat.data(:,:,11);
 %  facing_angle=feat.data(:,:,12);
 %  leg_dist=feat.data(:,:,13);
-indices=transpose(1:size(feat.data,1));
-featnumber = size(feat.data,3);
-ind_data=arrayfun(@(x) concatenate_data(x,featnumber, feat),indices,'UniformOutput',false);
+indices = transpose(1:size(feat.data, 1));
+featnumber = size(feat.data, 3);
+ind_data = arrayfun(@(x) concatenate_data(x, featnumber, feat), indices, 'UniformOutput', false);
 
-frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, ind_data,num2cell(indices),'UniformOutput',false);
-    
+frames_indexed = cellfun(@(cell1, cell2) {cell1, cell2}, ind_data, num2cell(indices), 'UniformOutput', false);

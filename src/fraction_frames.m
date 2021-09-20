@@ -1,6 +1,4 @@
-
-
-function fraction_frames(inputfilename,outputdir,expname,columnnumber,varargin)
+function fraction_frames(inputfilename, outputdir, expname, columnnumber, varargin)
 %FRACTION_FRAMES is a more generic version of the pdfplot function
 %Annika Rings, April 2019
 %
@@ -69,54 +67,54 @@ function fraction_frames(inputfilename,outputdir,expname,columnnumber,varargin)
 %remove_copulation_ind
 %newfigplot
 %savepdf
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,...
-    'minwingangle',30,'fromscores',false,'windowsize',13,...
-    'cutofffrac',0.5,'score','WingGesture','specificframes',false,...
-    'filterby',0,'cutoffval',2,'above',true,'removecop',true,'cutoff',-1,...
-    'below',false,'additional',0,'additional_cutoff',-1,...
-    'additional_below',false,'additional2',0,'additional2_cutoff',-1,...
-    'additional2_below',false);
+options = struct('scaling', 1, 'wingdur', 13, 'wingextonly', true, ...
+    'minwingangle', 30, 'fromscores', false, 'windowsize', 13, ...
+    'cutofffrac', 0.5, 'score', 'WingGesture', 'specificframes', false, ...
+    'filterby', 0, 'cutoffval', 2, 'above', true, 'removecop', true, 'cutoff', -1, ...
+    'below', false, 'additional', 0, 'additional_cutoff', -1, ...
+    'additional_below', false, 'additional2', 0, 'additional2_cutoff', -1, ...
+    'additional2_below', false);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
 
 %# count arguments - throw exception if the number is not divisible by 2
 nArgs = length(varargin);
-if round(nArgs/2)~=nArgs/2
+if round(nArgs/2) ~= nArgs / 2
     error('fraction_frames called with wrong number of arguments: expected Name/Value pair arguments')
 end
 
-for pair = reshape(varargin,2,[]) %# pair is {propName;propValue}
+for pair = reshape(varargin, 2, []) %# pair is {propName;propValue}
     inpName = lower(pair{1}); %# make case insensitive
     %check if the entered key is a valid key. If yes, replace the default by
     %the caller specified value. Otherwise, throw and exception
-    if any(strcmp(inpName,optionNames))
-        
+    if any(strcmp(inpName, optionNames))
+
         options.(inpName) = pair{2};
     else
-        error('%s is not a recognized parameter name',inpName)
+        error('%s is not a recognized parameter name', inpName)
     end
 end
 %turn the inputfilename into the specific names for the feat.mat and the
 %frames.csv file
-inputfilename_full=strcat(inputfilename,'-feat.mat');
-inputfilename_frames=strcat('../',inputfilename,'_frames.csv');
+inputfilename_full = strcat(inputfilename, '-feat.mat');
+inputfilename_frames = strcat('../', inputfilename, '_frames.csv');
 %this block gets all the values from the optional function arguments
 %for all arguments that were not specified, the default is used
-wingdur=options.wingdur;
-wingextonly=options.wingextonly;
-scaling=options.scaling;
-minwingangle=options.minwingangle*pi/180;
+wingdur = options.wingdur;
+wingextonly = options.wingextonly;
+scaling = options.scaling;
+minwingangle = options.minwingangle * pi / 180;
 
-fromscores=options.fromscores;
-windowsize=options.windowsize;
-cutofffrac=options.cutofffrac;
-score=options.score;
-specificframes=options.specificframes;
+fromscores = options.fromscores;
+windowsize = options.windowsize;
+cutofffrac = options.cutofffrac;
+score = options.score;
+specificframes = options.specificframes;
 filterby = options.filterby;
 cutoffval = options.cutoffval;
 above = options.above;
-remove_copulation=options.removecop;
+remove_copulation = options.removecop;
 cutoff = options.cutoff;
 below = options.below;
 additional = options.additional;
@@ -126,51 +124,51 @@ additional2 = options.additional2;
 additional2_cutoff = options.additional2_cutoff;
 additional2_below = options.additional2_below;
 %array of the maximum expected values for the features;
-maxs=[20;30;pi;pi;20;5;10;1;20;20;pi;pi;20;pi];
-max_=maxs(columnnumber)*scaling;
-pts=(0:(max_/99):max_);
+maxs = [20; 30; pi; pi; 20; 5; 10; 1; 20; 20; pi; pi; 20; pi];
+max_ = maxs(columnnumber) * scaling;
+pts = (0:(max_ / 99):max_);
 
 
 %check if the filterby option was set to a valid value and if so,
 %set filter to true -otherwise set
 %filter to false
 filter = 0;
-if (0< filterby && filterby <15)
-    filter =1;
-    wingextonly= false;
+if (0 < filterby && filterby < 15)
+    filter = 1;
+    wingextonly = false;
     disp('filtering data by');
     disp(string(filterby));
 end
 
-additional_column =0;
-if (0< additional && additional <15)
+additional_column = 0;
+if (0 < additional && additional < 15)
     additional_column = 1;
-    
-    if (additional_cutoff<0)
-        additional_cutoff = maxs(additional)/2;
+
+    if (additional_cutoff < 0)
+        additional_cutoff = maxs(additional) / 2;
     end
-    additional_cutoff = additional_cutoff/scaling;
+    additional_cutoff = additional_cutoff / scaling;
 end
 
-additional2_column =0;
-if (0< additional2 && additional2 <15)
+additional2_column = 0;
+if (0 < additional2 && additional2 < 15)
     additional2_column = 1;
-    
-    if (additional2_cutoff<0)
-        additional2_cutoff = maxs(additional2)/2;
+
+    if (additional2_cutoff < 0)
+        additional2_cutoff = maxs(additional2) / 2;
     end
-    additional2_cutoff = additional2_cutoff/scaling;
+    additional2_cutoff = additional2_cutoff / scaling;
 end
 
 %check if the cutoff was set
-if (cutoff<0)
-    cutoff = maxs(columnnumber)/2;
+if (cutoff < 0)
+    cutoff = maxs(columnnumber) / 2;
 end
-cutoff = cutoff/scaling;
+cutoff = cutoff / scaling;
 
 
 %make the pathname for the scoresfile out of the inputfilename
-scorename=strcat(inputfilename,'_JAABA/','scores_',score,'_id_corrected.mat');
+scorename = strcat(inputfilename, '_JAABA/', 'scores_', score, '_id_corrected.mat');
 %check which options were set and call the respective function
 %for specificframes, call function: handle_flytracker_output_frame_filtered
 %if filter is true, otherwise call:handle_flytracker_output_frame
@@ -185,111 +183,108 @@ scorename=strcat(inputfilename,'_JAABA/','scores_',score,'_id_corrected.mat');
 %wing_ext_frames_indexed
 if specificframes
     if filter
-        wing_ext_frames_indexed=handle_flytracker_output_frame_filtered(inputfilename_full,inputfilename_frames,filterby,cutoffval,above);
-        
+        wing_ext_frames_indexed = handle_flytracker_output_frame_filtered(inputfilename_full, inputfilename_frames, filterby, cutoffval, above);
+
     else
-        wing_ext_frames_indexed=handle_flytracker_output_frame(inputfilename_full,inputfilename_frames);
+        wing_ext_frames_indexed = handle_flytracker_output_frame(inputfilename_full, inputfilename_frames);
     end
 elseif fromscores
-    wing_ext_frames_indexed=handle_flytracker_outputs_score(inputfilename_full,scorename,windowsize,cutofffrac);
+    wing_ext_frames_indexed = handle_flytracker_outputs_score(inputfilename_full, scorename, windowsize, cutofffrac);
 elseif wingextonly
     if remove_copulation
-        [wing_ext_frames_indexed]= handle_flytracker_outputs_var(inputfilename_full,wingdur,minwingangle);
+        [wing_ext_frames_indexed] = handle_flytracker_outputs_var(inputfilename_full, wingdur, minwingangle);
     else
-        [wing_ext_frames_indexed]= handle_flytracker_outputs_var_copulation_not_removed(inputfilename_full,wingdur,minwingangle);
+        [wing_ext_frames_indexed] = handle_flytracker_outputs_var_copulation_not_removed(inputfilename_full, wingdur, minwingangle);
     end
 else
     if filter
         if remove_copulation
-            wing_ext_frames_indexed=remove_copulation_ind_filtered(inputfilename_full,filterby, cutoffval, above);
+            wing_ext_frames_indexed = remove_copulation_ind_filtered(inputfilename_full, filterby, cutoffval, above);
         else
-            wing_ext_frames_indexed=all_frames_ind_filtered(inputfilename_full,filterby, cutoffval, above);
+            wing_ext_frames_indexed = all_frames_ind_filtered(inputfilename_full, filterby, cutoffval, above);
         end
     else
         if remove_copulation
-            wing_ext_frames_indexed=remove_copulation_ind(inputfilename_full);
+            wing_ext_frames_indexed = remove_copulation_ind(inputfilename_full);
         else
-            wing_ext_frames_indexed=all_frames_ind(inputfilename_full);
+            wing_ext_frames_indexed = all_frames_ind(inputfilename_full);
         end
     end
 end
 %make indices to remember the flyID if rows are removed from the matrix
-indices=transpose(1:size(wing_ext_frames_indexed,1));
+indices = transpose(1:size(wing_ext_frames_indexed, 1));
 %add radial acceleration
-wing_ext_frames_indexed=cellfun(@(indiv) [indiv{1}(:,:),([diff(indiv{1}(:,2));1]*25)],wing_ext_frames_indexed,'uni',false);
+wing_ext_frames_indexed = cellfun(@(indiv) [indiv{1}(:, :), ([diff(indiv{1}(:, 2)); 1] * 25)], wing_ext_frames_indexed, 'uni', false);
 
 %remove NaNs
-wing_ext_frames_indexed=cellfun(@(input)rmmissing(input), wing_ext_frames_indexed,'UniformOutput',false);
+wing_ext_frames_indexed = cellfun(@(input)rmmissing(input), wing_ext_frames_indexed, 'UniformOutput', false);
 %add indices
-wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, wing_ext_frames_indexed,num2cell(indices),'UniformOutput',false);
+wing_ext_frames_indexed = cellfun(@(cell1, cell2) {cell1, cell2}, wing_ext_frames_indexed, num2cell(indices), 'UniformOutput', false);
 %this is a bit of a mess - needs some refactoring
 if below
     if additional_column
         if additional_below
             if additional2_column
                 if additional2_below
-                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional2)<additional2_cutoff) &(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                    numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) < cutoff) & (indiv{1}(:, additional2) < additional2_cutoff) & (indiv{1}(:, additional) < additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
                 else
-                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional2)>additional2_cutoff) &(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                    numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) < cutoff) & (indiv{1}(:, additional2) > additional2_cutoff) & (indiv{1}(:, additional) < additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
                 end
             else
-                numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) < cutoff) & (indiv{1}(:, additional) < additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
             end
         else
             if additional2_column
                 if additional2_below
-                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional2)<additional2_cutoff) &(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                    numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) < cutoff) & (indiv{1}(:, additional2) < additional2_cutoff) & (indiv{1}(:, additional) > additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
                 else
-                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional2)>additional2_cutoff) &(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                    numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) < cutoff) & (indiv{1}(:, additional2) > additional2_cutoff) & (indiv{1}(:, additional) > additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
                 end
             else
-            numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)<cutoff)&(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) < cutoff) & (indiv{1}(:, additional) > additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
             end
         end
     else
-        numabove = cellfun(@(indiv) size(indiv{1}(indiv{1}(:,columnnumber)<cutoff),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+        numabove = cellfun(@(indiv) size(indiv{1}(indiv{1}(:, columnnumber) < cutoff), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
     end
 else
     if additional_column
         if additional_below
             if additional2_column
                 if additional2_below
-                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional2)<additional2_cutoff) &(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                    numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) > cutoff) & (indiv{1}(:, additional2) < additional2_cutoff) & (indiv{1}(:, additional) < additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
                 else
-           numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional2)>additional2_cutoff) &(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                    numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) > cutoff) & (indiv{1}(:, additional2) > additional2_cutoff) & (indiv{1}(:, additional) < additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
                 end
-                else
-                 numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional)<additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+            else
+                numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) > cutoff) & (indiv{1}(:, additional) < additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
             end
         else
-                if additional2_column
+            if additional2_column
                 if additional2_below
-                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional2)<additional2_cutoff) &(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                    numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) > cutoff) & (indiv{1}(:, additional2) < additional2_cutoff) & (indiv{1}(:, additional) > additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
                 else
-                    numabove =cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional2)>additional2_cutoff) &(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
+                    numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) > cutoff) & (indiv{1}(:, additional2) > additional2_cutoff) & (indiv{1}(:, additional) > additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
                 end
-            
+
             else
-       
-            numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:,columnnumber)>cutoff)&(indiv{1}(:,additional)>additional_cutoff)),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
-                end
+
+                numabove = cellfun(@(indiv) size(indiv{1}((indiv{1}(:, columnnumber) > cutoff) & (indiv{1}(:, additional) > additional_cutoff)), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
+            end
         end
     else
-        numabove = cellfun(@(indiv) size(indiv{1}(indiv{1}(:,columnnumber)>cutoff),1)/size(indiv{1},1), wing_ext_frames_indexed,'UniformOutput',false);
-    
+        numabove = cellfun(@(indiv) size(indiv{1}(indiv{1}(:, columnnumber) > cutoff), 1)/size(indiv{1}, 1), wing_ext_frames_indexed, 'UniformOutput', false);
+
     end
 end
-frac_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, numabove,num2cell(indices),'UniformOutput',false);
+frac_frames_indexed = cellfun(@(cell1, cell2) {cell1, cell2}, numabove, num2cell(indices), 'UniformOutput', false);
 %remove empty cells
-frac_frames_nonempty=frac_frames_indexed(~cellfun(@(cells) isnan(cells{1}),frac_frames_indexed));
+frac_frames_nonempty = frac_frames_indexed(~cellfun(@(cells) isnan(cells{1}), frac_frames_indexed));
 
 if ~exist(outputdir, 'dir')
     mkdir(outputdir)
 end
 
-cellfun(@(data)save(fullfile(outputdir,strcat(inputfilename,'_',num2str(data{2}),'_',expname,'_fraction.mat')),'data'),frac_frames_nonempty,'UniformOutput',false);
+cellfun(@(data)save(fullfile(outputdir, strcat(inputfilename, '_', num2str(data{2}), '_', expname, '_fraction.mat')), 'data'), frac_frames_nonempty, 'UniformOutput', false);
 
 close all;
-
-
-

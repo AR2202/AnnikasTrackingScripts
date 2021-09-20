@@ -1,7 +1,7 @@
 %Annika Rings, July 2019
 %RUN_DISTANCE_TRAVELLED(dur)
 %dur: period of time to calculate the distance travelled,
-%(in s) 
+%(in s)
 %runs the distance_travelled function for all directories ending in
 %'Courtship'
 %optional argument: specificframes (Bool, default: false)
@@ -13,34 +13,34 @@
 %The file has to be located in
 %the video directory and be called '<videoname>_frames.csv' where videoname
 
-function run_distance_travelled(dur,varargin)
+function run_distance_travelled(dur, varargin)
 
-options = struct('specificframes',false);
+options = struct('specificframes', false);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
 
 %# count arguments - throw exception if the number is not divisible by 2
 nArgs = length(varargin);
-if round(nArgs/2)~=nArgs/2
+if round(nArgs/2) ~= nArgs / 2
     error('pdfplot_any called with wrong number of arguments: expected Name/Value pair arguments')
 end
 
-for pair = reshape(varargin,2,[]) %# pair is {propName;propValue}
+for pair = reshape(varargin, 2, []) %# pair is {propName;propValue}
     inpName = lower(pair{1}); %# make case insensitive
     %check if the entered key is a valid key
     %check if the entered key is a valid key. If yes, replace the default by
     %the caller specified value. Otherwise, throw and exception
-    if any(strcmp(inpName,optionNames))
-        
+    if any(strcmp(inpName, optionNames))
+
         options.(inpName) = pair{2};
     else
-        error('%s is not a recognized parameter name',inpName)
+        error('%s is not a recognized parameter name', inpName)
     end
 end
 %this block gets all the values from the optional function arguments
 %for all arguments that were not specified, the default is used
-specificframes=options.specificframes;
+specificframes = options.specificframes;
 %select all directories that end in the string 'Courtship'
 dirs = dir('*Courtship');
 
@@ -49,25 +49,25 @@ for p = 1:numel(dirs)
         continue;
     end
     dirname = dirs(p).name;
-    if ismember(dirname,{'.','..'})
+    if ismember(dirname, {'.', '..'})
         continue;
     end
     startdir = pwd;
     cd(dirname);
     %get all subdirectories of the Courtship directory - these are the
     %video directories
-    subdirs=dir();
+    subdirs = dir();
     for q = 1:numel(subdirs)
         if ~subdirs(q).isdir
             continue;
         end
-        subdirname=subdirs(q).name;
-        if ismember(subdirname,{'.','..'})
+        subdirname = subdirs(q).name;
+        if ismember(subdirname, {'.', '..'})
             continue;
         end
         %go into the video directory
         cd(subdirname);
-        disp(['Now calculating distance travelled for:' subdirname]);
+        disp(['Now calculating distance travelled for:', subdirname]);
         %go into the second directory level (also named the same as the
         %video directory)
         cd(subdirname);
@@ -76,20 +76,18 @@ for p = 1:numel(dirs)
         %error_handling_wrapper, which catches any errors and writes them
         %to a file called 'pdfplot_errors.log'
         if specificframes
-            inputfilename_frames=strcat('../',subdirname,'_frames.csv');
-             error_handling_wrapper('distance_travelled_errors.log','distance_travelled_frame',subdirname,dur,inputfilename_frames);
+            inputfilename_frames = strcat('../', subdirname, '_frames.csv');
+            error_handling_wrapper('distance_travelled_errors.log', 'distance_travelled_frame', subdirname, dur, inputfilename_frames);
         else
-        
-            error_handling_wrapper('distance_travelled_errors.log','distance_travelled',subdirname,dur);
+
+            error_handling_wrapper('distance_travelled_errors.log', 'distance_travelled', subdirname, dur);
         end
         %go back to the courtship directory and continue with the next
         %video
-        cd (startdir);
+        cd(startdir);
         cd(dirname);
     end
     %go back to the start directory and continue with the next courtship
     %directory
-    cd (startdir);
+    cd(startdir);
 end
-
-

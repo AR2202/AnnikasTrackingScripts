@@ -1,5 +1,3 @@
-
-
 dirs = dir('*Courtship');
 
 for p = 1:numel(dirs)
@@ -7,31 +5,29 @@ for p = 1:numel(dirs)
         continue;
     end
     dirname = dirs(p).name;
-    if ismember(dirname,{'.','..'})
+    if ismember(dirname, {'.', '..'})
         continue;
     end
     startdir = pwd;
     cd(dirname);
-    
-    subdirs=dir();
+
+    subdirs = dir();
     for q = 1:numel(subdirs)
         if ~subdirs(q).isdir
             continue;
         end
-        subdirname=subdirs(q).name;
-        if ismember(subdirname,{'.','..'})
+        subdirname = subdirs(q).name;
+        if ismember(subdirname, {'.', '..'})
             continue;
         end
         %disp(['Now making pdfs for:' subdirname]);
         cd(subdirname);
-        disp(['Now making pdfs for:' subdirname]);
+        disp(['Now making pdfs for:', subdirname]);
         cd(subdirname);
-        error_handling_wrapper('female_pos_errors.log','pdfs_female_pos_ipsi_contra',subdirname,'female_pos');
+        error_handling_wrapper('female_pos_errors.log', 'pdfs_female_pos_ipsi_contra', subdirname, 'female_pos');
         %pdfplot(string(subdirname),'pdfs');
-        cd (startdir);
+        cd(startdir);
         cd(dirname);
     end
-    cd (startdir);
+    cd(startdir);
 end
-
-

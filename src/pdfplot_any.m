@@ -62,69 +62,69 @@
 %newfigplot
 %savepdf
 
-function pdfplot_any(inputfilename,outputdir,expname,columnnumber,varargin)
+function pdfplot_any(inputfilename, outputdir, expname, columnnumber, varargin)
 
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false,'filterby',0,'cutoffval',2,'above',true,'removecop',true);
+options = struct('scaling', 1, 'wingdur', 13, 'wingextonly', true, 'minwingangle', 30, 'fromscores', false, 'windowsize', 13, 'cutofffrac', 0.5, 'score', 'WingGesture', 'specificframes', false, 'filterby', 0, 'cutoffval', 2, 'above', true, 'removecop', true);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
 
 %# count arguments - throw exception if the number is not divisible by 2
 nArgs = length(varargin);
-if round(nArgs/2)~=nArgs/2
+if round(nArgs/2) ~= nArgs / 2
     error('pdfplot_any called with wrong number of arguments: expected Name/Value pair arguments')
 end
 
-for pair = reshape(varargin,2,[]) %# pair is {propName;propValue}
+for pair = reshape(varargin, 2, []) %# pair is {propName;propValue}
     inpName = lower(pair{1}); %# make case insensitive
     %check if the entered key is a valid key. If yes, replace the default by
     %the caller specified value. Otherwise, throw and exception
-    if any(strcmp(inpName,optionNames))
-        
+    if any(strcmp(inpName, optionNames))
+
         options.(inpName) = pair{2};
     else
-        error('%s is not a recognized parameter name',inpName)
+        error('%s is not a recognized parameter name', inpName)
     end
 end
 %turn the inputfilename into the specific names for the feat.mat and the
 %frames.csv file
-inputfilename_full=strcat(inputfilename,'-feat.mat');
-inputfilename_frames=strcat('../',inputfilename,'_frames.csv');
+inputfilename_full = strcat(inputfilename, '-feat.mat');
+inputfilename_frames = strcat('../', inputfilename, '_frames.csv');
 %this block gets all the values from the optional function arguments
 %for all arguments that were not specified, the default is used
-wingdur=options.wingdur;
-wingextonly=options.wingextonly;
-scaling=options.scaling;
-minwingangle=options.minwingangle*pi/180;
+wingdur = options.wingdur;
+wingextonly = options.wingextonly;
+scaling = options.scaling;
+minwingangle = options.minwingangle * pi / 180;
 
-fromscores=options.fromscores;
-windowsize=options.windowsize;
-cutofffrac=options.cutofffrac;
-score=options.score;
-specificframes=options.specificframes;
+fromscores = options.fromscores;
+windowsize = options.windowsize;
+cutofffrac = options.cutofffrac;
+score = options.score;
+specificframes = options.specificframes;
 filterby = options.filterby;
 cutoffval = options.cutoffval;
 above = options.above;
-remove_copulation=options.removecop;
+remove_copulation = options.removecop;
 %array of the maximum expected values for the features;
-maxs=[20;30;pi;pi;20;5;10;1;20;20;pi;pi;20];
-max_=maxs(columnnumber)*scaling;
-pts=(0:(max_/99):max_);
+maxs = [20; 30; pi; pi; 20; 5; 10; 1; 20; 20; pi; pi; 20];
+max_ = maxs(columnnumber) * scaling;
+pts = (0:(max_ / 99):max_);
 
 
 %check if the filterby option was set to a valid value and if so,
 %set filter to true -otherwise set
 %filter to false
-filter =0;
-if (0< filterby && filterby <14)
-    filter =1;
-    wingextonly= false;
+filter = 0;
+if (0 < filterby && filterby < 14)
+    filter = 1;
+    wingextonly = false;
     disp('filtering data by');
     disp(string(filterby));
 end
 %make the pathname for the scoresfile out of the inputfilename
-scorename=strcat(inputfilename,'_JAABA/','scores_',score,'_id_corrected.mat');
+scorename = strcat(inputfilename, '_JAABA/', 'scores_', score, '_id_corrected.mat');
 %check which options were set and call the respective function
 %for specificframes, call function: handle_flytracker_output_frame_filtered
 %if filter is true, otherwise call:handle_flytracker_output_frame
@@ -139,56 +139,53 @@ scorename=strcat(inputfilename,'_JAABA/','scores_',score,'_id_corrected.mat');
 %wing_ext_frames_indexed
 if specificframes
     if filter
-        wing_ext_frames_indexed=handle_flytracker_output_frame_filtered(inputfilename_full,inputfilename_frames,filterby,cutoffval,above);
-        
+        wing_ext_frames_indexed = handle_flytracker_output_frame_filtered(inputfilename_full, inputfilename_frames, filterby, cutoffval, above);
+
     else
-        wing_ext_frames_indexed=handle_flytracker_output_frame(inputfilename_full,inputfilename_frames);
+        wing_ext_frames_indexed = handle_flytracker_output_frame(inputfilename_full, inputfilename_frames);
     end
 elseif fromscores
-    wing_ext_frames_indexed=handle_flytracker_outputs_score(inputfilename_full,scorename,windowsize,cutofffrac);
+    wing_ext_frames_indexed = handle_flytracker_outputs_score(inputfilename_full, scorename, windowsize, cutofffrac);
 elseif wingextonly
     if remove_copulation
-        [wing_ext_frames_indexed]= handle_flytracker_outputs_var(inputfilename_full,wingdur,minwingangle);
+        [wing_ext_frames_indexed] = handle_flytracker_outputs_var(inputfilename_full, wingdur, minwingangle);
     else
-        [wing_ext_frames_indexed]= handle_flytracker_outputs_var_copulation_not_removed(inputfilename_full,wingdur,minwingangle);
+        [wing_ext_frames_indexed] = handle_flytracker_outputs_var_copulation_not_removed(inputfilename_full, wingdur, minwingangle);
     end
 else
     if filter
         if remove_copulation
-            wing_ext_frames_indexed=remove_copulation_ind_filtered(inputfilename_full,filterby, cutoffval, above);
+            wing_ext_frames_indexed = remove_copulation_ind_filtered(inputfilename_full, filterby, cutoffval, above);
         else
-             wing_ext_frames_indexed=all_frames_ind_filtered(inputfilename_full,filterby, cutoffval, above);
+            wing_ext_frames_indexed = all_frames_ind_filtered(inputfilename_full, filterby, cutoffval, above);
         end
-       else
+    else
         if remove_copulation
-            wing_ext_frames_indexed=remove_copulation_ind(inputfilename_full);
+            wing_ext_frames_indexed = remove_copulation_ind(inputfilename_full);
         else
-            wing_ext_frames_indexed=all_frames_ind(inputfilename_full);
+            wing_ext_frames_indexed = all_frames_ind(inputfilename_full);
         end
     end
 end
 %make indices to remember the flyID if rows are removed from the matrix
-indices=transpose(1:size(wing_ext_frames_indexed,1));
+indices = transpose(1:size(wing_ext_frames_indexed, 1));
 %remove NaNs
-wing_ext_frames_indexed=cellfun(@(input)rmmissing(input{1,1}), wing_ext_frames_indexed,'UniformOutput',false);
+wing_ext_frames_indexed = cellfun(@(input)rmmissing(input{1, 1}), wing_ext_frames_indexed, 'UniformOutput', false);
 %add indices
-wing_ext_frames_indexed=cellfun(@(cell1,cell2) {cell1,cell2}, wing_ext_frames_indexed,num2cell(indices),'UniformOutput',false);
+wing_ext_frames_indexed = cellfun(@(cell1, cell2) {cell1, cell2}, wing_ext_frames_indexed, num2cell(indices), 'UniformOutput', false);
 %remove empty cells
-wing_ext_frames_nonempty=wing_ext_frames_indexed(~cellfun(@(cells) isempty(cells{1}),wing_ext_frames_indexed));
+wing_ext_frames_nonempty = wing_ext_frames_indexed(~cellfun(@(cells) isempty(cells{1}), wing_ext_frames_indexed));
 %make the kernel density estimation for each individual
-[f_data,xi_data]=cellfun(@(wing_ext_frames_ind) ksdensity((wing_ext_frames_ind{1}(:,columnnumber))*scaling,pts), wing_ext_frames_nonempty,'UniformOutput',false);
+[f_data, xi_data] = cellfun(@(wing_ext_frames_ind) ksdensity((wing_ext_frames_ind{1}(:, columnnumber)) * scaling, pts), wing_ext_frames_nonempty, 'UniformOutput', false);
 %plot the data for each individual
 %this calls the newfigplot function
-cellfun(@(xi1,f1,index) newfigplot(xi1,f1,expname,num2str(index{1,2}),inputfilename,outputdir), xi_data,f_data,wing_ext_frames_nonempty,'UniformOutput',false);
+cellfun(@(xi1, f1, index) newfigplot(xi1, f1, expname, num2str(index{1, 2}), inputfilename, outputdir), xi_data, f_data, wing_ext_frames_nonempty, 'UniformOutput', false);
 %make a structure called 'pdfdata' which contains the data returned from
 %the kde
-pdfdata=cellfun(@(xi_data, f_data) struct(expname,{xi_data,f_data}),xi_data, f_data,'UniformOutput',false);
+pdfdata = cellfun(@(xi_data, f_data) struct(expname, {xi_data, f_data}), xi_data, f_data, 'UniformOutput', false);
 %save the structure into a seperate .mat file for each individual in a
 %subdirectory called 'pdfs'
 %this calls the savepdf function
-cellfun(@(data,index)savepdf(outputdir,strcat(inputfilename,'_',num2str(index{1,2}),'_',expname,'_pdf.mat'),data),pdfdata,wing_ext_frames_nonempty,'UniformOutput',false);
+cellfun(@(data, index)savepdf(outputdir, strcat(inputfilename, '_', num2str(index{1, 2}), '_', expname, '_pdf.mat'), data), pdfdata, wing_ext_frames_nonempty, 'UniformOutput', false);
 %close figure windows
 close all;
-
-
-

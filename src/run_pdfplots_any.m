@@ -61,46 +61,46 @@
 %savepdf
 %error_handling_wrapper
 
-function run_pdfplots_any(expname,columnnumber,varargin)
+function run_pdfplots_any(expname, columnnumber, varargin)
 
-options = struct('scaling',1,'wingdur',13,'wingextonly',true,'minwingangle',30,'fromscores',false,'windowsize',13,'cutofffrac',0.5,'score','WingGesture','specificframes',false,'filterby',0,'cutoffval',2,'above',true,'removecop',true);
+options = struct('scaling', 1, 'wingdur', 13, 'wingextonly', true, 'minwingangle', 30, 'fromscores', false, 'windowsize', 13, 'cutofffrac', 0.5, 'score', 'WingGesture', 'specificframes', false, 'filterby', 0, 'cutoffval', 2, 'above', true, 'removecop', true);
 
 %# read the acceptable names
 optionNames = fieldnames(options);
 
 %# count arguments - throw exception if the number is not divisible by 2
 nArgs = length(varargin);
-if round(nArgs/2)~=nArgs/2
+if round(nArgs/2) ~= nArgs / 2
     error('pdfplot_any called with wrong number of arguments: expected Name/Value pair arguments')
 end
 
-for pair = reshape(varargin,2,[]) %# pair is {propName;propValue}
+for pair = reshape(varargin, 2, []) %# pair is {propName;propValue}
     inpName = lower(pair{1}); %# make case insensitive
     %check if the entered key is a valid key
     %check if the entered key is a valid key. If yes, replace the default by
     %the caller specified value. Otherwise, throw and exception
-    if any(strcmp(inpName,optionNames))
-        
+    if any(strcmp(inpName, optionNames))
+
         options.(inpName) = pair{2};
     else
-        error('%s is not a recognized parameter name',inpName)
+        error('%s is not a recognized parameter name', inpName)
     end
 end
 %this block gets all the values from the optional function arguments
 %for all arguments that were not specified, the default is used
-wingdur=options.wingdur;
-wingextonly=options.wingextonly;
-scaling=options.scaling;
-minwingangle=options.minwingangle*pi/180;
-fromscores=options.fromscores;
-windowsize=options.windowsize;
-cutofffrac=options.cutofffrac;
-score=options.score;
-specificframes=options.specificframes;
+wingdur = options.wingdur;
+wingextonly = options.wingextonly;
+scaling = options.scaling;
+minwingangle = options.minwingangle * pi / 180;
+fromscores = options.fromscores;
+windowsize = options.windowsize;
+cutofffrac = options.cutofffrac;
+score = options.score;
+specificframes = options.specificframes;
 filterby = options.filterby;
 cutoffval = options.cutoffval;
 above = options.above;
-removecop=options.removecop;
+removecop = options.removecop;
 %select all directories that end in the string 'Courtship'
 dirs = dir('*Courtship');
 
@@ -109,25 +109,25 @@ for p = 1:numel(dirs)
         continue;
     end
     dirname = dirs(p).name;
-    if ismember(dirname,{'.','..'})
+    if ismember(dirname, {'.', '..'})
         continue;
     end
     startdir = pwd;
     cd(dirname);
     %get all subdirectories of the Courtship directory - these are the
     %video directories
-    subdirs=dir();
+    subdirs = dir();
     for q = 1:numel(subdirs)
         if ~subdirs(q).isdir
             continue;
         end
-        subdirname=subdirs(q).name;
-        if ismember(subdirname,{'.','..'})
+        subdirname = subdirs(q).name;
+        if ismember(subdirname, {'.', '..'})
             continue;
         end
         %go into the video directory
         cd(subdirname);
-        disp(['Now making pdfs for:' subdirname]);
+        disp(['Now making pdfs for:', subdirname]);
         %go into the second directory level (also named the same as the
         %video directory)
         cd(subdirname);
@@ -136,23 +136,21 @@ for p = 1:numel(dirs)
         %error_handling_wrapper, which catches any errors and writes them
         %to a file called 'pdfplot_errors.log'
         if specificframes
-            
-            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'specificframes',true,'filterby',filterby,'cutoffval',cutoffval,'above',above);
-            
+
+            error_handling_wrapper('pdfplot_errors.log', 'pdfplot_any', subdirname, 'pdfs', expname, columnnumber, 'scaling', scaling, 'specificframes', true, 'filterby', filterby, 'cutoffval', cutoffval, 'above', above);
+
         elseif fromscores
-            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'windowsize',windowsize,'cutofffrac',cutofffrac,'scaling',scaling,'fromscores',true,'score',score);
-            
+            error_handling_wrapper('pdfplot_errors.log', 'pdfplot_any', subdirname, 'pdfs', expname, columnnumber, 'windowsize', windowsize, 'cutofffrac', cutofffrac, 'scaling', scaling, 'fromscores', true, 'score', score);
+
         else
-            error_handling_wrapper('pdfplot_errors.log','pdfplot_any',subdirname,'pdfs',expname,columnnumber,'scaling',scaling,'wingdur',wingdur,'wingextonly',wingextonly,'minwingangle',minwingangle,'filterby', filterby,'cutoffval',cutoffval,'above',above,'removecop',removecop);
+            error_handling_wrapper('pdfplot_errors.log', 'pdfplot_any', subdirname, 'pdfs', expname, columnnumber, 'scaling', scaling, 'wingdur', wingdur, 'wingextonly', wingextonly, 'minwingangle', minwingangle, 'filterby', filterby, 'cutoffval', cutoffval, 'above', above, 'removecop', removecop);
         end
         %go back to the courtship directory and continue with the next
         %video
-        cd (startdir);
+        cd(startdir);
         cd(dirname);
     end
     %go back to the start directory and continue with the next courtship
     %directory
-    cd (startdir);
+    cd(startdir);
 end
-
-
