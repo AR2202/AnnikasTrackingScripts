@@ -56,29 +56,23 @@ for p = 1:numel(dirs)
         continue;
     end
 
-    
+    disp(['Now looking in: ', dirname]);
     
     if olddataformat
       dirnames{end+1} =  dirname;
     else
         subdirs = dir(dirname);
-        for sub = 1:numel(subdirs)
-    if ~subdirs(sub).isdir
+        for subdi = 1:numel(dirs)
+    if ~dirs(p).isdir
         continue;
     end
-    subdirname = subdirs(sub).name;
-    if ismember(subdirname, {'.', '..'})
+    dirname = dirs(p).name;
+    if ismember(dirname, {'.', '..'})
         continue;
     end
-        dirname_full = fullfile(dirname,subdirname);
-        dirnames{end+1} =  dirname_full;
         
         end
     end
-end
-for p = 1:numel(dirnames)
-    dirname = dirnames{p};
-disp(['Now looking in: ', dirname]);
     cd(dirname);
     videos = cellfun(@(list)dir(char(strcat('*', list))), unique(outputtable.Var1), 'UniformOutput', false);
 
@@ -93,7 +87,6 @@ disp(['Now looking in: ', dirname]);
             if exist(string(videonames{q}{1}), 'dir')
                 disp(videonames{q}{1});
                 cd(videonames{q}{1});
-                if exist('Results','dir')
                 cd('Results');
                 variablename_video = regexprep(videonames{q}{1}, '(\w+)-(\w+)_Courtship-', '');
                 disp(variablename_video);
@@ -240,7 +233,6 @@ disp(['Now looking in: ', dirname]);
                     end
                 end
             end
-        end
             cd(startdir);
             cd(dirname);
         end
