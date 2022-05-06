@@ -102,9 +102,9 @@ disp(['Now looking in: ', dirname]);
                 cd('Results');
                 variablename_video = regexprep(videonames{q}{1}, '(\w+)-(\w+)_Courtship-', '');
                 disp(variablename_video);
-                %newtable = outputtable(strcmp(variablename_video,outputtable.Var1), : );
+               
                 newtable2 = outputtable(cellfun(@(x) contains(videonames{q}{1}, x), outputtable.Var1), :);
-                %newtable3=vertcat(newtable,newtable2);
+               
                 newtable3 = newtable2;
                 disp(newtable3);
 
@@ -153,7 +153,25 @@ disp(['Now looking in: ', dirname]);
                              
                         end
 
+                            end
+                         if ismember('time_to_init',outputtable2.Properties.VariableNames)  
+                        if isnumeric(outputtable2.time_to_init(outputtable2.FlyId == newtable3.Var2(r)))
+                          CurrIndex = outputtable2.time_to_init(outputtable2.FlyId == newtable3.Var2(r));
+                       else
+                            CurrIndex = str2double(outputtable2.(index)(outputtable2.FlyId == newtable3.Var2(r)));
                         end
+                        disp(index);
+                        disp(CurrIndex);
+                            
+                        if ismember(newtable3.Var2(r), outputtable2.FlyId)
+
+                            if (size(CurrIndex) > 0)
+
+                                data.init = [data.init, CurrIndex];
+                            end
+                             
+                        end
+                           end
 %                         if isnumeric(outputtable2.ApproachingIndex(outputtable2.FlyId == newtable3.Var2(r)))
 %                             ApproachingIndex = outputtable2.ApproachingIndex(outputtable2.FlyId == newtable3.Var2(r));
 %                         else
