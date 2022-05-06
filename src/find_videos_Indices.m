@@ -42,6 +42,11 @@ outputvar2 = arrayfun(@(input) input, outputtable.Var2, 'UniformOutput', false);
 startdir = pwd;
 data.wing = [];
 data.approach = [];
+data.CIwF = [];
+data.contact = [];
+data.circling = [];
+data.facing = [];
+data.turning = [];
 data.CI = [];
 data.init = [];
 data.cop = [];
@@ -119,11 +124,11 @@ disp(['Now looking in: ', dirname]);
                         disp('Fly ID');
                         disp(newtable3.Var2(r));
                         disp(outputtable2);
-                        datanames = {'wing','approach','CI'};
+                        datanames = {'wing','approach','CI','CIwF','contact','circling','facing','turning'};
                         if olddataformat
-                            indices_names = {'WingIndex','ApproachingIndex','CourtshipIndex'};
+                            indices_names = {'WingIndex','ApproachingIndex','CourtshipIndex','CourtshipIndexWithFacing','ContactIndex','EncirclingIndex','FacingIndex','TurningIndex'};
                         else
-                            indices_names ={'wing', 'approaching','CI'};
+                            indices_names ={'wing', 'approaching','CI','CIwF','contact','circling','facing','turning'};
                         end
                             for index_num = 1: length(indices_names)
                                 index = indices_names{index_num};
@@ -250,5 +255,6 @@ disp(['Now looking in: ', dirname]);
 end
 
 datafilename = strcat(genotype, '_Indices.mat');
-save(datafilename, 'data');
+outputname = fullfile(outputdir,datafilename);
+save(outputname, 'data');
 
