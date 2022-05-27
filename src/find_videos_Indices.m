@@ -22,23 +22,8 @@ switch nargin
     otherwise
         olddataformat = true;
 end
-outputdirname = 'Analysis';
-pathname = pwd;
-
-
-outputdir = fullfile(pathname, outputdirname);
-    
-if ~exist(outputdir, 'dir')
-    disp('Results folder does not exist. Ceating folder:')
-    disp(outputdir);
-    mkdir(fullfile(outputdir));
-end
+[outputtable, outputdir] = load_input_Indices(genotypelist, olddataformat);
 datafilename = strcat(genotype, '_Indices.mat');
 outputname = fullfile(outputdir,datafilename);
-
-   
-outputtable = readtable(genotypelist, 'readvariablenames', false);
-disp(outputtable);
-outputvar2 = arrayfun(@(input) input, outputtable.Var2, 'UniformOutput', false);
 find_indices(outputtable, outputname, olddataformat) 
 
