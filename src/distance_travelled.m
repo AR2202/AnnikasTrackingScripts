@@ -3,7 +3,7 @@
 %input parameter
 %does not remove copulation frames or filter by wingextension
 
-function distance_travelled(inputfilename, dur)
+function distance_travelled(inputfilename, dur, varargin)
 
 
 outputdir = 'distance_travelled';
