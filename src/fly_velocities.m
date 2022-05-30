@@ -1,5 +1,5 @@
-function correlation_coef = fly_velocities(inputfilename, outputdir)
-inputfilename_full = strcat(inputfilename, '-feat_id_corrected.mat');
+function correlation_coef = fly_velocities(inputfilename, outputdir, varargin)
+inputfilename_full = strcat(inputfilename, '-feat.mat');
 load(inputfilename_full);
 indices = transpose(1:size(feat.data, 1));
 veldata = feat.data(:, :, 1);
