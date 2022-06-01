@@ -116,45 +116,11 @@ additional2 = options.additional2;
 additional2_cutoff = options.additional2_cutoff;
 additional2_below = options.additional2_below;
 outdirname = options.outdirname;
-%select all directories that end in the string 'Courtship'
-dirs = dir('*Courtship');
 
-for p = 1:numel(dirs)
-    if ~dirs(p).isdir
-        continue;
-    end
-    dirname = dirs(p).name;
-    if ismember(dirname, {'.', '..'})
-        continue;
-    end
-    startdir = pwd;
-    cd(dirname);
-    %get all subdirectories of the Courtship directory - these are the
-    %video directories
-    subdirs = dir();
-    for q = 1:numel(subdirs)
-        if ~subdirs(q).isdir
-            continue;
-        end
-        subdirname = subdirs(q).name;
-        if ismember(subdirname, {'.', '..'})
-            continue;
-        end
-        %go into the video directory
-        cd(subdirname);
-        disp(['Now processing:', subdirname]);
-        %go into the second directory level (also named the same as the
-        %video directory)
-        cd(subdirname);
-        %test which options are set and call the fraction_frames function with
-        %the respective parameters. The function is called wrapped in the
-        %error_handling_wrapper, which catches any errors and writes them
-        %to a file called 'fraction_errors.log'
         if specificframes
 
-            error_handling_wrapper('fraction_errors.log', ...
+            run_any('fraction_errors.log', ...
                                    'fraction_frames', ...
-                                   subdirname, ...
                                    outdirname, ...
                                    expname, ...
                                    columnnumber, ...
@@ -173,9 +139,8 @@ for p = 1:numel(dirs)
                                    'additional2_below', additional2_below);
 
         elseif fromscores
-            error_handling_wrapper('fraction_errors.log', ...
+            run_any('fraction_errors.log', ...
                                    'fraction_frames', ...
-                                   subdirname, ...
                                    outdirname, ...
                                    expname, ...
                                    columnnumber, ...
@@ -196,9 +161,8 @@ for p = 1:numel(dirs)
 
 
         else
-            error_handling_wrapper('fraction_errors.log', ...
+            run_any('fraction_errors.log', ...
                                    'fraction_frames', ...
-                                   subdirname, ...
                                    outdirname, ...
                                    expname, ...
                                    columnnumber, ...
@@ -220,12 +184,4 @@ for p = 1:numel(dirs)
                                    'additional2_below', additional2_below);
 
         end
-        %go back to the courtship directory and continue with the next
-        %video
-        cd(startdir);
-        cd(dirname);
-    end
-    %go back to the start directory and continue with the next courtship
-    %directory
-    cd(startdir);
-end
+       

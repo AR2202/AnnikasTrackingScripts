@@ -4,7 +4,7 @@
 % writes any erros to <errorlogfile>
 %currently tested only for distance_travelled
 
-function run_any(errorlogfile, functionname, specificframes, fromscores, varargin)
+function run_any(errorlogfile, functionname,  varargin)
 
 
 
@@ -55,7 +55,7 @@ for p = 1:numel(courtshipdirs2)
         end
         %go into the video directory
         cd(subdirname);
-        disp(['Now calculating distance travelled for:', subdirname]);
+        disp(['Now calculating ',functionname, ' for: ', subdirname]);
         %go into the second directory level (also named the same as the
         %video directory)
         cd(subdirname);
@@ -64,16 +64,12 @@ for p = 1:numel(courtshipdirs2)
         %error_handling_wrapper, which catches any errors and writes them
         %to a file called <errorlogfile>
         
-        inputfilename_frames = strcat('../', subdirname, '_frames.csv');
-        varargin = [varargin; inputfilename_frames];
-        if specificframes
-            
-            functionname = strcat(functionname, '_frame');
+        
            
-        else
+    
 
             error_handling_wrapper(errorlogfile, functionname, subdirname, varargin{:});
-        end
+       
         %go back to the courtship directory and continue with the next
         %video
         cd(startdir);

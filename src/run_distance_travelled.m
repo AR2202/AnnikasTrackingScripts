@@ -42,4 +42,8 @@ end
 %for all arguments that were not specified, the default is used
 specificframes = options.specificframes;
 fromscores = options.fromscores;
-run_any('distance_travelled_errors.log', 'distance_travelled',   specificframes, fromscores, dur)
+if specificframes
+    run_any('distance_travelled_errors.log', 'distance_travelled_frames',  dur)
+else
+run_any('distance_travelled_errors.log', 'distance_travelled',    dur)
+end

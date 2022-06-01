@@ -4,6 +4,6 @@
 
 
 function run_fly_vel()
-        run_any('vel_errors.log', 'fly_velocities', false, false,'vel');
+        run_any('vel_errors.log', 'fly_velocities','vel');
 
         
