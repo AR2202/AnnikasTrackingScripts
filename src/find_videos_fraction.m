@@ -1,14 +1,22 @@
 %Annika Rings Jan 2021
-%FIND_VIDEOS_FRACTIONn(genotypelist,path,expname,genotype)
+%FIND_VIDEOS_FRACTIONN(genotypelist,path,expname,genotype)
 %
 %averages the phototaxis data for the flies specified in
 %genotypelist
 %genotype is just the label for the outputdatafile
 %both arguments are of type string
-function find_videos_fraction(genotypelist, path, expname, genotype)
+function find_videos_fraction(genotypelist, path, expname, genotype, olddataformat)
+
+switch nargin
+    case 5
+        olddataformat = olddataformat;
+        
+    otherwise
+        olddataformat = true;
+end
+[outputtable, outputdir] = load_input_Indices(genotypelist, olddataformat);
 
 
-outputtable = readtable(genotypelist, 'readvariablenames', false);
 
 outputvar2 = arrayfun(@(input) input, outputtable.Var2, 'UniformOutput', false);
 
@@ -16,7 +24,7 @@ startdir = pwd;
 frac = [];
 dirs = dir();
 
-
+dirnames = {};
 for p = 1:numel(dirs)
     if ~dirs(p).isdir
         continue;
@@ -25,7 +33,26 @@ for p = 1:numel(dirs)
     if ismember(dirname, {'.', '..'})
         continue;
     end
-
+   if olddataformat
+      dirnames{end+1} =  dirname;
+    else
+        subdirs = dir(dirname);
+        for sub = 1:numel(subdirs)
+    if ~subdirs(sub).isdir
+        continue;
+    end
+    subdirname = subdirs(sub).name;
+    if ismember(subdirname, {'.', '..'})
+        continue;
+    end
+        dirname_full = fullfile(dirname,subdirname);
+        dirnames{end+1} =  dirname_full;
+        
+        end
+    end
+end
+for p = 1:numel(dirnames)
+    dirname = dirnames{p};
     disp(['Now looking in: ', dirname]);
     cd(dirname);
     videos = cellfun(@(list)dir(char(strcat('*', list))), outputtable.Var1, 'UniformOutput', false);
@@ -72,7 +99,7 @@ end
 meanfrac = mean(frac);
 fracSEM = std(frac) / sqrt(size(frac, 2));
 fullfigname = strcat(genotype, '_', expname, '_mean_fraction_frames');
-datafilename = strcat(fullfigname, '.mat');
+datafilename = fullfile(outputdir,strcat(fullfigname, '.mat'));
 fignew = figure('Name', fullfigname);
 
 bar(1, meanfrac, 0.1, 'm');

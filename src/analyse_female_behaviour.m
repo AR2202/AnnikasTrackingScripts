@@ -1,0 +1,6 @@
+function analyse_female_behaviour(genotypelist, genotype, olddataformat)
+run_distance_travelled(600)
+run_fly_vel()
+pausing()
+find_videos_Indices_other(genotypelist, genotype, olddataformat)
+find_videos_pausing(genotypelist, genotype, olddataformat)
