@@ -37,18 +37,21 @@ for p = 1:numel(dirs)
       dirnames{end+1} =  dirname;
     else
         subdirs = dir(dirname);
-        for sub = 1:numel(subdirs)
-    if ~subdirs(sub).isdir
-        continue;
-    end
-    subdirname = subdirs(sub).name;
-    if ismember(subdirname, {'.', '..'})
-        continue;
-    end
-        dirname_full = fullfile(dirname,subdirname);
-        dirnames{end+1} =  dirname_full;
-        
+        tracked_subdirs= subdirs(~strcmp({subdirs.name}, '.')&[subdirs.isdir]==1&contains({subdirs.name},'Tracked'));
+        %convert to table for sorting
+        T = struct2table(tracked_subdirs);
+        %sort by tracking date, newest first (based on name of directory)
+        sortedT = sortrows(T, 'name', 'descend');
+        sortedSubdirs = table2struct(sortedT);
+        if numel(sortedSubdirs) >= 1
+            % this will use the newest tracking only. 
+            %If this behaviour is not intended, it needs to be changed
+            subdirname = sortedSubdirs(1).name;
+            dirname_full = fullfile(dirname,subdirname);
+            dirnames{end+1} =  dirname_full;
         end
+        
+       
     end
 end
 for p = 1:numel(dirnames)
