@@ -4,9 +4,9 @@
 
 ## Annikas Tracking Scripts
 
-This is a collection of MATLAB scripts for post-tracking data analysis of fly courtship videos tracked with the Goodwin Lab tracking system. The package includes a preliminary GUI, which is likely to be modified. Check for updates frequently.
+This is a collection of MATLAB scripts for post-tracking data analysis of fly courtship videos tracked with the Goodwin Lab tracking system. 
 
-All functions can still be called from the MATLAB command line or a custom matlab script.
+Goodwin Lab tracking has recently been updated. These scripts are currently being revised. An update of the documentation will follow.
 
 ## Requirements
 
