@@ -1,3 +1,5 @@
 function analyse_male_behaviour(genotypelist, genotype, olddataformat)
-
+run_distance_travelled(600)
 find_videos_Indices(genotypelist, genotype, olddataformat)
+find_videos_bilateral(genotypelist, genotype, olddataformat)
+find_videos_dist_other(genotypelist, genotype, olddataformat)
