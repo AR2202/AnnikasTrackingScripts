@@ -27,7 +27,7 @@ for p = 1:numel(courtshipdirs)
         %replace the cirectory name ending in 'Recorded' with all its
         %tracked
         %subdirectories
-        courtshipdirs2(:,p) = [];
+        courtshipdirs2(:,find(strcmp(courtshipdirs2, dirname))) = [];
         for q = 1:numel(additional_dirs)
             additional = additional_dirs{q};
         courtshipdirs2 = [courtshipdirs2,additional];
