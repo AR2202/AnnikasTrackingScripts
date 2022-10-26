@@ -7,11 +7,12 @@ for i = 1:length(genotypelists)
     find_videos_bilateral(genotypelist, genotype, olddataformat)
     find_videos_dist_other(genotypelist, genotype, olddataformat)
     find_videos_dist(genotypelist, genotype, olddataformat)
-    %find_videos_mean_velocity(genotypelist, genotype, olddataformat)
+
     find_videos_mean_dist_to_other(genotypelist, genotype, olddataformat)
     
     find_videos_threshold(genotypelist, genotype, 'time_to_dist', olddataformat)
     find_videos_threshold(genotypelist, genotype, 'time_to_move', olddataformat)
     find_videos_threshold(genotypelist, genotype, 'time_to_leg_touch', olddataformat)
+    find_videos_threshold_delay(genotypelist, genotype, 'time_to_move', true)
     
 end
