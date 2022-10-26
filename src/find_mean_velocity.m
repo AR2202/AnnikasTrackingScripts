@@ -1,8 +1,9 @@
 
-function find_mean_velocity(outputtable, outputdir, fullfigname, expname, olddataformat)
+function find_mean_velocity(outputtable, outputdir, fullfigname, expname, ...
+    path, olddataformat)
 
 
-path = 'velocity';
+
 structname = 'data';
 
 

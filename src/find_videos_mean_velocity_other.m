@@ -24,5 +24,5 @@ outputvar2 = arrayfun(@(input) input, outputtable.Var2);
 Var4 = arrayfun(@(var2)var2-(~isOdd(var2))+(isOdd(var2)), outputvar2);
 outputtable.Var2 = Var4;
 fullfigname = strcat(genotype, '_mean_', expname, '_other');
-find_mean_velocity(outputtable, outputdir, fullfigname, expname, olddataformat);
+find_mean_velocity(outputtable, outputdir, fullfigname, expname, 'velocity', olddataformat);
 

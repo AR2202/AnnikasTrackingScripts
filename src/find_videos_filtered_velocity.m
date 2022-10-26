@@ -7,9 +7,9 @@
 %both arguments are of type string
 %optional argument olddataformat (bool): whether old or new tracking format was
 %used; if omitted, it is assumed to be true
-function find_videos_mean_velocity(genotypelist, genotype, olddataformat)
+function find_videos_filtered_velocity(genotypelist, genotype, olddataformat)
 switch nargin
-    case 3
+    case 6
         olddataformat = olddataformat;
         
     otherwise
@@ -22,5 +22,5 @@ expname = 'velocity';
 
 fullfigname = strcat(genotype, '_mean_', expname);
 find_mean_velocity(outputtable, outputdir, fullfigname, expname, ...
-    'velocity', olddataformat);
+    'velocity_filtered', olddataformat);
 
