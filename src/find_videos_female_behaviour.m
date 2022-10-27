@@ -10,6 +10,7 @@ for i = 1:length(genotypelists)
     find_videos_mean_velocity(genotypelist, genotype, olddataformat)
     find_videos_mean_velocity_other(genotypelist, genotype, olddataformat)
     find_videos_threshold(genotypelist, genotype, 'time_to_move', olddataformat)
+    
     find_videos_filtered_velocity(genotypelist, genotype, olddataformat)
     
 end

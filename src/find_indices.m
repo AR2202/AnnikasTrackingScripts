@@ -135,6 +135,23 @@ disp(['Now looking in: ', dirname]);
                             end
                              
                         end
+                         elseif ismember('CourtshipInitiation',outputtable2.Properties.VariableNames)  
+                        if isnumeric(outputtable2.CourtshipInitiation(outputtable2.FlyId == newtable3.Var2(r)))
+                          CurrIndex = outputtable2.CourtshipInitiation(outputtable2.FlyId == newtable3.Var2(r));
+                       else
+                            CurrIndex = str2double(outputtable2.(index)(outputtable2.FlyId == newtable3.Var2(r)));
+                        end
+                        disp(index);
+                        disp(CurrIndex);
+                            
+                        if ismember(newtable3.Var2(r), outputtable2.FlyId)
+
+                            if (size(CurrIndex) > 0)
+
+                                data.init = [data.init, CurrIndex];
+                            end
+                             
+                        end
                            end
 %                         if isnumeric(outputtable2.ApproachingIndex(outputtable2.FlyId == newtable3.Var2(r)))
 %                             ApproachingIndex = outputtable2.ApproachingIndex(outputtable2.FlyId == newtable3.Var2(r));

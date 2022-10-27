@@ -20,7 +20,7 @@ end
 expname = 'velocity';
 [outputtable, outputdir] = load_input_Indices(genotypelist, olddataformat);
 
-fullfigname = strcat(genotype, '_mean_', expname);
+fullfigname = strcat(genotype, '_mean_filtered_', expname);
 find_mean_velocity(outputtable, outputdir, fullfigname, expname, ...
     'velocity_filtered', olddataformat);
 
