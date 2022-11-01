@@ -4,7 +4,7 @@ run_distance_travelled(600)
 run_fly_vel()
 run_mean_velocity(900)
 
-run_time_to_movement(4)
+run_time_to_movement(10)
 run_mean_velocity_filtered_by_other_fly_score('Facing', 12, 0.5)
 
 

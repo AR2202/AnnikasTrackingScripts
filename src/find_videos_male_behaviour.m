@@ -12,7 +12,7 @@ for i = 1:length(genotypelists)
     
     find_videos_threshold(genotypelist, genotype, 'time_to_dist', olddataformat)
     find_videos_threshold(genotypelist, genotype, 'time_to_move', olddataformat)
-    find_videos_threshold(genotypelist, genotype, 'time_to_leg_touch', olddataformat)
+    
     find_videos_threshold_delay(genotypelist, genotype, 'time_to_move', true)
     
 end

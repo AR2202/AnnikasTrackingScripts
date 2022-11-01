@@ -130,8 +130,12 @@ disp(['Now looking in: ', dirname]);
                         if ismember(newtable3.Var2(r), outputtable2.FlyId)
 
                             if (size(CurrIndex) > 0)
+                                if CurrIndex == 0.04
+                                    data.init = [data.init, 900];
+                                else
 
-                                data.init = [data.init, CurrIndex];
+                                    data.init = [data.init, CurrIndex];
+                                end
                             end
                              
                         end
@@ -148,7 +152,12 @@ disp(['Now looking in: ', dirname]);
 
                             if (size(CurrIndex) > 0)
 
-                                data.init = [data.init, CurrIndex];
+                                if CurrIndex == 0.04
+                                    data.init = [data.init, 900];
+                                else
+
+                                    data.init = [data.init, CurrIndex];
+                                end
                             end
                              
                         end
